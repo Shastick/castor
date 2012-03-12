@@ -2,5 +2,5 @@ package digester.processer
 
 
 trait LogProcesser {
-  def crunchLine(in: Array[Byte])
+  def crunchLine(in: Array[Byte]):Array[Byte]
 }

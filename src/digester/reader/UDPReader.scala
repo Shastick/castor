@@ -2,19 +2,19 @@ package digester.reader
 import java.net.DatagramSocket
 import java.net.DatagramPacket
 import digester.processer.LogProcesser
-import java.io.Writer
+import digester.writer.LineWriter
 
 class UDPReader(socket: DatagramSocket
 				,processer: LogProcesser
-				,writer: Writer) extends Reader{
+				,writer: LineWriter) extends Reader{
   
 	val packet_length = 1024
-	def this(port: Int, proc: LogProcesser,writ: Writer) =
+	def this(port: Int, proc: LogProcesser,writ: LineWriter) =
 	  this(new DatagramSocket(port),proc,writ)
 	
 	def act() {
 	  while(true){
-		  processer.crunchLine(readPacket)
+		  writer.writeLine(processer.crunchLine(readPacket))
 	  }
 	}
 	
@@ -29,5 +29,4 @@ class UDPReader(socket: DatagramSocket
 	 socket.receive(p)
 	 p.getData()
 	}
-	
 }
