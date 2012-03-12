@@ -1,0 +1,5 @@
+package reader
+
+trait Reader {
+
+}
