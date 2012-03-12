@@ -2,6 +2,7 @@ package digester.reader
 import java.net.DatagramSocket
 import java.net.DatagramPacket
 import digester.processer.LogProcesser
+import java.io.Writer
 
 class UDPReader(socket: DatagramSocket
 				,processer: LogProcesser
