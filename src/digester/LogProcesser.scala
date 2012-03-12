@@ -1,0 +1,5 @@
+package digester
+
+trait LogProcesser {
+
+}
