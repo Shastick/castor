@@ -1,5 +1,8 @@
-package reader
+package digester.reader
 
-trait Reader {
+import scala.actors.Actor
+
+trait Reader extends Actor{
+
 
 }
