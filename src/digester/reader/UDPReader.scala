@@ -18,16 +18,13 @@ class UDPReader(socket: DatagramSocket
 	
 	def act() {
 	  while(true){
-		  println(SyslogParser(readPacket))
+		  println(SyslogParser(readDatagram))
 	  }
 	}
 	
-	def readLine():String = {
-	  val bytes = readPacket
-	  new String(bytes)
-	}
+	def readLine():String = readDatagram()
 	
-	def readPacket():Array[Byte] = {
+	def readDatagram():String = {
 	 val buff = new Array[Byte](packet_length)
 	 val p = new DatagramPacket(buff,packet_length)
 	 socket.receive(p)
@@ -37,8 +34,6 @@ class UDPReader(socket: DatagramSocket
 	 val string_stream = new BufferedReader(
 			 new InputStreamReader(
 			     new ByteArrayInputStream(p.getData())))
-	 		
-	 
-	 p.getData()
+	 string_stream.readLine()
 	}
 }
