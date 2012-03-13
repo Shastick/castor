@@ -16,11 +16,11 @@ object SyslogParser {
   def apply(datagram: String):SyslogMsg = {
     //Raw string with """ """
     //val parse = """^(<\d{1,3}>)(\D{3}\s[\d\s]{2}:\d{2}:\d{2}:\d{2})\s(.*)\s([.\s]*)$""".r
-    val parse = """^(<\d{1,3}>)(\D{3}).*""".r
+    val parse = """^(<\d{1,3}>)(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(.*)""".r
 		 
     datagram match {
-    case parse(pri,tstamp) => SyslogMsg(pri,SyslogHeader(tstamp,"host"),"msg")
-      case _ => SyslogMsg("Empty !",SyslogHeader("",""),"")
+    case parse(pri,tstamp,host,msg) => SyslogMsg(pri,SyslogHeader(tstamp,host),msg)
+      case _ => throw new Exception("Parser Error : " + datagram)
       //TODO @julien handle this correctly
     }
   }
