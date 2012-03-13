@@ -7,7 +7,7 @@ import java.security.cert.X509Certificate
 import java.io.FileInputStream
 
 
-class RSAProcesser extends LogProcesser{
+class RSAProcesser(ks: KeyStore) extends ManagedKey(ks) with LogProcesser{
 	val cipher_def = "RSA/ECB/PKCS1PADDING"
 	val RSA_byte_step = 117
 	
@@ -18,10 +18,8 @@ class RSAProcesser extends LogProcesser{
 	//Security.addProvider(new BouncyCastleProvider()) 
 	/* Use existing keystore */ 
 	val cert_alias = "trolilol"
-	// keystore alias 
-	val keystore = KeyStore.getInstance("JCEKS")
-	keystore.load(new FileInputStream("keystore"), null)
-	val cert = keystore.getCertificate(cert_alias) match {
+
+	val cert = ks.getCertificate(cert_alias) match {
 	  case c:X509Certificate => c
 	  case _ => throw new Exception("Woops, not a X509Certificate loaded!")
 	}
