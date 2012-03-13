@@ -17,11 +17,11 @@ class RSAProcesser extends LogProcesser{
 	
 	//Security.addProvider(new BouncyCastleProvider()) 
 	/* Use existing keystore */ 
-	val ALIAS = "trolilol"
+	val cert_alias = "trolilol"
 	// keystore alias 
 	val keystore = KeyStore.getInstance("JKS")
 	keystore.load(new FileInputStream("keystore"), null)
-	val cert = keystore.getCertificate(ALIAS) match {
+	val cert = keystore.getCertificate(cert_alias) match {
 	  case c:X509Certificate => c
 	  case _ => throw new Exception("Woops, not a X509Certificate loaded!")
 	}
