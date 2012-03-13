@@ -7,7 +7,7 @@ import sun.misc.BASE64Encoder
 import digester.processer.RSAProcesser
 
 object LogDigester extends Application {
-	val proc = new RSAProcesser()
+	val proc = new AESProcesser()
 	val writer = new LogFileWriter("test_out.txt",new BASE64Encoder())
 	val tester = new UDPReader(5555,proc,writer)
 	tester.start

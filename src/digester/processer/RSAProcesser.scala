@@ -19,7 +19,7 @@ class RSAProcesser extends LogProcesser{
 	/* Use existing keystore */ 
 	val cert_alias = "trolilol"
 	// keystore alias 
-	val keystore = KeyStore.getInstance("JKS")
+	val keystore = KeyStore.getInstance("JCEKS")
 	keystore.load(new FileInputStream("keystore"), null)
 	val cert = keystore.getCertificate(cert_alias) match {
 	  case c:X509Certificate => c
