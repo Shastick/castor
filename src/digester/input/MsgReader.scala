@@ -1,4 +1,4 @@
-package digester.reader
+package digester.input
 
 import scala.actors.Actor
 

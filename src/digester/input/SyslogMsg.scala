@@ -1,4 +1,4 @@
-package digester.reader
+package digester.input
 import scala.util.matching.Regex
 import java.io.BufferedReader
 import java.io.InputStreamReader

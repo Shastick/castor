@@ -1,4 +1,4 @@
-package digester.reader
+package digester.input
 import java.net.DatagramSocket
 import java.net.DatagramPacket
 import digester.processer.LogProcesser
