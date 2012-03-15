@@ -8,6 +8,6 @@ class AESLineDecoder(ks: KeyStore, lines: LogReader) extends LineDecoder(lines) 
   val cipher = AESCipher.initDecryptionCipher(ks,"aes_pony1","")
   
   def extractLine():String = {
-	
+	return "LOL"
   }
 }

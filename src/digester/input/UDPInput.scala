@@ -36,5 +36,7 @@ class UDPInput(socket: DatagramSocket
 			 new InputStreamReader(
 			     new ByteArrayInputStream(p.getData())))
 	 string_stream.readLine()
+	 
+	 //new String(p.getData(), "UTF8")
 	}
 }
