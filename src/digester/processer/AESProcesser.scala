@@ -11,7 +11,7 @@ import util.AESCipher
 
 class AESProcesser(ks: KeyStore) extends ManagedKey(ks) with LogProcesser {
 	
-  val cipher = AESCipher.initCipher(ks,"pony_key","")
+  val cipher = AESCipher.initEncryptionCipher(ks,"aes_pony1","")
 
   /**
    * Encrypt a byte array

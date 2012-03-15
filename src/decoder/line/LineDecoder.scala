@@ -1,4 +1,5 @@
-package decoder
+package decoder.line
+import decoder.reader.LogReader
 
 /**
  * Abstract class setting the basics for anything wishing to decrypt log lines.

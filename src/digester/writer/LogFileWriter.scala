@@ -8,7 +8,7 @@ class LogFileWriter(out: FileWriter, enc: BASE64Encoder, line_sep: String) exten
   /**
    * Overloaded constructor for a filename specified by string.
    */
-  def this(fname: String, enc: BASE64Encoder) = this(new FileWriter(fname,true),enc, "\n")
+  def this(fname: String) = this(new FileWriter(fname,true), new BASE64Encoder, "\n")
   
   def writeLine(line: String) = {
     if (line.endsWith(line_sep)) out.write(line)

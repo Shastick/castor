@@ -1,8 +1,13 @@
-package decoder
+package decoder.line
+import util.AESCipher
+import java.security.KeyStore
+import decoder.reader.LogReader
 
-class AESLineDecoder(lines: LogReader) extends LineDecoder(lines) {
+class AESLineDecoder(ks: KeyStore, lines: LogReader) extends LineDecoder(lines) {
+  
+  val cipher = AESCipher.initDecryptionCipher(ks,"aes_pony1","")
   
   def extractLine():String = {
-    
+		  cipher.doFinal()
   }
 }

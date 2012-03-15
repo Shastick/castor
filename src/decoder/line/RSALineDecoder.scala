@@ -1,4 +1,5 @@
-package decoder
+package decoder.line
+import decoder.reader.LogReader
 
 class RSALineDecoder(lines: LogReader) extends LineDecoder(lines) {
 

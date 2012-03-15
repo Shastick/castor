@@ -10,7 +10,7 @@ import util.RSACipher
 
 class RSAProcesser(ks: KeyStore) extends ManagedKey(ks) with LogProcesser{
 	
-	val cipher = RSACipher.initCipher(ks,"trolilol")
+	val cipher = RSACipher.initEncryptionCipher(ks,"trolilol")
 	
 	def crunchLine(bytes: Array[Byte]):Array[Byte]={
 	  val out = new Array[Byte](bytes.size)

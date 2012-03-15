@@ -12,7 +12,7 @@ object LogDigester extends Application {
 	ManagedKey.initKey(ks,"pony_key",256,"")
 	
 	val proc = new RSAProcesser(ks)
-	val writer = new LogFileWriter("test_out.txt",new BASE64Encoder())
+	val writer = new LogFileWriter("test_out.txt")
 	val tester = new UDPInput(5555,proc,writer)
 	tester.start
 }
