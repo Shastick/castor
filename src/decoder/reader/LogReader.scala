@@ -1,5 +1,5 @@
 package decoder.reader
 
-trait LogReader extends Iterator[String]{
+trait LogReader extends Iterator[Array[Byte]]{
 
 }

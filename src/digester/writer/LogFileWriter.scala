@@ -18,11 +18,6 @@ class LogFileWriter(out: FileWriter, enc: BASE64Encoder, line_sep: String) exten
   
   def writeLine(bytes: Array[Byte]) = writeLine(byteToBase64(bytes))
  
-   def base64ToByte(data: String):Array[Byte] = {
-       val decoder = new BASE64Decoder()
-       decoder.decodeBuffer(data)
-   }
- 
-   def byteToBase64(data: Array[Byte]):String = enc.encode(data)
+  def byteToBase64(data: Array[Byte]):String = enc.encode(data)
    
 }

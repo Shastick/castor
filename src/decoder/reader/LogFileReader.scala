@@ -13,5 +13,7 @@ class LogFileReader(lines: Iterator[String],dec: BASE64Decoder) extends LogReade
   def this(fname: String) = this(Source.fromFile(new File(fname)).getLines,new BASE64Decoder)
 
   def hasNext() = lines.hasNext
-  def next() = lines.next()
+  def next() = base64ToByte(lines.next())
+  
+  def base64ToByte(data: String):Array[Byte] = dec.decodeBuffer(data)
 }
