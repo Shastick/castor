@@ -5,31 +5,16 @@ import java.security.Security
 import java.security.KeyStore
 import java.security.cert.X509Certificate
 import java.io.FileInputStream
+import util.RSACipher
 
 
 class RSAProcesser(ks: KeyStore) extends ManagedKey(ks) with LogProcesser{
-	val cipher_def = "RSA/ECB/PKCS1PADDING"
-	val RSA_byte_step = 117
 	
-	/**
-	 * Courtesy of http://www.jensign.com/JavaScience/dotnet/RSAEncrypt/
-	 */
-	
-	//Security.addProvider(new BouncyCastleProvider()) 
-	/* Use existing keystore */ 
-	val cert_alias = "trolilol"
-
-	val cert = ks.getCertificate(cert_alias) match {
-	  case c:X509Certificate => c
-	  case _ => throw new Exception("Woops, not a X509Certificate loaded!")
-	}
-	
-	val cipher = Cipher.getInstance(cipher_def) 
-	cipher.init(Cipher.ENCRYPT_MODE, cert)
+	val cipher = RSACipher.initCipher(ks,"trolilol")
 	
 	def crunchLine(bytes: Array[Byte]):Array[Byte]={
 	  val out = new Array[Byte](bytes.size)
-	  val clear_data = bytes.grouped(RSA_byte_step)
+	  val clear_data = bytes.grouped(RSACipher.byte_step)
 	  val cipher_data = clear_data.flatMap(b => cipher.doFinal(b))
 	  cipher_data.copyToArray(out)
 	  out
