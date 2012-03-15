@@ -2,7 +2,7 @@ package digester.input
 
 import scala.actors.Actor
 
-trait MsgReader extends Actor{
+trait MsgInput extends Actor{
 
 	/**
 	 * http://www.faqs.org/rfcs/rfc3164.html for details about the structure of a 

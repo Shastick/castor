@@ -8,9 +8,9 @@ import java.io.InputStreamReader
 import java.io.ByteArrayInputStream
 
 
-class UDPReader(socket: DatagramSocket
+class UDPInput(socket: DatagramSocket
 				,processer: LogProcesser
-				,writer: LineWriter) extends MsgReader{
+				,writer: LineWriter) extends MsgInput{
   
 	val packet_length = 2048
 	def this(port: Int, proc: LogProcesser,writ: LineWriter) =
