@@ -1,5 +1,5 @@
 package decoder
 
-class RSALineDecoder {
+class RSALineDecoder(lines: LogReader) extends LineDecoder(lines) {
 
 }

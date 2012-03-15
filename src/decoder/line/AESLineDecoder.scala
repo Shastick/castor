@@ -1,5 +1,5 @@
 package decoder
 
-class AESLineDecoder {
+class AESLineDecoder(lines: LogReader) extends LineDecoder(lines) {
 
 }

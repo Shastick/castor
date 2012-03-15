@@ -1,1 +1,6 @@
 bin/*
+.cache
+.classpat
+.project
+.settings
+test_out

@@ -1,5 +1,5 @@
 package decoder
 
-class LineDecoder(lines: Iterator[String]) {
-
+class LineDecoder(log: LogReader) {
+	def nextLine = log.next()
 }
