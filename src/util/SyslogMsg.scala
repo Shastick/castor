@@ -48,15 +48,51 @@ class SyslogHeader(
  */
     
 object SyslogParser {
-  def apply(datagram: String):SyslogMsg = {
-    //TODO timestamp regexp probably doesn't cover all possible timestamp forms
-    val parse = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(.*)""".r
+  val decoder = BASE64.getDecoder
+  def dec(s:String) = decoder.decodeBuffer(s)
+  /**
+   * Clear text parsing regexps
+   * TODO => timestamp regexp probably doesn't cover all possible timestamp forms
+   */
+  val clr_txt = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(.*)$""".r
+  /**
+   * Cipher text parsing regexps
+   *  - paranoid : every field is crypted
+   *  - full :  only the PRIORITY field is in cleartext
+   *  - event : SOURCE and MSG only are crypted
+   *  - content : only the MSG is crypted
+   *  - timeless : only the TIMESTAMP is crypted
+   *  - anonymous : only the SOURCE is crypted
+   *  - blind : TIMESTAMP and SOURCE are crypted
+   *  
+   *  TODO check if the regexps can indeed correctly differentiate every case,
+   *  and in which cases they collide
+   */
+  val c_paranoid = """^<(\S*)>(\S*)\s(\S*)\s(\S*)$""".r
+  val c_full = """^<(\d{1,3})>(\S*)\s(\S*)\s(\S*)$""".r
+  val c_event = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(\S*)$""".r
+  val c_content = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(\S*)$""".r
+  val c_timeless = """^<(\d{1,3})>(\S*)\s(\S*)\s(.*)$""".r
+  val c_anonymous = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(.*)$""".r
+  val c_blind = """^<(\d{1,3})>(\S*)\s(\S*)\s(.*)$""".r
+  
+  def parseClearText(datagram: String):SyslogMsg = {
 		 
     datagram match {
-    case parse(pri,tstamp,host,msg) => 
+    case clr_txt(pri,tstamp,host,msg) => 
       	new SyslogMsg(Left(pri), new SyslogHeader(Left(tstamp),Left(host)),Left(msg))
     case _ => throw new Exception("Parser Error : " + datagram)
       //TODO @julien handle this correctly
     }
   }
+  
+  def parseCipherText(c: String):SyslogMsg = 
+	c match {
+		case c_full(pri,tstamp,host,msg) =>
+		  new SyslogMsg(Left(pri)
+		    ,new SyslogHeader(Right(dec(tstamp)),Right(dec(host)))
+		  	,Right(dec(msg)))
+		  
+	  	case _ => throw new Exception("Parse error :")
+  	}
 }

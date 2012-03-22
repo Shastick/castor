@@ -11,8 +11,8 @@ import javax.crypto.Cipher
 
 object LogDigester extends Application {
 	val mk = ManagedKeyStore.load("keystore", "dorloter")
-	mk.newAESKey("aes_test",256,"")
-	mk.save
+	//mk.newAESKey("aes_test",256,"")
+	//mk.save
 	
 	val proc = new RSAProcesser(mk.ks,"rsa_test")
 	val writer = new LogFileWriter("test_out.txt")

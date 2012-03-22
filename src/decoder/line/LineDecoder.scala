@@ -6,7 +6,6 @@ import decoder.reader.LogReader
  */
 
 abstract class LineDecoder(log: LogReader) {
-	def nextCipherLine = log.next()
-	
-	def extractLine(): String
+	def nextLine = log.next()
+	def extractMsg(): String
 }
