@@ -1,9 +1,11 @@
 package decoder.line
 import decoder.reader.LogReader
+import util.SyslogMsg
+import java.security.KeyStore
 
-class RSAMsgDecoder(lines: LogReader) extends LineDecoder(lines) {
+class RSAMsgDecoder(ks: KeyStore, lines: LogReader) extends MsgDecoder(lines) {
 
-  def extractLine(): String = {
-    "LOL"
+  def nextMsg():SyslogMsg = {
+    null
   }
 }
