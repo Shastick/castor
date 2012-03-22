@@ -49,7 +49,7 @@ class SyslogHeader(
     
 object SyslogParser {
   def apply(datagram: String):SyslogMsg = {
-    
+    //TODO timestamp regexp probably doesn't cover all possible timestamp forms
     val parse = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(.*)""".r
 		 
     datagram match {

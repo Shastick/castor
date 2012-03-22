@@ -4,7 +4,9 @@ import javax.crypto.Cipher
 import java.security.KeyStore
 
 object AESCipher {
-  //TODO @julien check if something like AES/CBC/padding scheme can be used here
+  /**TODO check if something like AES/CBC/padding scheme can be used here => for now,
+   * two same datagrams have the exact same ciphertext
+   */
   	val cipher_def = "AES"
 	val block_size = 256
 			

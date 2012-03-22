@@ -11,7 +11,7 @@ import util.AESCipher
 
 class AESProcesser(ks: KeyStore) extends LogProcesser(ks)  {
 	
-  val cipher = AESCipher.initEncryptionCipher(ks,"aes_pony1","")
+  val cipher = AESCipher.initEncryptionCipher(ks,"aes_test","")
 
   /**
    * Encrypt a byte array
