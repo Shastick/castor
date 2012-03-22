@@ -4,9 +4,9 @@ import java.security.KeyStore
 import util.RSACipher
 
 
-class RSAProcesser(ks: KeyStore) extends LogProcesser(ks) {
+class RSAProcesser(ks: KeyStore, ka: String) extends LogProcesser(ks,ka) {
 	
-	val cipher = RSACipher.initEncryptionCipher(ks,"trolilol")
+	val cipher = RSACipher.initEncryptionCipher(ks,ka)
 	
 	def crunchArray(bytes: Array[Byte]):Array[Byte]={
 	  val out = new Array[Byte](bytes.size)

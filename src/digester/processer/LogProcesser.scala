@@ -9,7 +9,7 @@ import util.SyslogHeader
  * of syslog messages should be encrypted and hands them down to the Processer implementations.
  */
 
-abstract class LogProcesser(ks: KeyStore)  {
+abstract class LogProcesser(ks: KeyStore, ka: String)  {
   
   def crunchArray(in: Array[Byte]):Array[Byte]
   

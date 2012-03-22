@@ -9,7 +9,7 @@ import java.security.KeyStore.PasswordProtection
 import util.AESCipher
 
 
-class AESProcesser(ks: KeyStore) extends LogProcesser(ks)  {
+class AESProcesser(ks: KeyStore, ka: String) extends LogProcesser(ks,ka)  {
 	
   val cipher = AESCipher.initEncryptionCipher(ks,"aes_test","")
 
