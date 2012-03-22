@@ -1,14 +1,17 @@
 package digester.writer
-import sun.misc.BASE64Decoder
-import sun.misc.BASE64Encoder
 import java.io.FileWriter
+import util.SyslogMsg
+import util.BASE64
 
-class LogFileWriter(out: FileWriter, enc: BASE64Encoder, line_sep: String) extends LineWriter {
-
+class LogFileWriter(out: FileWriter, line_sep: String) extends LineWriter {
+	
+  val enc = BASE64.getEncoder
+  
   /**
    * Overloaded constructor for a filename specified by string.
    */
-  def this(fname: String) = this(new FileWriter(fname,true), new BASE64Encoder, "\n")
+  
+  def this(fname: String) = this(new FileWriter(fname,true), "\n")
   
   def writeLine(line: String) = {
     if (line.endsWith(line_sep)) out.write(line)
@@ -16,8 +19,8 @@ class LogFileWriter(out: FileWriter, enc: BASE64Encoder, line_sep: String) exten
     out.flush()
   }
   
-  def writeLine(bytes: Array[Byte]) = writeLine(byteToBase64(bytes))
- 
-  def byteToBase64(data: Array[Byte]):String = enc.encode(data)
+  def writeLine(bytes: Array[Byte]) = writeLine(enc.encode(bytes))
+  
+  def writeDgram(s: SyslogMsg) = writeLine(s.toString)
    
 }

@@ -14,7 +14,8 @@ abstract class LogProcesser(ks: KeyStore)  {
   def crunchArray(in: Array[Byte]):Array[Byte]
   
   def crunchDGram(in: SyslogMsg):SyslogMsg = {
-    
+    // Now encrypting host and message only.
+    // TODO : do this based from a config file.
 	val pri = Left(in.pri.left.get)
 	val tstamp = Left(in.header.tstamp.left.get)
 	val host = Right(crunchArray(in.header.tstamp.left.get.getBytes))
