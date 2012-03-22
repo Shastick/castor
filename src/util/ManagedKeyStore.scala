@@ -11,25 +11,31 @@ import java.io.FileOutputStream
  *  => TODO finish it correctly.
  */
 class ManagedKeyStore(
-    val file: String
+    file: String
+    ,pwd: String
     ,val ks: KeyStore) {
  
-  def initAESKey(alias: String, key_size: Int, key_pass: String){
+  def newAESKey(alias: String, key_size: Int, key_pass: String){
     val kgen = KeyGenerator.getInstance("AES");
     kgen.init(key_size); // 192 and 256 bits may not be available
     val skey = kgen.generateKey();
     val skeyEntry = new SecretKeyEntry(skey)
-    
     ks.setEntry(alias,skeyEntry,new PasswordProtection(key_pass.toCharArray()))
   }
   
-  def save = ks.store(new FileOutputStream(file),null)
+  def save = ks.store(new FileOutputStream(file), pwd.toCharArray())
 }
 
 object ManagedKeyStore {
-  def load(file: String):ManagedKeyStore = {
+  def load(file: String, pwd: String):ManagedKeyStore = {
     val ks = KeyStore.getInstance("JCEKS")
-    ks.load(new FileInputStream(file), null)
-    new ManagedKeyStore(file, ks)
+    ks.load(new FileInputStream(file), pwd.toCharArray())
+    new ManagedKeyStore(file,pwd, ks)
+  }
+  
+  def create(file: String, pwd: String):ManagedKeyStore = {
+    val ks = KeyStore.getInstance("JCEKS")
+    ks.load(null,null)
+    new ManagedKeyStore(file,pwd, ks)
   }
 }

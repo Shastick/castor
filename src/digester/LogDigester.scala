@@ -8,8 +8,9 @@ import digester.processer.RSAProcesser
 import util.ManagedKeyStore
 
 object LogDigester extends Application {
-	val mk = ManagedKeyStore.load("keystore")
-	mk.initAESKey("aes_test",256,"")
+	val mk = ManagedKeyStore.load("keystore", "dorloter")
+	//mk.newAESKey("aes_test",256,"")
+	//mk.save
 	
 	val proc = new AESProcesser(mk.ks)
 	val writer = new LogFileWriter("test_out.txt")
