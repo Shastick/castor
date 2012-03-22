@@ -2,10 +2,8 @@ package decoder.line
 import decoder.reader.LogReader
 import util.SyslogMsg
 import java.security.KeyStore
+import util.RSACipher
 
-class RSAMsgDecoder(ks: KeyStore, lines: LogReader) extends MsgDecoder(lines) {
-
-  def nextMsg():SyslogMsg = {
-    null
-  }
+class RSAMsgDecoder(ks: KeyStore, lines: LogReader,key_alias: String) extends MsgDecoder(lines) {
+	val cipher = RSACipher.initDecryptionCipher(ks,key_alias)
 }

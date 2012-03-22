@@ -59,11 +59,11 @@ object SyslogParser {
    * Cipher text parsing regexps
    *  - paranoid : every field is crypted
    *  - full :  only the PRIORITY field is in cleartext
-   *  - event : SOURCE and MSG only are crypted
+   *  - event : HOST and MSG only are crypted
    *  - content : only the MSG is crypted
    *  - timeless : only the TIMESTAMP is crypted
-   *  - anonymous : only the SOURCE is crypted
-   *  - blind : TIMESTAMP and SOURCE are crypted
+   *  - anonymous : only the HOST is crypted
+   *  - blind : TIMESTAMP and HIST are crypted
    *  
    *  TODO check if the regexps can indeed correctly differentiate every case,
    *  and in which cases they collide
@@ -88,7 +88,7 @@ object SyslogParser {
   
   def parseCipherText(c: String):SyslogMsg = 
 	c match {
-		case c_full(pri,tstamp,host,msg) =>
+		case c_event(pri,tstamp,host,msg) =>
 		  new SyslogMsg(Left(pri)
 		    ,new SyslogHeader(Right(dec(tstamp)),Right(dec(host)))
 		  	,Right(dec(msg)))
