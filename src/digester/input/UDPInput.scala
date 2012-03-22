@@ -6,6 +6,7 @@ import digester.writer.LineWriter
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.ByteArrayInputStream
+import util.SyslogParser
 
 
 class UDPInput(socket: DatagramSocket

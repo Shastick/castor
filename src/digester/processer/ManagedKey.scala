@@ -5,10 +5,6 @@ import java.security.KeyStore.PasswordProtection
 import javax.crypto.KeyGenerator
 import java.security.KeyStore.SecretKeyEntry
 
-class ManagedKey(ks: KeyStore) {
-
-}
-
 object ManagedKey {
  def initKey(ks: KeyStore, alias: String, key_size: Int, key_pass: String){
     val kgen = KeyGenerator.getInstance("AES");

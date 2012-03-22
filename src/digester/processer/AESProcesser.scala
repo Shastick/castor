@@ -9,7 +9,7 @@ import java.security.KeyStore.PasswordProtection
 import util.AESCipher
 
 
-class AESProcesser(ks: KeyStore) extends ManagedKey(ks) with LogProcesser {
+class AESProcesser(ks: KeyStore) extends LogProcesser(ks)  {
 	
   val cipher = AESCipher.initEncryptionCipher(ks,"aes_pony1","")
 
@@ -18,7 +18,7 @@ class AESProcesser(ks: KeyStore) extends ManagedKey(ks) with LogProcesser {
    * Currently EVERYTHING is encrypted, even if the bytes represent a one character String...
    * TODO @julien => think about it => good or bad ?
    */
-  def crunchLine(input: Array[Byte]):Array[Byte]={
+  def crunchArray(input: Array[Byte]):Array[Byte]={
     cipher.doFinal(input)
   } 
 }

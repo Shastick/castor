@@ -1,4 +1,4 @@
-package digester.util
+package util
 import scala.util.matching.Regex
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -7,10 +7,10 @@ import java.io.ByteArrayInputStream
 
 class SyslogMsg(pri: String, header: SyslogHeader, msg: String){
   override def toString() =
-    pri + header.timestamp + " " + header.hostname + " " + msg
+    pri + header.tstamp + " " + header.host + " " + msg
 }
 
-case class SyslogHeader(timestamp: String, hostname: String)
+class SyslogHeader(tstamp: String, host: String)
 
 /**
  * ClrSyslogMsg represents a syslog message with all its elements as cleartexts.
