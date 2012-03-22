@@ -14,8 +14,7 @@ case class SyslogHeader(timestamp: String, hostname: String)
  */
 object SyslogParser {
   def apply(datagram: String):SyslogMsg = {
-    //Raw string with """ """
-    //val parse = """^(<\d{1,3}>)(\D{3}\s[\d\s]{2}:\d{2}:\d{2}:\d{2})\s(.*)\s([.\s]*)$""".r
+    
     val parse = """^(<\d{1,3}>)(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(.*)""".r
 		 
     datagram match {
