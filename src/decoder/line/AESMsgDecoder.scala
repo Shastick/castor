@@ -7,8 +7,14 @@ import util.SyslogParser
 import util.Stringifier
 import util.SyslogHeader
 
-class AESMsgDecoder(
-    ks: KeyStore, lines: LogReader, k_alias: String, k_pass:String)
-    extends MsgDecoder(lines) {
-  val cipher = AESCipher.initDecryptionCipher(ks,k_alias,k_pass)
+/**
+ * Decoder handling AES messages decryption.
+ *  - ka is the key alias,
+ *  - kp is the key password. 
+ */
+class AESMsgDecoder(ks: KeyStore, lines: LogReader, ka: String, kp:String)
+    	extends MsgDecoder(lines) {
+  
+  val cipher = AESCipher.initDecryptionCipher(ks,ka,kp)
+  
 }

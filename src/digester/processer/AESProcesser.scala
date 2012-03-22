@@ -9,9 +9,9 @@ import java.security.KeyStore.PasswordProtection
 import util.AESCipher
 
 
-class AESProcesser(ks: KeyStore, ka: String) extends LogProcesser(ks,ka)  {
+class AESProcesser(ks: KeyStore, ka: String, kp: String) extends LogProcesser(ks,ka)  {
 	
-  val cipher = AESCipher.initEncryptionCipher(ks,"aes_test","")
+  val cipher = AESCipher.initEncryptionCipher(ks,ka,kp)
 
   /**
    * Encrypt a byte array

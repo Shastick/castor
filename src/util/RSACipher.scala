@@ -5,7 +5,7 @@ import java.security.cert.X509Certificate
 
 object RSACipher {
   		val cipher_def = "RSA/ECB/PKCS1PADDING"
-		val byte_step = 117
+		val byte_step = 117 //Depends on the used key size... TODO handle this better
 		
 	def initEncryptionCipher(ks: KeyStore, c_alias:String):Cipher={
   		val cert = getCert(ks,c_alias)		

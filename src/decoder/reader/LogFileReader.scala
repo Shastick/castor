@@ -9,7 +9,7 @@ import util.BASE64
 /**
  * Implements a simple Iterator returning entire lines, initialized with a file name.
  */
-class LogFileReader(lines: Iterator[String]) {
+class LogFileReader(lines: Iterator[String]) extends LogReader{
   
   def this(fname: String) = this(Source.fromFile(new File(fname)).getLines)
 

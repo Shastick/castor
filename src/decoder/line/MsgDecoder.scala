@@ -10,14 +10,15 @@ import util.SyslogParser
  * Abstract class setting the basics for anything wishing to decrypt log lines.
  */
 
-abstract class MsgDecoder(log: LogReader) {
+abstract class MsgDecoder(log: LogReader) extends Iterator[SyslogMsg]{
 	
 	val cipher: Cipher
 	
-	def nextMsg():SyslogMsg =
+	def hasNext = log.hasNext
+	def next:SyslogMsg =
   	decipher(SyslogParser.parseCipherText(log.next))
 	
-	def decipher(c: SyslogMsg):SyslogMsg =
+  	def decipher(c: SyslogMsg):SyslogMsg =
     new SyslogMsg(cf(c.pri)
         ,new SyslogHeader(cf(c.header.tstamp),cf(c.header.host))
         ,cf(c.msg))
