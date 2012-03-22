@@ -5,13 +5,13 @@ import digester.writer.LogFileWriter
 import sun.misc.BASE64Decoder
 import sun.misc.BASE64Encoder
 import digester.processer.RSAProcesser
-import util.ManagedKey
+import util.ManagedKeyStore
 
 object LogDigester extends Application {
-	val ks = ManagedKey.loadKeystore("keystore")
-	ManagedKey.initKey(ks,"aes_test",256,"")
+	val mk = ManagedKeyStore.load("keystore")
+	mk.initAESKey("aes_test",256,"")
 	
-	val proc = new AESProcesser(ks)
+	val proc = new AESProcesser(mk.ks)
 	val writer = new LogFileWriter("test_out.txt")
 	val tester = new UDPInput(5555,proc,writer)
 	tester.start

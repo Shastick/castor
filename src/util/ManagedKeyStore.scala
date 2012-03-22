@@ -10,9 +10,11 @@ import java.io.FileOutputStream
  *  Utility class for loading keystores, adding keys, etc.
  *  => TODO finish it correctly.
  */
-object ManagedKeyStore(ks: KeyStore) {
+class ManagedKeyStore(
+    val file: String
+    ,val ks: KeyStore) {
  
-  def initKey(ks: KeyStore, alias: String, key_size: Int, key_pass: String){
+  def initAESKey(alias: String, key_size: Int, key_pass: String){
     val kgen = KeyGenerator.getInstance("AES");
     kgen.init(key_size); // 192 and 256 bits may not be available
     val skey = kgen.generateKey();
@@ -20,14 +22,14 @@ object ManagedKeyStore(ks: KeyStore) {
     
     ks.setEntry(alias,skeyEntry,new PasswordProtection(key_pass.toCharArray()))
   }
-    
-  def loadKeystore(file: String):KeyStore = {
-    val keystore = KeyStore.getInstance("JCEKS")
-    keystore.load(new FileInputStream(file), null)
-    keystore
-  }
   
-  def saveKeystore(ks: KeyStore, file: String) {
-    ks.store(new FileOutputStream(file),null)
+  def save = ks.store(new FileOutputStream(file),null)
+}
+
+object ManagedKeyStore {
+  def load(file: String):ManagedKeyStore = {
+    val ks = KeyStore.getInstance("JCEKS")
+    ks.load(new FileInputStream(file), null)
+    new ManagedKeyStore(file, ks)
   }
 }
