@@ -5,6 +5,11 @@ import java.io.ByteArrayInputStream
 
 object Stringifier {
   
+  def tb(in:String) = toBytes(in)
+  
+  def toBytes(in: String): Array[Byte] = {
+    in.getBytes("UTF-8")
+  }
   def apply(in: Array[Byte]):String = {
      // Yes, this is ugly.
 	 // And yes, it is done on purpose, as if I want a string I can use in regexp's,

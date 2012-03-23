@@ -16,5 +16,4 @@ class AESMsgDecoder(ks: KeyStore, lines: LogReader, ka: String, kp:String)
     	extends MsgDecoder(lines) {
   
   val cipher = AESCipher.initDecryptionCipher(ks,ka,kp)
-  
 }
