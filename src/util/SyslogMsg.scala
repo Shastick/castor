@@ -1,9 +1,5 @@
 package util
 import scala.util.matching.Regex
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.io.InputStream
-import java.io.ByteArrayInputStream
 
 /**
  * Represents a syslog message, either in a cleartext form, or in an
@@ -18,10 +14,7 @@ class SyslogMsg(
     ,val header: SyslogHeader
     ,val msg: Either[String,Array[Byte]]){
   
-  override def toString() = "<" + ets(pri) + ">" +
-		  					ets(header.tstamp) + " " +
-		  					ets(header.host) + " " +
-		  					ets(msg)
+  override def toString() = "<"+ets(pri)+">"+ets(header.tstamp)+" "+ets(header.host)+" "+ets(msg)
   
   /**
    * ets => Either to String function : takes an either, returns the string if it is one,
@@ -48,8 +41,7 @@ class SyslogHeader(
  */
     
 object SyslogParser {
-  val decoder = BASE64.getDecoder
-  def dec(s:String) = decoder.decodeBuffer(s)
+  def dec(s:String) =  BASE64.dec(s)
   /**
    * Clear text parsing regexps
    * TODO => timestamp regexp probably doesn't cover all possible timestamp forms

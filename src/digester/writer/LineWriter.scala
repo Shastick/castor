@@ -9,7 +9,6 @@ trait LineWriter {
    */
 
 	def writeLine(str: String)
-	def writeLine(bytes: Array[Byte])
 	def writeDgram(s: SyslogMsg)
 	
 }

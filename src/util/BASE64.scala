@@ -1,18 +1,16 @@
 package util
 
-import sun.misc.BASE64Decoder
-import sun.misc.BASE64Encoder
+import org.apache.commons.codec.binary.Base64
 
 /**
  * Utility singleton for transforming Byte Arrays to BASE64 Strings and vice-versa
  */
 object BASE64 {
-  val enc = new BASE64Encoder
-  val dec = new BASE64Decoder
+  val conv = new Base64()
   
-  def enc(in:Array[Byte]):String = enc.encode(in) 
-  def dec(in:String):Array[Byte] = dec.decodeBuffer(in)
   
-  def getEncoder = new BASE64Encoder
-  def getDecoder = new BASE64Decoder
+  def enc(in:Array[Byte]):String = conv.encodeToString(in)
+  def dec(in:String):Array[Byte] = conv.decode(Stringifier.toBytes(in))
+  
+  def getConverter = new Base64
 }
