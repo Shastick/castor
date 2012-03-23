@@ -12,6 +12,7 @@ import util.AESCipher
 class AESProcesser(ks: KeyStore, ka: String, kp: String) extends LogProcesser(ks,ka)  {
 	
   val cipher = AESCipher.initEncryptionCipher(ks,ka,kp)
+  val cipher_d = AESCipher.initDecryptionCipher(ks,ka,kp)
 
   /**
    * Encrypt a byte array
@@ -19,6 +20,7 @@ class AESProcesser(ks: KeyStore, ka: String, kp: String) extends LogProcesser(ks
    * TODO @julien => think about it => good or bad ?
    */
   def crunchArray(input: Array[Byte]):Array[Byte]={
-    cipher.doFinal(input)
+    val out = cipher.doFinal(input)
+    cipher_d.doFinal(input)
   } 
 }

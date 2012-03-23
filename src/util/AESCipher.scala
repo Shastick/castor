@@ -12,22 +12,21 @@ object AESCipher {
    */
 	val keyAlg_def = "AES"
   	val cipher_def = "AES/CBC/PKCS5PADDING"
+  	val provider = "BC"
 	val block_size = 256
+	val iv = "LOLOLOLOLOLOLOLO".getBytes()
 			
 	def initEncryptionCipher(ks: KeyStore,k_alias: String, k_pass:String):Cipher={
 			val keySpec = getKeySpec(ks,k_alias,k_pass)
 			val cipher = Cipher.getInstance(cipher_def)
-			val iv = new Array[Byte](16)
-			Random.nextBytes(iv)
 			cipher.init(Cipher.ENCRYPT_MODE,keySpec, new IvParameterSpec(iv))
+			println(cipher.getProvider())
 			cipher
 	}
   	
   	def initDecryptionCipher(ks: KeyStore,k_alias: String, k_pass:String):Cipher={
 			val keySpec = getKeySpec(ks,k_alias,k_pass)
 			val cipher = Cipher.getInstance(cipher_def)
-			val iv = new Array[Byte](16)
-			Random.nextBytes(iv)
 			cipher.init(Cipher.DECRYPT_MODE,keySpec, new IvParameterSpec(iv))
 			cipher
 	}

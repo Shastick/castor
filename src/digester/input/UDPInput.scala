@@ -28,11 +28,6 @@ class UDPInput(socket: DatagramSocket
 	 val buff = new Array[Byte](packet_length)
 	 val p = new DatagramPacket(buff,packet_length)
 	 socket.receive(p)
-	 // Yes, this is ugly.
-	 // And yes, it is done on purpose, as if I want a string I can use in regexp's,
-	 // just calling new String(p.getData()) won't cut it... >.>
-	 // TODO @julien try to find a better way around, like not creating new readers each time
-	 // or checking if a String contructor is available with options like new String(p.getData(), "UTF8") 
 	 Stringifier(p.getData())
 	}
 }
