@@ -24,13 +24,6 @@ class AESProcesser(ks: KeyStore, ka: String, kp: String) extends LogProcesser(ks
 	  val ct_len = cipher.update(input,0,input.size,ct,0)
 	  val f_len = cipher.doFinal(ct,ct_len)
     
-	 val ct_b = BASE64.dec(BASE64.enc(ct))
-	  
-	  val pt = new Array[Byte](d_cipher.getOutputSize(ct_b.size))
-    val pt_len = d_cipher.update(ct_b,0,ct_b.size,pt,0)
-    d_cipher.doFinal(pt,pt_len)
-    
-    println(new String(pt))
 	  ct
   } 
 }

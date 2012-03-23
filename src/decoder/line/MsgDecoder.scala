@@ -31,14 +31,14 @@ abstract class MsgDecoder(log: LogReader) extends Iterator[SyslogMsg]{
   private def crunchField(f: Either[String,Array[Byte]]):Left[String,Array[Byte]] =
     f match {
     	case l: Left[String, Array[Byte]] => l
-    	case r: Right[String, Array[Byte]] => println(r.right.get.size)
+    	case r: Right[String, Array[Byte]] =>
     	  Left(Stringifier(decrypt(r.right.get)))
   	}
 	
-	  def decrypt(in: Array[Byte]):Array[Byte] = {
-    val pt = new Array[Byte](cipher.getOutputSize(in.size))
-    val pt_len = cipher.update(in,0,in.size,pt,0)
-    cipher.doFinal(pt,pt_len)
+	def decrypt(in: Array[Byte]):Array[Byte] = {
+	  val pt = new Array[Byte](cipher.getOutputSize(in.size))
+	  val pt_len = cipher.update(in,0,in.size,pt,0)
+	  cipher.doFinal(pt,pt_len)
     pt
   }
 }

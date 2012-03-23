@@ -89,10 +89,9 @@ object SyslogParser {
   def parseCipherText(c: String):SyslogMsg = 
 	c match {
 		case c_event(pri,tstamp,host,msg) =>
-		  new SyslogMsg(Left(pri)
-		    ,new SyslogHeader(Right(dec(tstamp)),Right(dec(host)))
-		  	,Right(dec(msg)))
-		  
-	  	case _ => throw new Exception("Parse error :")
+					  new SyslogMsg(Left(pri)
+					    ,new SyslogHeader(Left(tstamp),Right(dec(host)))
+					  	,Right(dec(msg)))
+	  	case _ => throw new Exception("Parse error : " + c)
   	}
 }
