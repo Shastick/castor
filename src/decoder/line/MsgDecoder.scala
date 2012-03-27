@@ -5,6 +5,7 @@ import util.Stringifier
 import util.SyslogHeader
 import javax.crypto.Cipher
 import util.SyslogParser
+import util.BASE64
 
 /**
  * Abstract class setting the basics for anything wishing to decrypt log lines.
@@ -17,7 +18,7 @@ abstract class MsgDecoder(log: LogReader) extends Iterator[SyslogMsg]{
 	
 	def hasNext = log.hasNext
 	def next:SyslogMsg =
-  	decipher(SyslogParser.parseCipherText(log.next))
+  		decipher(SyslogParser.parseCipherText(log.next))
 	
   	def decipher(c: SyslogMsg):SyslogMsg =
     new SyslogMsg(cf(c.pri)
@@ -31,7 +32,7 @@ abstract class MsgDecoder(log: LogReader) extends Iterator[SyslogMsg]{
   private def crunchField(f: Either[String,Array[Byte]]):Left[String,Array[Byte]] =
     f match {
     	case l: Left[String, Array[Byte]] => l
-    	case r: Right[String, Array[Byte]] =>
+    	case r: Right[String, Array[Byte]] => 
     	  Left(Stringifier(decrypt(r.right.get)))
   	}
 	
