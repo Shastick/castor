@@ -5,24 +5,35 @@ import java.security.cert.X509Certificate
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
 
+class RSACipher(cipher: Cipher) extends LogCipher {
+  	
+  def crunchArray(bytes: Array[Byte]):Array[Byte]={
+	  val out = new Array[Byte](cipher.getOutputSize(bytes.size))
+	  val clear_data = bytes.grouped(cipher.getBlockSize())
+	  val cipher_data = clear_data.flatMap(b => cipher.doFinal(b))
+	  cipher_data.copyToArray(out)
+	  out
+	}
+} 
+
 object RSACipher {
   
   		val cipher_def = "RSA/ECB/PKCS1PADDING"
 		val provider = "BC"
 		Security.addProvider(new BouncyCastleProvider())
 		
-	def initEncryptionCipher(ks: KeyStore, c_alias:String):Cipher={
+	def initEncryptionCipher(ks: KeyStore, c_alias:String):RSACipher={
   		val cert = getCert(ks,c_alias)		
   		val cipher = Cipher.getInstance(cipher_def,provider) 
   		cipher.init(Cipher.ENCRYPT_MODE, cert.getPublicKey())
-  		cipher
+  		new RSACipher(cipher)
 	}
   		
-  	def initDecryptionCipher(ks: KeyStore,k_alias:String, k_pwd:String):Cipher={
+  	def initDecryptionCipher(ks: KeyStore,k_alias:String, k_pwd:String):RSACipher={
   		val key = ks.getKey(k_alias,k_pwd.toCharArray)
   		val cipher = Cipher.getInstance(cipher_def,provider) 
   		cipher.init(Cipher.DECRYPT_MODE, key)
-  		cipher
+  		new RSACipher(cipher)
   	}
   	
   	private def getCert(ks: KeyStore, c_alias: String):X509Certificate = {

@@ -6,6 +6,7 @@ import util.SyslogHeader
 import javax.crypto.Cipher
 import util.SyslogParser
 import util.BASE64
+import util.LogCipher
 
 /**
  * Abstract class setting the basics for anything wishing to decrypt log lines.
@@ -13,7 +14,7 @@ import util.BASE64
 
 abstract class MsgDecoder(log: LogReader) extends Iterator[SyslogMsg]{
 	
-	val cipher: Cipher
+	val cipher: LogCipher
 
 	
 	def hasNext = log.hasNext
@@ -36,10 +37,5 @@ abstract class MsgDecoder(log: LogReader) extends Iterator[SyslogMsg]{
     	  Left(Stringifier(decrypt(r.right.get)))
   	}
 	
-	def decrypt(in: Array[Byte]):Array[Byte] = {
-	  val pt = new Array[Byte](cipher.getOutputSize(in.size))
-	  val pt_len = cipher.update(in,0,in.size,pt,0)
-	  cipher.doFinal(pt,pt_len)
-    pt
-  }
+	def decrypt(in: Array[Byte]):Array[Byte] = cipher.crunchArray(in)
 }
