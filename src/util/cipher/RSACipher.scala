@@ -7,11 +7,11 @@ import java.security.Security
 
 class RSACipher(cipher: Cipher) extends LogCipher {
   	
-  def crunchArray(bytes: Array[Byte]):Array[Byte]={
+  override def crunchArray(bytes: Array[Byte]):Array[Byte]={
 	  val out = new Array[Byte](cipher.getOutputSize(bytes.size))
-	  val clear_data = bytes.grouped(cipher.getBlockSize())
-	  val cipher_data = clear_data.flatMap(b => cipher.doFinal(b))
-	  cipher_data.copyToArray(out)
+	  val in_data = bytes.grouped(cipher.getBlockSize())
+	  val proc_data = in_data.flatMap(b => cipher.doFinal(b))
+	  proc_data.copyToArray(out)
 	  out
 	}
 } 

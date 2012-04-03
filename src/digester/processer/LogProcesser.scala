@@ -10,7 +10,7 @@ import util.Stringifier
  * of syslog messages should be encrypted and hands them down to the Processer implementations.
  */
 
-abstract class LogProcesser(ks: KeyStore, ka: String)  {
+abstract class LogProcesser  {
   
   def crunchArray(in: Array[Byte]):Array[Byte]
   

@@ -10,7 +10,7 @@ import util.cipher.AESCipher
 import util.BASE64
 
 
-class AESProcesser(ks: KeyStore, ka: String, kp: String) extends LogProcesser(ks,ka)  {
+class AESProcesser(ks: KeyStore, ka: String, kp: String) extends LogProcesser  {
 	
   val cipher = AESCipher.initEncryptionCipher(ks,ka,kp)
 

@@ -4,7 +4,7 @@ import java.security.KeyStore
 import util.cipher.RSACipher
 
 
-class RSAProcesser(ks: KeyStore, ka: String) extends LogProcesser(ks,ka) {
+class RSAProcesser(ks: KeyStore, ka: String) extends LogProcesser {
 	
 	val cipher = RSACipher.initEncryptionCipher(ks,ka)
 	

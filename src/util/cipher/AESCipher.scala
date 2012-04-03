@@ -9,12 +9,11 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 
 
 class AESCipher(cipher: Cipher) extends LogCipher{
-	
-    def crunchArray(input: Array[Byte]):Array[Byte]={
-	  val ct = new Array[Byte](cipher.getOutputSize(input.size))
-	  val ct_len = cipher.update(input,0,input.size,ct,0)
-	  cipher.doFinal(ct,ct_len)
-	  ct
+	def crunchArray(input: Array[Byte]):Array[Byte]={
+	  val o = new Array[Byte](cipher.getOutputSize(input.size))
+	  val o_len = cipher.update(input,0,input.size,o,0)
+	  cipher.doFinal(o,o_len)
+	  o
     } 
 }
 
