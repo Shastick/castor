@@ -23,6 +23,10 @@ class ManagedKeyStore(
     ks.setEntry(alias,skeyEntry,new PasswordProtection(key_pass.toCharArray()))
   }
   
+  def newElGamalCert(alias: String, key_site: Int, key_pass: String){
+    
+  }
+  
   def save = ks.store(new FileOutputStream(file), pwd.toCharArray())
 }
 

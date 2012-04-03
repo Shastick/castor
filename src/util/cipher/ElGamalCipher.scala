@@ -24,12 +24,12 @@ object ElGamalCipher {
 	 * http://www.java2s.com/Tutorial/Java/0490__Security/ElGamalexamplewithrandomkeygeneration.htm
 	 */
   //TODO ElGamal key storing
-  val cdef = "ElGamal/CBC/PKCS7Padding"
+  val cdef = "ElGamal/ECB/PKCS1Padding"
   val provider = "BC"
   
   val kpg = KeyPairGenerator.getInstance("ElGamal", "BC")
   val ran = new SecureRandom()
-  kpg.initialize(128,ran)
+  kpg.initialize(160,ran) //160 is the minimum
   
   val pair = kpg.generateKeyPair
   val pubk = pair.getPublic

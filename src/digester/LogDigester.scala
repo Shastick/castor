@@ -16,6 +16,6 @@ object LogDigester extends Application {
 	val aes_proc = new AESProcesser(mk.ks,"aes_test", "")
 	val gamal_proc = new ElGamalProcesser()
 	val writer = new LogFileWriter("test_out.txt")
-	val tester = new UDPInput(5555,rsa_proc,writer)
+	val tester = new UDPInput(5555,gamal_proc,writer)
 	tester.start
 }
