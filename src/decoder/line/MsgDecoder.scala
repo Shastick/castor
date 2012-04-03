@@ -6,7 +6,7 @@ import util.SyslogHeader
 import javax.crypto.Cipher
 import util.SyslogParser
 import util.BASE64
-import util.LogCipher
+import util.cipher.LogCipher
 
 /**
  * Abstract class setting the basics for anything wishing to decrypt log lines.

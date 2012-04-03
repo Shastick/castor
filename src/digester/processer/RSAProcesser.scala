@@ -1,7 +1,7 @@
 package digester.processer
 import java.security.KeyStore
 
-import util.RSACipher
+import util.cipher.RSACipher
 
 
 class RSAProcesser(ks: KeyStore, ka: String) extends LogProcesser(ks,ka) {

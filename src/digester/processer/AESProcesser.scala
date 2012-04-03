@@ -6,7 +6,7 @@ import java.security.KeyStore
 import java.io.FileInputStream
 import java.security.KeyStore.SecretKeyEntry
 import java.security.KeyStore.PasswordProtection
-import util.AESCipher
+import util.cipher.AESCipher
 import util.BASE64
 
 

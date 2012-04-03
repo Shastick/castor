@@ -1,4 +1,4 @@
-package util
+package util.cipher
 import javax.crypto.spec.SecretKeySpec
 import javax.crypto.Cipher
 import java.security.KeyStore

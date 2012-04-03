@@ -1,5 +1,5 @@
 package decoder.line
-import util.AESCipher
+import util.cipher.AESCipher
 import java.security.KeyStore
 import decoder.reader.LogReader
 import util.SyslogMsg

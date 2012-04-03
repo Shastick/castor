@@ -2,7 +2,7 @@ package decoder.line
 import decoder.reader.LogReader
 import util.SyslogMsg
 import java.security.KeyStore
-import util.RSACipher
+import util.cipher.RSACipher
 import util.Stringifier
 
 class RSAMsgDecoder(ks: KeyStore, lines: LogReader, ka: String) extends MsgDecoder(lines) {

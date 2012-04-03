@@ -1,4 +1,4 @@
-package util
+package util.cipher
 import javax.crypto.Cipher
 import java.security.KeyStore
 import java.security.cert.X509Certificate
