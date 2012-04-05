@@ -16,6 +16,9 @@ class ElGamalCipher(cipher: Cipher) extends LogCipher {
 }
 
 object ElGamalCipher {
+  /**
+   * Unusable yet !
+   */
 	/**
 	 * El Gamal is not implementend in the sun JDK,
 	 * a library like BouncyCastle is required.
@@ -23,7 +26,9 @@ object ElGamalCipher {
 	 * Random keygen courtesy 
 	 * http://www.java2s.com/Tutorial/Java/0490__Security/ElGamalexamplewithrandomkeygeneration.htm
 	 */
-  //TODO ElGamal key storing
+  // TODO ElGamal key storing
+  // TODO curve type definition ? see
+  // 
   val cdef = "ElGamal/ECB/PKCS1Padding"
   val provider = "BC"
   

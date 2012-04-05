@@ -7,8 +7,6 @@ trait LineWriter {
    * and append it "as is" to whatever their output is,
    * while making sure the line is ended.
    */
-
-	def writeLine(str: String)
-	def writeDgram(s: SyslogMsg)
 	
+	def writeDgram(s: SyslogMsg)
 }

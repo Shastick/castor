@@ -11,15 +11,14 @@ import util.Stringifier
 
 
 class UDPInput(socket: DatagramSocket
-				,processer: LogProcesser
-				,writer: LineWriter) extends MsgInput{
+				,processer: LogProcesser) extends MsgInput{
   
 	val packet_length = 2048
-	def this(port: Int, proc: LogProcesser,writ: LineWriter) =
-	  this(new DatagramSocket(port),proc,writ)
+	def this(port: Int, proc: LogProcesser) =
+	  this(new DatagramSocket(port),proc)
 	
 	def act() = while(true) 
-		writer.writeDgram(processer.crunchDGram(SyslogParser.parseClearText(readDatagram)))
+		processer.crunchDgram(SyslogParser.parseClearText(readDatagram))
 	  	
 	
 	def readLine():String = readDatagram()

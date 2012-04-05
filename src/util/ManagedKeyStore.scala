@@ -5,6 +5,9 @@ import java.security.KeyStore.PasswordProtection
 import javax.crypto.KeyGenerator
 import java.security.KeyStore.SecretKeyEntry
 import java.io.FileOutputStream
+import java.security.SecureRandom
+import java.security.KeyPairGenerator
+
 
 /**
  *  Utility class for loading keystores, adding keys, etc.
@@ -23,8 +26,17 @@ class ManagedKeyStore(
     ks.setEntry(alias,skeyEntry,new PasswordProtection(key_pass.toCharArray()))
   }
   
-  def newElGamalCert(alias: String, key_site: Int, key_pass: String){
-    
+
+  def newElGamalCert(alias: String, key_size: Int, key_pass: String){
+      val kpg = KeyPairGenerator.getInstance("ElGamal", "BC")
+      val ran = new SecureRandom()
+      kpg.initialize(160,ran) //160 is the minimum
+      val pair = kpg.generateKeyPair
+      val pubk = pair.getPublic
+      val privk = pair.getPrivate
+      
+      pubk
+      
   }
   
   def save = ks.store(new FileOutputStream(file), pwd.toCharArray())
