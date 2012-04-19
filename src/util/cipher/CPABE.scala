@@ -24,7 +24,10 @@ object CPABE {
 	  fw.write(in)
 	  fw.flush()
 	  fw.close()
-	  r.exec(c_enc + " pub_key tempenc 'pri > 5'" )
+	  val q = Array(p_key, temp_in, policy)
+	  val p = r.exec(c_enc, q)
+	
+
 	  //val proc = r.exec(c_enc + " " + p_key + " " + temp_in + " " + policy)
 	  
 	  //val fr = new FileInputStream(temp_out)
