@@ -2,6 +2,11 @@ package digester.input
 
 import scala.actors.Actor
 
+/**
+ * A Message Input symbolizes a syslog message source (most probably, from a UDP socket),
+ * under the current model, it is the message Input that holds the whole processing path
+ * of a syslog message together.
+ */
 trait MsgInput extends Actor{
 
 	/**
