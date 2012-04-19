@@ -1,22 +1,26 @@
 package digester.writer
 import java.io.FileWriter
 import util.SyslogMsg
-import util.BASE64
+import digester.LogHandler
 
-class LogFileWriter(out: FileWriter, line_sep: String) extends LineWriter {
+/**
+ * Handle writing of syslog messages to a file.
+ */
+class LogFileWriter(out: FileWriter, line_sep: String) extends LogHandler {
   
   /**
    * Overloaded constructor for a filename specified by string.
    */
-  
   def this(fname: String) = this(new FileWriter(fname,true), "\n")
   
-  def writeLine(line: String) = {
+  def procDgram(s: SyslogMsg) = writeLine(s.toString)
+  
+  /**
+   * Write a line to the FileWriter and ensure it is terminated by a line separator.
+   */
+  private def writeLine(line: String) = {
     if (line.endsWith(line_sep)) out.write(line)
     	else out.write(line + line_sep)
     out.flush()
   }
-  
-  def writeDgram(s: SyslogMsg) = writeLine(s.toString)
-   
 }

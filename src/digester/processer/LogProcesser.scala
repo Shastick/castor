@@ -5,18 +5,30 @@ import util.SyslogMsg
 import util.SyslogHeader
 import util.Stringifier
 import digester.writer.LineWriter
+import digester.LogHandler
 
 /**
  * Superclass for any log processor. This class chooses what part
  * of syslog messages should be encrypted and hands them down to the Processer implementations.
  */
 
-abstract class LogProcesser(lw: LineWriter) {
-  
-  def crunchArray(in: Array[Byte]):Array[Byte]
+abstract class LogProcesser(next: LogHandler) extends LogHandler{
 
-  def procDgram(m: SyslogMsg) = lw.writeDgram(crunchDgram(m))
+  def procDgram(m: SyslogMsg) = pushDgram(crunchDgram(m))
   
+  /**
+   * pushDgram sends the datagram to the next logHandler
+   */
+  def pushDgram(m: SyslogMsg) = next.procDgram(m)
+  
+  /**
+   * How an individual byte array is processed
+   */
+  def crunchArray(in: Array[Byte]):Array[Byte]
+  
+  /**
+   * How a whole datagram is processed
+   */
   def crunchDgram(in: SyslogMsg):SyslogMsg = {
     // Now encrypting host and message only.
     // TODO : do this based on a config file or whatever config mean.
