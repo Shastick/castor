@@ -1,7 +1,8 @@
 package digester.crypt
 import util.cipher.ElGamalCipher
-import util.SyslogMsg 
+import util.SyslogMsg
 import digester.LogHandler
+import digester.LogProcesser
 
 class ElGamalProcesser(next: LogHandler) extends LogProcesser(next) {
 

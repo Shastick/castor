@@ -1,10 +1,9 @@
 package digester
 
-import digester.input.UDPInput
 import digester.crypt._
+import digester.input.UDPInput
 import digester.writer.LogFileWriter
 import util.ManagedKeyStore
-import javax.crypto.Cipher
 
 /**
  * TODO ideas :  - ABE 

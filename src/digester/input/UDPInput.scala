@@ -1,13 +1,13 @@
 package digester.input
 import java.net.DatagramSocket
 import java.net.DatagramPacket
-import digester.crypt.LogProcesser
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.ByteArrayInputStream
 import util.SyslogParser
 import util.Stringifier
 import digester.LogHandler
+import digester.LogProcesser
 
 
 class UDPInput(socket: DatagramSocket

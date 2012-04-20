@@ -10,6 +10,7 @@ import util.cipher.AESCipher
 import util.BASE64
 import util.SyslogMsg
 import digester.LogHandler
+import digester.LogProcesser
 
 
 class AESProcesser(next: LogHandler, ks: KeyStore, ka: String, kp: String) 

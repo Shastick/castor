@@ -1,10 +1,9 @@
-package digester.crypt
+package digester
 
 import java.security.KeyStore
 import util.SyslogMsg
 import util.SyslogHeader
 import util.Stringifier
-import digester.LogHandler
 
 /**
  * Superclass for any log processor. This class chooses what part
