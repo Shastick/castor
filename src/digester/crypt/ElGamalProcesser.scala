@@ -1,7 +1,6 @@
-package digester.processer
+package digester.crypt
 import util.cipher.ElGamalCipher
-import util.SyslogMsg
-import digester.writer.LineWriter
+import util.SyslogMsg 
 import digester.LogHandler
 
 class ElGamalProcesser(next: LogHandler) extends LogProcesser(next) {

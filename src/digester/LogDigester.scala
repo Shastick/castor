@@ -1,7 +1,7 @@
 package digester
 
 import digester.input.UDPInput
-import digester.processer._
+import digester.crypt._
 import digester.writer.LogFileWriter
 import util.ManagedKeyStore
 import javax.crypto.Cipher

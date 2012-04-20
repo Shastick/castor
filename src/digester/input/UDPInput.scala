@@ -1,7 +1,7 @@
 package digester.input
 import java.net.DatagramSocket
 import java.net.DatagramPacket
-import digester.processer.LogProcesser
+import digester.crypt.LogProcesser
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.ByteArrayInputStream

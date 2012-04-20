@@ -1,4 +1,4 @@
-package digester.processer
+package digester.crypt
 
 import digester.writer.LogFileWriter
 import util.SyslogMsg

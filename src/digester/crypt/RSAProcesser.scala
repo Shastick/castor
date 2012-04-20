@@ -1,7 +1,6 @@
-package digester.processer
+package digester.crypt
 import java.security.KeyStore
 import util.cipher.RSACipher
-import digester.writer.LineWriter
 import util.SyslogMsg
 import digester.LogHandler
 
