@@ -4,7 +4,6 @@ import java.security.KeyStore
 import util.SyslogMsg
 import util.SyslogHeader
 import util.Stringifier
-import digester.writer.LineWriter
 import digester.LogHandler
 
 /**
