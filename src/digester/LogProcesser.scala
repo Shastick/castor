@@ -4,6 +4,8 @@ import java.security.KeyStore
 import util.SyslogMsg
 import util.SyslogHeader
 import util.Stringifier
+import util.HashState
+import util.AdminMsg
 
 /**
  * Superclass for any log processor. This class chooses what part
@@ -12,17 +14,18 @@ import util.Stringifier
 
 abstract class LogProcesser(next: LogHandler) extends LogHandler{
 
-  def procDgram(m: SyslogMsg) = pushDgram(crunchDgram(m))
-  
-  /**
-   * pushDgram sends the datagram to the next logHandler
-   */
-  def pushDgram(m: SyslogMsg) = next ! m
+  def procDgram(m: SyslogMsg) = next ! crunchDgram(m)
   
   /**
    * How an individual byte array is processed
    */
   def crunchArray(in: Array[Byte]):Array[Byte]
+  
+  /**
+   * Default behavior for non-datagram messages :
+   * propagate them without modification.
+   */
+  def procMsg(m: AdminMsg) = next ! m 
   
   /**
    * How a whole datagram is processed

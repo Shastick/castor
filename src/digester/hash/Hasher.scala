@@ -1,9 +1,11 @@
 package digester.hash
-import digester.LogProcesser
-import util.SyslogMsg
-import digester.LogHandler
 import java.security.MessageDigest
-import scala.actors.Actor
+
+import digester.LogHandler
+import digester.LogProcesser
+import util.HashState
+import util.Stringifier
+import util.SyslogMsg
 
 /**
  * A Hasher is a statefull class that will be in charge of building a hash chain of the messages 
@@ -11,7 +13,11 @@ import scala.actors.Actor
  * state of the hash chain into the message flow.
  * 
  */
-class Hasher(next: LogHandler, md: MessageDigest) extends LogProcesser(next) {
+class Hasher(next: LogHandler,
+    md: MessageDigest,
+    sc: SequentialCipher,
+    seqnum: Int)
+    extends LogProcesser(next) {
 
   private var lastHash = Array.empty[Byte]
   
@@ -22,12 +28,20 @@ class Hasher(next: LogHandler, md: MessageDigest) extends LogProcesser(next) {
     md.reset
     md.digest(in)
   }
-  
+  /**
+   * The message is not altered and returned as is.
+   */
   override def crunchDgram(in: SyslogMsg): SyslogMsg = {
     val toHash = lastHash ++ in.toBytes
     lastHash = crunchArray(toHash)
     in
   }
+  
+  /**
+   * Authentifies the current state and sends it to the downstream LogHandler.
+   */
+  def writeState() =
+    next ! new HashState(seqnum,Stringifier(sc.encrypt(seqnum.toString,lastHash)))
 }
 
 /**

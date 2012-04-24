@@ -2,6 +2,7 @@ package digester.writer
 import java.io.FileWriter
 import util.SyslogMsg
 import digester.LogHandler
+import util.AdminMsg
 
 /**
  * Handle writing of syslog messages to a file.
@@ -15,6 +16,7 @@ class LogFileWriter(out: FileWriter, line_sep: String) extends LogHandler {
   
   def procDgram(s: SyslogMsg) = writeLine(s.toString)
   
+  def procMsg(m: AdminMsg) = writeLine(m.toString)
   /**
    * Write a line to the FileWriter and ensure it is terminated by a line separator.
    */

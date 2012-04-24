@@ -14,5 +14,9 @@ package digester.hash
  */
 
 class SequentialCipher {
+	def encrypt(id: String, data: Array[Byte]): Array[Byte] = Array.empty[Byte]
+}
 
+object SequentialCipher {
+  
 }
