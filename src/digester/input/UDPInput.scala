@@ -18,8 +18,7 @@ class UDPInput(socket: DatagramSocket
 	  this(new DatagramSocket(port),proc)
 	
 	def act() = while(true) 
-		processer.procDgram(SyslogParser.parseClearText(readDatagram))
-	  	
+		processer ! SyslogParser.parseClearText(readDatagram)
 	
 	def readLine():String = readDatagram()
 	

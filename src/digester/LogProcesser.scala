@@ -17,7 +17,7 @@ abstract class LogProcesser(next: LogHandler) extends LogHandler{
   /**
    * pushDgram sends the datagram to the next logHandler
    */
-  def pushDgram(m: SyslogMsg) = next.procDgram(m)
+  def pushDgram(m: SyslogMsg) = next ! m
   
   /**
    * How an individual byte array is processed

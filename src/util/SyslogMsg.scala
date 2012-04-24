@@ -14,8 +14,9 @@ class SyslogMsg(
     ,val header: SyslogHeader
     ,val msg: Either[String,Array[Byte]]){
   
-  override def toString() = "<"+ets(pri)+">"+ets(header.tstamp)+" "+ets(header.host)+" "+ets(msg)
+  override def toString = "<"+ets(pri)+">"+ets(header.tstamp)+" "+ets(header.host)+" "+ets(msg)
   
+  def toBytes = Stringifier.toBytes(toString)
   /**
    * ets => Either to String function : takes an either, returns the string if it is one,
    * and converts the bytes to an encoded string if the Either is a byte array.
