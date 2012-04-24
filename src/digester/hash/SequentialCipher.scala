@@ -1,4 +1,8 @@
 package digester.hash
+import uk.ac.ic.doc.jpair.ibe.key.BFMasterPublicKey
+import uk.ac.ic.doc.jpair.ibe.key.BFUserPublicKey
+import uk.ac.ic.doc.jpair.ibe.BFCipher
+import java.util.Random
 
 /**
  * This class is used to 'sign' (actually encrypt) hash values in order to authenticate them.
@@ -13,8 +17,13 @@ package digester.hash
  * The SequentialCipher is built on Jpair's IBE implementation.
  */
 
-class SequentialCipher {
-	def encrypt(id: String, data: Array[Byte]): Array[Byte] = Array.empty[Byte]
+class SequentialCipher(mpk: BFMasterPublicKey, rnd: Random) {
+  
+	def encrypt(id: String, data: Array[Byte]): Array[Byte] = {
+	  val pk = new BFUserPublicKey(id,mpk)
+	  val citext = BFCipher.encrypt(pk,data,rnd)
+	  Array.empty[Byte]
+	}
 }
 
 object SequentialCipher {

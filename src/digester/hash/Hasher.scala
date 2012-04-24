@@ -45,7 +45,7 @@ class Hasher(next: LogHandler,
 }
 
 /**
- * Helper class
+ * Companion Object
  */
 object Hasher {
   

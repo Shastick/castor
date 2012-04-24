@@ -1,15 +1,23 @@
 package digester
-import uk.ac.ic.doc.jpair.api._
-import uk.ac.ic.doc.jpair.ibe._
-import uk.ac.ic.doc.jpair.pairing._
-import uk.ac.ic.doc.jpair.ibe.key._
-import java.util.Random
-import java.io.ObjectOutputStream
-import java.io.ByteArrayOutputStream
-import java.io.ObjectInputStream
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.security.KeyPair
+import java.util.Random
 import util.BASE64
+import util.Stringifier
+
+import uk.ac.ic.doc.jpair.pairing.Predefined
+import uk.ac.ic.doc.jpair.ibe.BFCipher
+import uk.ac.ic.doc.jpair.ibe.key.BFUserPublicKey
+import uk.ac.ic.doc.jpair.ibe.key.BFMasterPublicKey
+import uk.ac.ic.doc.jpair.ibe.key.BFMasterPrivateKey
+import uk.ac.ic.doc.jpair.ibe.key.BFUserPrivateKey
+import uk.ac.ic.doc.jpair.ibe.BFCtext
+import uk.ac.ic.doc.jpair.ibe.Util
+
 
 object ibe_test extends App{
 	// define a source of randomness
@@ -33,7 +41,7 @@ object ibe_test extends App{
 	
 	//encrypt something
 	val citext =
-	  BFCipher.encrypt(ukp2.getPublic().asInstanceOf[BFUserPublicKey],"PONEY".getBytes(),rnd)
+	  BFCipher.encrypt(ukp2.getPublic.asInstanceOf[BFUserPublicKey],"PONEY".getBytes(),rnd)
 	
 	val a = BASE64.enc(serialize(citext))
 	println(a)
@@ -61,5 +69,19 @@ object ibe_test extends App{
 	    case c: BFCtext => c
 	    case _ => throw new IOException("Not a BFCtext found at deserialization!")
 	  }
+	}
+	
+	def buildPrivateKey(mk: KeyPair, id: String, rnd: Random): BFUserPrivateKey = {
+	  	val e = mk.getPublic.asInstanceOf[BFMasterPublicKey].getPairing
+		//user private key: hash(ID)->point Q
+		//sQ, s is the master private key
+		
+		val bid = Stringifier.toBytes(id)
+
+		val Q = Util.hashToPoint(bid,e.getCurve(), e.getCofactor)
+		val s = mk.getPrivate.asInstanceOf[BFMasterPrivateKey].getKey
+		val Qs = e.getCurve.multiply(Q, s)
+		
+		new BFUserPrivateKey(Qs, mk.getPublic.asInstanceOf[BFMasterPublicKey])
 	}
 }
