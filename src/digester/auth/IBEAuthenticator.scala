@@ -18,18 +18,16 @@ import uk.ac.ic.doc.jpair.ibe.BFCtext
  * The SequentialCipher is built on Jpair's IBE implementation.
  */
 
-class SequentialCipher(pks: Iterator[BFUserPublicKey], rnd: Random) {
+class IBEAuthenticator(pks: Iterator[BFUserPublicKey], rnd: Random) extends Authenticator {
 	
-	/**
-	 * encrypt returns a tuple containing the String identifier
-	 */
-	def encrypt(data: Array[Byte]): (String,BFCtext) = {
-	  if(!pks.hasNext) throw new Exception("Out of public keys !")
+	def authenticate(id: String, data: Array[Byte]): (String,Array[Byte]) = {
+	  /*if(!pks.hasNext) throw new Exception("Out of public keys !")
 	  else {
 		  val pk = pks.next
 		  val citext = BFCipher.encrypt(pk,data,rnd)
 		  (pk.gerKey,citext)
-	  }
+	  }*/
+	  ("",Array.empty)
 	}
 }
 

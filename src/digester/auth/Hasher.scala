@@ -16,7 +16,7 @@ import util.SyslogMsg
 
 class Hasher(next: LogHandler,
     md: MessageDigest,
-    sc: SequentialCipher)
+    sc: Authenticator)
     extends LogProcesser(next) {
 
   private var lastHash = Array.empty[Byte]
