@@ -9,6 +9,6 @@ abstract class AdminMsg
 /**
  * case class wrapper around an encrypted hash.
  */
-class HashState(seqnum: Int, ctext: String) extends AdminMsg {
-  override def toString = seqnum.toString + ":" + ctext
+class HashState(id: String, ctext: String) extends AdminMsg {
+  override def toString = id + ":" + ctext
 }

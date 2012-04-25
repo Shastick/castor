@@ -40,8 +40,8 @@ class Hasher(next: LogHandler,
   /**
    * Authentifies the current state and sends it to the downstream LogHandler.
    */
-  //def writeState() =
-    //next ! new HashState(seqnum,Stringifier(sc.encrypt(seqnum.toString,lastHash)))
+  def writeState() =
+    next ! sc.authenticate(lastHash)
 }
 
 /**

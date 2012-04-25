@@ -4,6 +4,7 @@ import uk.ac.ic.doc.jpair.ibe.key.BFUserPublicKey
 import uk.ac.ic.doc.jpair.ibe.BFCipher
 import java.util.Random
 import uk.ac.ic.doc.jpair.ibe.BFCtext
+import util.HashState
 
 /**
  * This class is used to 'sign' (actually encrypt) hash values in order to authenticate them.
@@ -20,14 +21,14 @@ import uk.ac.ic.doc.jpair.ibe.BFCtext
 
 class IBEAuthenticator(pks: Iterator[BFUserPublicKey], rnd: Random) extends Authenticator {
 	
-	def authenticate(id: String, data: Array[Byte]): (String,Array[Byte]) = {
+	def authenticate(data: Array[Byte]): HashState = {
 	  /*if(!pks.hasNext) throw new Exception("Out of public keys !")
 	  else {
 		  val pk = pks.next
 		  val citext = BFCipher.encrypt(pk,data,rnd)
 		  (pk.gerKey,citext)
 	  }*/
-	  ("",Array.empty)
+	  new HashState("","")
 	}
 }
 
