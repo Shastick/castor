@@ -9,10 +9,11 @@ import util.SyslogMsg
 
 /**
  * A Hasher is a statefull class that will be in charge of building a hash chain of the messages 
- * that flow through it. It will periodically insert the (encrypted) current 
+ * that flow through it. It will periodically insert the (eventually authentified) current 
  * state of the hash chain into the message flow.
  * 
  */
+
 class Hasher(next: LogHandler,
     md: MessageDigest,
     sc: SequentialCipher)
