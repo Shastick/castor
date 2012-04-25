@@ -23,6 +23,9 @@ import uk.ac.ic.doc.jpair.ibe.Util
  * (At least under the Jpair's implementation).
  * Worse, the master public key is stored along with the user public keys => it WILL
  * be on the system !
+ * 
+ * Alternative : forget IBE, use a hash chain that is initialized with a password and that will 
+ * generate the secrets for a simple HMAC of the syslog messages hash chain state.
  */
 
 object ibe_test extends App{

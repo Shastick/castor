@@ -3,6 +3,7 @@ import uk.ac.ic.doc.jpair.ibe.key.BFMasterPublicKey
 import uk.ac.ic.doc.jpair.ibe.key.BFUserPublicKey
 import uk.ac.ic.doc.jpair.ibe.BFCipher
 import java.util.Random
+import uk.ac.ic.doc.jpair.ibe.BFCtext
 
 /**
  * This class is used to 'sign' (actually encrypt) hash values in order to authenticate them.
@@ -18,12 +19,16 @@ import java.util.Random
  */
 
 class SequentialCipher(pks: Iterator[BFUserPublicKey], rnd: Random) {
-  
-	def encrypt(data: Array[Byte]): Array[Byte] = {
+	
+	/**
+	 * encrypt returns a tuple containing the String identifier
+	 */
+	def encrypt(data: Array[Byte]): (String,BFCtext) = {
 	  if(!pks.hasNext) throw new Exception("Out of public keys !")
 	  else {
+		  val pk = pks.next
 		  val citext = BFCipher.encrypt(pk,data,rnd)
-		  Array.empty[Byte]
+		  (pk.gerKey,citext)
 	  }
 	}
 }
