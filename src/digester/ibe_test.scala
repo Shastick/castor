@@ -18,6 +18,12 @@ import uk.ac.ic.doc.jpair.ibe.key.BFUserPrivateKey
 import uk.ac.ic.doc.jpair.ibe.BFCtext
 import uk.ac.ic.doc.jpair.ibe.Util
 
+/**
+ * Observations : it seems that the public key is required in order to do the decryption.
+ * (At least under the Jpair's implementation).
+ * Worse, the master public key is stored along with the user public keys => it WILL
+ * be on the system !
+ */
 
 object ibe_test extends App{
 	// define a source of randomness
@@ -27,15 +33,11 @@ object ibe_test extends App{
 	// Create a new Master Key Pair
 	val mkp = BFCipher.setup(p,rnd)
 	//First way to generate a public key.
-	//Nasty because creating the corresponding private key does not seem trivial for me at the moment
 	//It seems casting is required, could not find an alternate way at the moment.
 	val pub1 = new BFUserPublicKey("User1",mkp.getPublic.asInstanceOf[BFMasterPublicKey])
 	
 	/** Second way to generate a public (and private) pair.
-	 * Nice because the library does everything under the hood,
-	 * Bad because if I go along this lazy way, I have to store all the corresponding 
-	 * decryption keys from the beginning => they should only be computed from the master
-	 * private key at decryption time. => TODO check how to do this
+	 * (compute a pair simultaneously)
 	 */ 
 	val ukp2 = BFCipher.extract(mkp, "User2", rnd)
 	

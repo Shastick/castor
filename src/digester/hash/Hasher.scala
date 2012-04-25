@@ -15,8 +15,7 @@ import util.SyslogMsg
  */
 class Hasher(next: LogHandler,
     md: MessageDigest,
-    sc: SequentialCipher,
-    seqnum: Int)
+    sc: SequentialCipher)
     extends LogProcesser(next) {
 
   private var lastHash = Array.empty[Byte]
@@ -41,7 +40,7 @@ class Hasher(next: LogHandler,
    * Authentifies the current state and sends it to the downstream LogHandler.
    */
   def writeState() =
-    next ! new HashState(seqnum,Stringifier(sc.encrypt(seqnum.toString,lastHash)))
+    next ! new HashState(Stringifier(sc.encrypt(seqnum.toString,lastHash)))
 }
 
 /**

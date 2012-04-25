@@ -17,12 +17,14 @@ import java.util.Random
  * The SequentialCipher is built on Jpair's IBE implementation.
  */
 
-class SequentialCipher(mpk: BFMasterPublicKey, rnd: Random) {
+class SequentialCipher(pks: Iterator[BFUserPublicKey], rnd: Random) {
   
-	def encrypt(id: String, data: Array[Byte]): Array[Byte] = {
-	  val pk = new BFUserPublicKey(id,mpk)
-	  val citext = BFCipher.encrypt(pk,data,rnd)
-	  Array.empty[Byte]
+	def encrypt(data: Array[Byte]): Array[Byte] = {
+	  if(!pks.hasNext) throw new Exception("Out of public keys !")
+	  else {
+		  val citext = BFCipher.encrypt(pk,data,rnd)
+		  Array.empty[Byte]
+	  }
 	}
 }
 
