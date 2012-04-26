@@ -5,7 +5,6 @@ import uk.ac.ic.doc.jpair.ibe.BFCipher
 import java.util.Random
 import uk.ac.ic.doc.jpair.ibe.BFCtext
 import util.HashState
-import java.math.BigInteger
 import java.security.interfaces.RSAPublicKey
 import java.security.MessageDigest
 import util.IBHashState
@@ -37,17 +36,12 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
 	    
 	    val rnd = new Array[Byte](block_length)
 	    rangen.nextBytes(rnd)
-	    /**
-	     * Going through Java BigIntegers first because scala's
-	     * won't construct from anything else ;-) => FALSE
-	     * Disregard that, I'm stupid :-D
-	     */
+
 	    val r = BigInt(rnd)
-	    
 	    val t = r.modPow(e, n)
 	    
 	    md.reset
-	    val f = new BigInt(new BigInteger(md.digest(t.toByteArray ++ data)))
+	    val f = BigInt(md.digest(t.toByteArray ++ data))
 	    
 	    val s = (k*r.modPow(f, n)) mod n
 
