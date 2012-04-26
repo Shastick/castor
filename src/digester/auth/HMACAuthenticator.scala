@@ -8,6 +8,10 @@ import util.Stringifier
 
 class HMACAuthenticator(keys: Iterator[(String,Array[Byte])], digest: Digest) extends Authenticator{
 	
+	/**
+	 * Using Bouncycastle's Hmac implementation
+	 */
+  
 	val hmac = new HMac(digest)
   
 	def authenticate(data: Array[Byte]): HashState = {
