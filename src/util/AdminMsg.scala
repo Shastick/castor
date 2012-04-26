@@ -7,8 +7,8 @@ package util
 abstract class AdminMsg
 
 /**
- * case class wrapper around an encrypted hash.
+ * Wrapper around a hash, its authentication and the ID used to authenticate it.
  */
-class HashState(id: String, ctext: String) extends AdminMsg {
-  override def toString = id + ":" + ctext
+class HashState(id: String, hash: String, sig: String) extends AdminMsg {
+  override def toString = id + ":" + hash + ":" + sig
 }

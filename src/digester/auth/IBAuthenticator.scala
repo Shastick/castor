@@ -19,16 +19,11 @@ import util.HashState
  * The SequentialCipher is built on Jpair's IBE implementation.
  */
 
-class IBEAuthenticator(pks: Iterator[BFUserPublicKey], rnd: Random) extends Authenticator {
+class IBAuthenticator(pks: Iterator[BFUserPublicKey], rnd: Random) extends Authenticator {
 	
 	def authenticate(data: Array[Byte]): HashState = {
-	  /*if(!pks.hasNext) throw new Exception("Out of public keys !")
-	  else {
-		  val pk = pks.next
-		  val citext = BFCipher.encrypt(pk,data,rnd)
-		  (pk.gerKey,citext)
-	  }*/
-	  new HashState("","")
+
+	  new HashState("","","")
 	}
 }
 
