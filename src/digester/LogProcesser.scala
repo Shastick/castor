@@ -25,7 +25,7 @@ abstract class LogProcesser(next: LogHandler) extends LogHandler{
    * Default behavior for non-datagram messages :
    * propagate them without modification.
    */
-  def procMsg(m: AdminMsg) = next ! m 
+  def procAdminMsg(m: AdminMsg) = next ! m 
   
   /**
    * How a whole datagram is processed

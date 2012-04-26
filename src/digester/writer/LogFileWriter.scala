@@ -16,7 +16,7 @@ class LogFileWriter(out: FileWriter, line_sep: String) extends LogHandler {
   
   def procDgram(s: SyslogMsg) = writeLine(s.toString)
   
-  def procMsg(m: AdminMsg) = writeLine(m.toString)
+  def procAdminMsg(m: AdminMsg) = writeLine(m.toString)
   /**
    * Write a line to the FileWriter and ensure it is terminated by a line separator.
    */

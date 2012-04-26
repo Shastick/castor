@@ -15,7 +15,7 @@ trait LogHandler extends Actor {
 	 * Defines what is done to the message
 	 */
 	def procDgram(dg: SyslogMsg)
-	def procMsg(m: AdminMsg)
+	def procAdminMsg(m: AdminMsg)
 	
 	/**
 	 * The logHandler's Act() manages the message dispatch.
@@ -24,6 +24,6 @@ trait LogHandler extends Actor {
 	 */
 	def act() = while(true) receive {
 	    case m: SyslogMsg => procDgram(m)
-	    case m: AdminMsg => procMsg(m)
+	    case m: AdminMsg => procAdminMsg(m)
 	}
 }

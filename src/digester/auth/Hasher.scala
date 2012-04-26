@@ -1,14 +1,15 @@
 package digester.hash
 import java.security.MessageDigest
-
 import digester.LogHandler
 import digester.LogProcesser
 import util.HashState
 import util.Stringifier
 import util.SyslogMsg
+import util.AdminMsg
+import util.SaveState
 
 /**
- * A Hasher is a statefull class that will be in charge of building a hash chain of the messages 
+ * A Hasher is a stateful class that will be in charge of building a hash chain of the messages 
  * that flow through it. It will periodically insert the (eventually authentified) current 
  * state of the hash chain into the message flow.
  * 
@@ -20,6 +21,14 @@ class Hasher(next: LogHandler,
     extends LogProcesser(next) {
 
   private var lastHash = Array.empty[Byte]
+  
+  /**
+   * 
+   */
+  override def procAdminMsg(m: AdminMsg) = m match {
+    case m: SaveState => writeState
+    case _ => next ! m
+  } 
   
   /**
    * Handles the hashing TODO : is a salt required here ?
