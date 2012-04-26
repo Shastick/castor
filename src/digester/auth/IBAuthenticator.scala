@@ -39,9 +39,10 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
 	    rangen.nextBytes(rnd)
 	    /**
 	     * Going through Java BigIntegers first because scala's
-	     * won't construct from anything else ;-) 
+	     * won't construct from anything else ;-) => FALSE
+	     * Disregard that, I'm stupid :-D
 	     */
-	    val r = new BigInt(new BigInteger(rnd))
+	    val r = BigInt(rnd)
 	    
 	    val t = r.modPow(e, n)
 	    
