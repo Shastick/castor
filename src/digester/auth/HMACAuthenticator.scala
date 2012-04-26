@@ -18,7 +18,7 @@ class HMACAuthenticator(keys: Iterator[(String,Array[Byte])], digest: Digest) ex
 	  if (!keys.hasNext) throw new Exception("No more authentication keys!")
 	  else {
 	    val k = keys.next
-		  new HashState(k._1,Stringifier(hmac(k._2,data)))
+		  new HashState(k._1,Stringifier(data),Stringifier(hmac(k._2,data)))
 	  }
 	}
 	

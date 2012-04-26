@@ -5,28 +5,52 @@ import uk.ac.ic.doc.jpair.ibe.BFCipher
 import java.util.Random
 import uk.ac.ic.doc.jpair.ibe.BFCtext
 import util.HashState
+import java.math.BigInteger
+import java.security.interfaces.RSAPublicKey
+import java.security.MessageDigest
+import util.IBHashState
 
 /**
- * This class is used to 'sign' (actually encrypt) hash values in order to authenticate them.
- * It is 'sequential' in the sense that once a key has been used to encrypt a value,
- * it will be deleted.
- * 
- * This way, an attacker can theoretically not encrypt another hash if he attempts to modify log entries.
- * 
- * To check a value's authenticity, it has to be checked against the decrypted value having the same
- * sequence number.
- *
- * The SequentialCipher is built on Jpair's IBE implementation.
+ * This class is used to periodically authenticate the state of the hash chain.
+ * It uses IBA (Identity Based Authentication) as proposed by Shamir in his 1984 paper
+ * "Identity Based CryptoSystems And Signature Schemes"
  */
 
-class IBAuthenticator(pks: Iterator[BFUserPublicKey], rnd: Random) extends Authenticator {
+class IBAuthenticator(keys: Iterator[(String,BigInt)],
+			rangen: Random,
+			pubkey: RSAPublicKey,
+			md: MessageDigest) extends Authenticator {
 	
-	def authenticate(data: Array[Byte]): HashState = {
-
-	  new HashState("","","")
-	}
-}
-
-object SequentialCipher {
+  /**
+   * TODO make sure it is meaningful => should be of same size than the RSA modulus (?)
+   */
+	def block_length = 1024
   
+	def authenticate(data: Array[Byte]): HashState = {
+	  //TODO handle this more elegantly than by blowing everything up ;-)
+	  if(!keys.hasNext) throw new Exception("No more authentication keys!")
+	  else {
+	    val e = new BigInt(pubkey.getPublicExponent)
+	    val n = new BigInt(pubkey.getModulus)
+	    
+	    val (id,k) = keys.next
+	    
+	    val rnd = new Array[Byte](block_length)
+	    rangen.nextBytes(rnd)
+	    /**
+	     * Going through Java BigIntegers first because scala's
+	     * won't construct from anything else ;-) 
+	     */
+	    val r = new BigInt(new BigInteger(rnd))
+	    
+	    val t = r.modPow(e, n)
+	    
+	    md.reset
+	    val f = new BigInt(new BigInteger(md.digest(t.toByteArray ++ data)))
+	    
+	    val s = (k*r.modPow(f, n)) mod n
+
+	    new IBHashState(id,data,s.toByteArray,t.toByteArray)
+	  }
+	}
 }
