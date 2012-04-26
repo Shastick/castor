@@ -22,8 +22,10 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
 	
   /**
    * TODO make sure it is meaningful => should be of same size than the RSA modulus (?)
+   * (And make it coherent with all the key sizes.)
    */
-	def block_length = 1024
+  
+	def block_length = 2048
   
 	def authenticate(data: Array[Byte]): HashState = {
 	  //TODO handle this more elegantly than by blowing everything up ;-)

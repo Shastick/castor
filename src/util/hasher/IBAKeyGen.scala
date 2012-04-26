@@ -17,12 +17,7 @@ import java.security.KeyPairGenerator
 object IBAKeyGen {
   
   val int_size = 8
-  
-  /**
-   * We explicitely use no padding
-   */
-  
-  val cipher_def = "RSA/ECB/NOPADDING"
+
   val provider = "BC"
   Security.addProvider(new BouncyCastleProvider())
   
@@ -47,12 +42,10 @@ object IBAKeyGen {
    * 
    */
   def genKeys(privKey: RSAPrivateKey, quant: Int): List[(String,BigInt)] = {
-    val cipher = Cipher.getInstance(cipher_def,provider) 
-  		cipher.init(Cipher.ENCRYPT_MODE, privKey)
   	
   	val bb = ByteBuffer.allocate(int_size)
   	
-  	(1 to quant) map {i => IntToBytes(i, bb)} map {i => makeKey(i,cipher)} toList 
+  	(1 to quant) map {i => IntToBytes(i, bb)} map {i => makeKey(i,privKey)} toList 
   }
   
   /**
@@ -69,11 +62,15 @@ object IBAKeyGen {
    * Build a key.
    * TODO : check it does the RSA stuff as I think it does, or verification will fail.
    */
-  private def makeKey(id: Array[Byte], c: Cipher): (String, BigInt) = {
+  private def makeKey(id: Array[Byte], k: RSAPrivateKey): (String, BigInt) = {
   	digest.reset
+  	
   	val id_hash = digest.digest(id)
-  	val pk = c.doFinal(id_hash)
-  	(Stringifier(id_hash),BigInt(pk))
+  	val pk = BigInt(id_hash).modPow(
+  	    new BigInt(k.getPrivateExponent),
+  	    new BigInt(k.getModulus))
+  	    
+  	(Stringifier(id_hash),pk)
   }
   /**
    * Transform an Int to a byte array. The sign bit should be irrelevant,
