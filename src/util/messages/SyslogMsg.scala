@@ -5,39 +5,42 @@ import util.BASE64
 import util.Stringifier
 
 /**
- * Represents a syslog message, either in a cleartext form, or in an
- * encrypted form, using scala's Either class.
- * 
- * Left is cleartext (as a string)
- * Right is ciphertext (as a Byte Array)
+ * Syslog Messages are represented by SyslogMsg
+ * The Clear variant has only strings,
+ * whereas the Cipher variant has eithers => if the either is right,
+ * its content is encrypted.
+ * If the either is left, the content is cleartex and kept as a String.
  */
 
-class SyslogMsg( 
-    val pri: Array[Byte]
-    ,val tstamp: Array[Byte]
-    ,val host: Array[Byte]
-    ,val msg: Array[Byte])
-    extends Message {
+abstract class SyslogMsg extends Message {
+  def toBytes = Stringifier(toString)
+  def toString
+}
+
+class ClearSyslogMsg( 
+    val pri: String
+    ,val tstamp: String
+    ,val host: String
+    ,val msg: String)
+    extends SyslogMsg {
   
-  /**
-   * Constructor using strings :
-   */
-  def this(pri: String, tstamp: String, host: String, msg: String) =
-    this(Stringifier(pri),Stringifier(tstamp),Stringifier(host),Stringifier(msg))
-  
-  /**
-   * String conversion shortcuts
-   */
-  private def ts(a: Array[Byte]): String = Stringifier(a)
-  
-  override def toString = 	"<" + ts(pri) + ">" +
-		  					ts(tstamp) + " " +
-		  					ts(host) + " " +
-		  					ts(msg)
-  
-  /**
-   * The whole byte representation has to contain the spaces and brackets present in the string
-   */
+  def toString = 	"<" + pri + ">" +
+		  			tstamp + " " +
+		  			host + " " +
+		  			msg
+ 
   def toBytes = Stringifier(toString)
 
+}
+
+class CipherSyslogMsg(
+    val pri: Either[String,Array[Byte]],
+    val tstamp: Either[String,Array[Byte]],
+    val host: Either[String,Array[Byte]],
+    val msg: Either[String,Array[Byte]])
+    extends SyslogMsg {
+  
+  def toString =
+  
+  def toBytes = 
 }
