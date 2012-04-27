@@ -1,6 +1,6 @@
 package decoder.line
 import decoder.reader.LogReader
-import util.SyslogMsg
+import util.messages.SyslogMsg
 import java.security.KeyStore
 import util.cipher.RSACipher
 import util.Stringifier

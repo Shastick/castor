@@ -4,10 +4,10 @@ import java.net.DatagramPacket
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.ByteArrayInputStream
-import util.SyslogParser
 import util.Stringifier
 import digester.LogHandler
 import digester.LogProcesser
+import util.messages.SyslogParser
 
 
 class UDPInput(socket: DatagramSocket

@@ -1,13 +1,13 @@
-package digester.hash
-import uk.ac.ic.doc.jpair.ibe.key.BFMasterPublicKey
-import uk.ac.ic.doc.jpair.ibe.key.BFUserPublicKey
-import uk.ac.ic.doc.jpair.ibe.BFCipher
+package digester.auth
+
 import java.util.Random
-import uk.ac.ic.doc.jpair.ibe.BFCtext
-import util.HashState
+import util.messages.HashState
 import java.security.interfaces.RSAPublicKey
 import java.security.MessageDigest
-import util.IBHashState
+import util.messages.IBHashState
+import util.messages.IBHashState
+import util.messages.HashState
+
 
 /**
  * This class is used to periodically authenticate the state of the hash chain.

@@ -8,7 +8,7 @@ import java.security.KeyStore.SecretKeyEntry
 import java.security.KeyStore.PasswordProtection
 import util.cipher.AESCipher
 import util.BASE64
-import util.SyslogMsg
+import util.messages.SyslogMsg
 import digester.LogHandler
 import digester.LogProcesser
 

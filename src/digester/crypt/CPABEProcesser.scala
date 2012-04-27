@@ -1,9 +1,9 @@
 package digester.crypt
 
 import digester.writer.LogFileWriter
-import util.SyslogMsg
 import digester.LogHandler
 import digester.LogProcesser
+import util.messages.SyslogMsg
 
 /**
  * This class is a wrapper around a the cpabe utility written

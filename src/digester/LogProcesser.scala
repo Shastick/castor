@@ -1,11 +1,11 @@
 package digester
 
 import java.security.KeyStore
-import util.SyslogMsg
-import util.SyslogHeader
+import util.messages.SyslogMsg
+import util.messages.SyslogHeader
 import util.Stringifier
-import util.HashState
-import util.AdminMsg
+import util.messages.HashState
+import util.messages.AdminMsg
 
 /**
  * Superclass for any log processor. This class chooses what part

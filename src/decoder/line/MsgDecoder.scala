@@ -1,10 +1,10 @@
 package decoder.line
 import decoder.reader.LogReader
-import util.SyslogMsg
+import util.messages.SyslogMsg
 import util.Stringifier
-import util.SyslogHeader
+import util.messages.SyslogHeader
 import javax.crypto.Cipher
-import util.SyslogParser
+import util.messages.SyslogParser
 import util.BASE64
 import util.cipher.LogCipher
 

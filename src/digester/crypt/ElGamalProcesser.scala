@@ -1,6 +1,6 @@
 package digester.crypt
 import util.cipher.ElGamalCipher
-import util.SyslogMsg
+import util.messages.SyslogMsg
 import digester.LogHandler
 import digester.LogProcesser
 

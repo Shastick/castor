@@ -1,5 +1,5 @@
 package decoder.reader
-import util.SyslogMsg
+import util.messages.SyslogMsg
 
 /**
  * Dump trait representing anything able to read log data.

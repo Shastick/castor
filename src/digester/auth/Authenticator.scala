@@ -1,5 +1,5 @@
-package digester.hash
-import util.HashState
+package digester.auth
+import util.messages.HashState
 
 /**
  * Represents an entity able to authenticate data.

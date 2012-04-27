@@ -1,5 +1,8 @@
-package util
+package util.messages
+
 import scala.util.matching.Regex
+import util.BASE64
+import util.Stringifier
 
 /**
  * Represents a syslog message, either in a cleartext form, or in an

@@ -1,8 +1,8 @@
 package digester.writer
 import java.io.FileWriter
-import util.SyslogMsg
+import util.messages.SyslogMsg
 import digester.LogHandler
-import util.AdminMsg
+import util.messages.AdminMsg
 
 /**
  * Handle writing of syslog messages to a file.

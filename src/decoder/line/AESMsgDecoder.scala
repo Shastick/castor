@@ -2,10 +2,10 @@ package decoder.line
 import util.cipher.AESCipher
 import java.security.KeyStore
 import decoder.reader.LogReader
-import util.SyslogMsg
-import util.SyslogParser
+import util.messages.SyslogMsg
+import util.messages.SyslogParser
 import util.Stringifier
-import util.SyslogHeader
+import util.messages.SyslogHeader
 
 /**
  * Decoder handling AES messages decryption.

@@ -1,12 +1,12 @@
-package digester.hash
+package digester.auth
 import java.security.MessageDigest
 import digester.LogHandler
 import digester.LogProcesser
-import util.HashState
+import util.messages.HashState
 import util.Stringifier
-import util.SyslogMsg
-import util.AdminMsg
-import util.SaveState
+import util.messages.SyslogMsg
+import util.messages.AdminMsg
+import util.messages.SaveState
 
 /**
  * A Hasher is a stateful class that will be in charge of building a hash chain of the messages 

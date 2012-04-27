@@ -1,4 +1,5 @@
-package util
+package util.messages
+import util.Stringifier
 
 /**
  * Abstract class representing any "meta-message" (or non-content) that would have to be sent around

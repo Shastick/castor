@@ -1,9 +1,9 @@
-package digester.hash
+package digester.auth
 
 import org.bouncycastle.crypto.macs.HMac
 import org.bouncycastle.crypto.Digest
 import org.bouncycastle.crypto.params.KeyParameter
-import util.HashState
+import util.messages.HashState
 import util.Stringifier
 
 class HMACAuthenticator(keys: Iterator[(String,Array[Byte])], digest: Digest) extends Authenticator{

@@ -1,7 +1,7 @@
 package digester
-import util.SyslogMsg
+import util.messages.SyslogMsg
 import scala.actors.Actor
-import util.AdminMsg
+import util.messages.AdminMsg
 
 /**
  * LogHandler trait: class to group anything able 
