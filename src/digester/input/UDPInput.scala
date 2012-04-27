@@ -7,8 +7,7 @@ import java.io.ByteArrayInputStream
 import util.Stringifier
 import digester.LogHandler
 import digester.LogProcesser
-import util.messages.SyslogParser
-
+import util.messages.Parser
 
 class UDPInput(socket: DatagramSocket
 				,processer: LogHandler) extends MsgInput{
@@ -18,7 +17,7 @@ class UDPInput(socket: DatagramSocket
 	  this(new DatagramSocket(port),proc)
 	
 	def act() = while(true) 
-		processer ! SyslogParser.parseClearText(readDatagram)
+		processer ! Parser.fromInput(readDatagram)
 	
 	def readLine():String = readDatagram()
 	

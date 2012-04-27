@@ -11,12 +11,13 @@ import util.BASE64
 import util.messages.SyslogMsg
 import digester.LogHandler
 import digester.LogProcesser
+import java.security.Key
 
 
-class AESProcesser(next: LogHandler, ks: KeyStore, ka: String, kp: String) 
+class AESProcesser(next: LogHandler, k: Key , mode: Int) 
 extends LogProcesser(next) {
 	
-  val cipher = AESCipher.initEncryptionCipher(ks,ka,kp)
+  val cipher = AESCipher.init(k,mode)
   def crunchArray(input: Array[Byte]): Array[Byte] = cipher.crunchArray(input)
 
 }
