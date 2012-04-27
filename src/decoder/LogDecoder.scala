@@ -11,7 +11,7 @@ object LogDecoder extends Application {
 	
 	val screen = new MessageSync
 	screen.start
-	val rsa_proc = new RSAProcesser(screen,mk.readCert("rsa_2").getPublicKey, Cipher.DECRYPT_MODE)
+	val rsa_proc = new RSAProcesser(screen,mk.readKey("rsa_2","dorloter"), Cipher.DECRYPT_MODE)
 	rsa_proc.start
 	val aes_proc = new AESProcesser(screen,mk.readKey("aes_test",""),Cipher.DECRYPT_MODE)
 	aes_proc.start
