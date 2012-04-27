@@ -2,6 +2,7 @@ package digester
 import util.messages.SyslogMsg
 import scala.actors.Actor
 import util.messages.AdminMsg
+import util.messages.Comment
 
 /**
  * LogHandler trait: class to group anything able 
@@ -12,7 +13,7 @@ import util.messages.AdminMsg
  */
 trait LogHandler extends Actor {
 	/**
-	 * Defines what is done to the message
+	 * Defines what is done to the message(s)
 	 */
 	def procDgram(dg: SyslogMsg)
 	def procAdminMsg(m: AdminMsg)

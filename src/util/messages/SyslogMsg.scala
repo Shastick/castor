@@ -18,7 +18,10 @@ class SyslogMsg(
     ,val msg: Either[String,Array[Byte]])
     extends Message {
   
-  override def toString = "<"+ets(pri)+">"+ets(header.tstamp)+" "+ets(header.host)+" "+ets(msg)
+  override def toString = 	"<" + ets(pri) + ">" +
+		  					ets(header.tstamp) + " " +
+		  					ets(header.host) + " " +
+		  					ets(msg)
   
   def toBytes = Stringifier.toBytes(toString)
   /**

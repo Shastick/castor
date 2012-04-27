@@ -39,6 +39,7 @@ class Hasher(next: LogHandler,
   }
   /**
    * The message is not altered and returned as is.
+   * The hash is computed from the whole message converted to bytes.
    */
   override def crunchDgram(in: SyslogMsg): SyslogMsg = {
     val toHash = lastHash ++ in.toBytes

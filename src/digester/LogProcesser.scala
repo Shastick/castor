@@ -31,10 +31,10 @@ abstract class LogProcesser(next: LogHandler) extends LogHandler{
    * How a whole datagram is processed
    */
   def crunchDgram(in: SyslogMsg):SyslogMsg = {
-    // Now encrypting host and message only.
+    // Now processing host and message only.
     // TODO : do this based on a config file or whatever config mean.
-	val pri = Left(in.pri.left.get)
-	val tstamp = Left(in.header.tstamp.left.get)
+	val pri = in.pri
+	val tstamp = in.header.tstamp
 	val host = Right(crunchArray(Stringifier.tb(in.header.host.left.get)))
 	val msg = Right(crunchArray(Stringifier.tb(in.msg.left.get)))
     

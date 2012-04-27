@@ -5,15 +5,20 @@ import java.io.File
 import sun.misc.BASE64Decoder
 import sun.misc.BASE64Encoder
 import util.BASE64
+import digester.LogHandler
+import util.messages.Parser
 
 /**
  * Implements a simple Iterator returning entire lines, initialized with a file name.
  */
-class LogFileReader(lines: Iterator[String]) extends LogReader{
+class LogFileReader(dest: LogHandler, lines: Iterator[String]) extends LogReader(dest){
   
-  def this(fname: String) = this(Source.fromFile(new File(fname)).getLines)
+  /**
+   * Overloaded constructor to build the reader from a file name.
+   */
+  def this(dest: LogHandler, fname: String) =
+    this(dest, Source.fromFile(new File(fname)).getLines)
 
-  def hasNext = lines.hasNext
-  def next = lines.next
+  def beamLogData = lines.foreach { dest ! Parser.fromLog(_) }
  
 }

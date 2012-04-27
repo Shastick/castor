@@ -17,6 +17,7 @@ import java.security.PublicKey
 /**
  *  Utility class for loading keystores, adding keys, etc.
  *  => TODO finish it correctly.
+ *  => TODO check deprecation warnings ?
  */
 class ManagedKeyStore(
     file: String
@@ -41,7 +42,7 @@ class ManagedKeyStore(
   def readKey(alias: String, password: String):Key = ks.getKey(alias,password.toCharArray())
   
   def save = ks.store(new FileOutputStream(file), pwd.toCharArray())
-  
+
   private def getCert(ks: KeyStore, c_alias: String):X509Certificate =
   	ks.getCertificate(c_alias) match {
   		case c:X509Certificate => c
