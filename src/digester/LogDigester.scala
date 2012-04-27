@@ -4,6 +4,7 @@ import digester.crypt._
 import digester.input.UDPInput
 import digester.writer.LogFileWriter
 import util.ManagedKeyStore
+import javax.crypto.Cipher
 
 /**
  * TODO ideas :  - ABE 
@@ -18,12 +19,10 @@ object LogDigester extends Application {
 	
 	val writer = new LogFileWriter("test_out.txt")
 	writer.start
-	val rsa_proc = new RSAProcesser(writer,mk.ks,"rsa_2")
+	val rsa_proc = new RSAProcesser(writer,mk.readCert("rsa_2").getPublicKey, Cipher.ENCRYPT_MODE)
 	rsa_proc.start
-	val aes_proc = new AESProcesser(writer,mk.ks,"aes_test", "")
+	val aes_proc = new AESProcesser(writer,mk.readKey("aes_test",""),Cipher.ENCRYPT_MODE)
 	aes_proc.start
-	val gamal_proc = new ElGamalProcesser(writer)
-	gamal_proc.start
 	val tester = new UDPInput(5555,rsa_proc)
 	tester.start
 }
