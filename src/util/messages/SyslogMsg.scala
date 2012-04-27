@@ -14,7 +14,7 @@ import util.Stringifier
 
 abstract class SyslogMsg extends Message {
   def toBytes = Stringifier(toString)
-  def toString
+  def toString: String
 }
 
 class ClearSyslogMsg( 
@@ -24,13 +24,10 @@ class ClearSyslogMsg(
     ,val msg: String)
     extends SyslogMsg {
   
-  def toString = 	"<" + pri + ">" +
+  override def toString = 	"<" + pri + ">" +
 		  			tstamp + " " +
 		  			host + " " +
 		  			msg
- 
-  def toBytes = Stringifier(toString)
-
 }
 
 class CipherSyslogMsg(
@@ -40,7 +37,17 @@ class CipherSyslogMsg(
     val msg: Either[String,Array[Byte]])
     extends SyslogMsg {
   
-  def toString =
-  
-  def toBytes = 
+  override def toString = "<" + ets(pri) + ">" +
+				ets(tstamp) + " " +
+				ets(host) + " " +
+				ets(msg)
+
+  /**
+   * ets => Either to String function : takes an either, returns the string if it is one,
+   * and converts the bytes to an b64 encoded string if the Either is a byte array.
+   */
+  private def ets(in: Either[String, Array[Byte]]): String =
+    if(in.isLeft) in.left.get
+    else BASE64.enc(in.right.get)
+
 }

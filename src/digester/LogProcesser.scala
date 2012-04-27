@@ -5,6 +5,8 @@ import util.messages.SyslogMsg
 import util.Stringifier
 import util.messages.HashState
 import util.messages.AdminMsg
+import util.messages.ClearSyslogMsg
+import util.messages.CipherSyslogMsg
 
 /**
  * Superclass for any log processor. This class chooses what part
@@ -31,9 +33,24 @@ abstract class LogProcesser(next: LogHandler) extends LogHandler{
    * Now only processing host and message
    * TODO : DO THIS BASED ON A CONFIG MEAN
    */
-  def crunchDgram(in: SyslogMsg):SyslogMsg =
-    new SyslogMsg(	in.pri,
-					in.tstamp,
-					crunchArray(in.host),
-					crunchArray(in.msg))
+  def crunchDgram(m: SyslogMsg):SyslogMsg = m match {
+    case m: ClearSyslogMsg =>
+      new CipherSyslogMsg(Left(m.pri),
+    		  			Left(m.tstamp),
+    		  			Right(crunchArray(Stringifier(m.host))),
+    		  			Right(crunchArray(Stringifier(m.msg))))
+    case m: CipherSyslogMsg =>
+      new ClearSyslogMsg(get(m.pri),
+    		  			get(m.tstamp),
+    		  			get(m.host),
+    		  			get(m.msg))
+  }
+  
+  /**
+   * Take the string in an Either or Decrypt the array and convert it to a string.
+   */
+  private def get(e: Either[String,Array[Byte]]): String = 
+    if(e.isLeft) e.left.get
+    else Stringifier(crunchArray(e.right.get))
+    
 }

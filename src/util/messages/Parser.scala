@@ -58,7 +58,7 @@ object Parser {
    */
   def fromInput(dgram: String): SyslogMsg = dgram match {
     case clr_txt(pri,tstamp,host,msg) => 
-      	new SyslogMsg(pri, tstamp,host,msg)
+      	new ClearSyslogMsg(pri, tstamp,host,msg)
     case _ => throw new Exception("Parser Error : " + dgram)
       //TODO @julien handle this correctly
   }
@@ -75,5 +75,9 @@ object Parser {
   }
   
   private def makeEvent(pri: String, t: String, h: String, m: String): SyslogMsg = 
-    new SyslogMsg(Stringifier(pri),Stringifier(t),BASE64.dec(h),BASE64.dec(m))
+    new CipherSyslogMsg(Left(pri),
+    					Left(t),
+    					Right(BASE64.dec(h)),
+    					Right(BASE64.dec(m)))
+  
 }
