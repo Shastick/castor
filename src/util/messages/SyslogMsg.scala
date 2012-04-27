@@ -13,28 +13,31 @@ import util.Stringifier
  */
 
 class SyslogMsg( 
-    val pri: Either[String,Array[Byte]]
-    ,val header: SyslogHeader
-    ,val msg: Either[String,Array[Byte]])
+    val pri: Array[Byte]
+    ,val tstamp: Array[Byte]
+    ,val host: Array[Byte]
+    ,val msg: Array[Byte])
     extends Message {
   
-  override def toString = 	"<" + ets(pri) + ">" +
-		  					ets(header.tstamp) + " " +
-		  					ets(header.host) + " " +
-		  					ets(msg)
-  
-  def toBytes = Stringifier.toBytes(toString)
   /**
-   * ets => Either to String function : takes an either, returns the string if it is one,
-   * and converts the bytes to an encoded string if the Either is a byte array.
+   * Constructor using strings :
    */
-  private def ets(in: Either[String, Array[Byte]]): String = in match {
-      case l: Left[String, Array[Byte]] => l.left.get
-      case r: Right[String, Array[Byte]] => BASE64.enc(r.right.get)
-      case _ => throw new Exception("Something went wrong with the SyslogMsg Either's... : " + in)
-  }
-}
+  def this(pri: String, tstamp: String, host: String, msg: String) =
+    this(Stringifier(pri),Stringifier(tstamp),Stringifier(host),Stringifier(msg))
+  
+  /**
+   * String conversion shortcuts
+   */
+  private def ts(a: Array[Byte]): String = Stringifier(a)
+  
+  override def toString = 	"<" + ts(pri) + ">" +
+		  					ts(tstamp) + " " +
+		  					ts(host) + " " +
+		  					ts(msg)
+  
+  /**
+   * The whole byte representation has to contain the spaces and brackets present in the string
+   */
+  def toBytes = Stringifier(toString)
 
-class SyslogHeader(
-    val tstamp: Either[String,Array[Byte]]
-    ,val host: Either[String,Array[Byte]])
+}

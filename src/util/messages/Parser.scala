@@ -1,5 +1,6 @@
 package util.messages
 import util.BASE64
+import util.Stringifier
 
 /**
  * Object handling the parsing of strings to Messages. 
@@ -57,7 +58,7 @@ object Parser {
    */
   def fromInput(dgram: String): SyslogMsg = dgram match {
     case clr_txt(pri,tstamp,host,msg) => 
-      	new SyslogMsg(Left(pri), new SyslogHeader(Left(tstamp),Left(host)),Left(msg))
+      	new SyslogMsg(pri, tstamp,host,msg)
     case _ => throw new Exception("Parser Error : " + dgram)
       //TODO @julien handle this correctly
   }
@@ -74,8 +75,5 @@ object Parser {
   }
   
   private def makeEvent(pri: String, t: String, h: String, m: String): SyslogMsg = 
-    new SyslogMsg(Left(pri),
-    		new SyslogHeader(Left(t),
-    		Right(BASE64.dec(h))),
-    		Right(BASE64.dec(m)))
+    new SyslogMsg(Stringifier(pri),Stringifier(t),BASE64.dec(h),BASE64.dec(m))
 }

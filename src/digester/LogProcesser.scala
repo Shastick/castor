@@ -2,7 +2,6 @@ package digester
 
 import java.security.KeyStore
 import util.messages.SyslogMsg
-import util.messages.SyslogHeader
 import util.Stringifier
 import util.messages.HashState
 import util.messages.AdminMsg
@@ -28,17 +27,13 @@ abstract class LogProcesser(next: LogHandler) extends LogHandler{
   def procAdminMsg(m: AdminMsg) = next ! m 
   
   /**
-   * How a whole datagram is processed
+   * How a whole datagram is processed.
+   * Now only processing host and message
+   * TODO : DO THIS BASED ON A CONFIG MEAN
    */
-  def crunchDgram(in: SyslogMsg):SyslogMsg = {
-    // Now processing host and message only.
-    // TODO : do this based on a config file or whatever config mean.
-	val pri = in.pri
-	val tstamp = in.header.tstamp
-	val host = Right(crunchArray(Stringifier.tb(in.header.host.left.get)))
-	val msg = Right(crunchArray(Stringifier.tb(in.msg.left.get)))
-    
-	new SyslogMsg(pri, new SyslogHeader(tstamp,host),msg)
-  }
-  
+  def crunchDgram(in: SyslogMsg):SyslogMsg =
+    new SyslogMsg(	in.pri,
+					in.tstamp,
+					crunchArray(in.host),
+					crunchArray(in.msg))
 }

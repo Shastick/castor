@@ -3,14 +3,22 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.ByteArrayInputStream
 
+/**
+ * Stringifier does all the String <-> Array[Byte] conversion.
+ * As i'm not yet quite sure it is done correctly, I prefer keeping it in one place
+ * if later corrections are required.
+ */
 object Stringifier {
   
-  def tb(in:String) = toBytes(in)
+  def apply(in: String): Array[Byte] = toBytes(in)
   
   def toBytes(in: String): Array[Byte] = {
     in.getBytes("UTF-8")
   }
-  def apply(in: Array[Byte]):String = {
+  
+  def apply(in: Array[Byte]): String = makeString(in)
+  
+  def makeString(in: Array[Byte]): String = {
      // Yes, this is ugly.
 	 // And yes, it is done on purpose, as if I want a string I can use in regexp's,
 	 // just calling new String(p.getData()) won't cut it... >.>
