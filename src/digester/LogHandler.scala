@@ -24,10 +24,15 @@ trait LogHandler extends Actor {
 	 * This should ensure we have no concurrency problems as an Actor
 	 * handles one message at a time.
 	 */
-	def act() = while(true) receive {
-	    case m: SyslogMsg => procDgram(m)
-	    
-	    case m: AdminMsg => println("Admin MSG received!") 
-	      //procAdminMsg(m)
+	def act() = loop {
+		receive {
+	    	case m: SyslogMsg => procDgram(m)
+	    	case m: AdminMsg => procAdminMsg(m)
+		}
 	}
+	
+	/**
+	 * TODO : Clear out strange behavior => case class that extends a normal class is not matched
+	 * if m: SuperClass is mentioned in the case, but if case CaseClass is specified, it does.
+	 */
 }

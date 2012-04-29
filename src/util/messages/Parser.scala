@@ -69,7 +69,7 @@ object Parser {
   def fromLog(line: String): Message = line match {
 		case c_event(pri,tstamp,host,msg) => makeEvent(pri,tstamp,host,msg)
 		case m_iba(id,h,s,t) =>  new IBHashState(id,h,s,t) 
-		case m_hmac(id,h,s) => new HashState(id,h,s)
+		case m_hmac(id,h,s) => new HMACState(id,h,s)
 		case comment(m) => new Comment(m)
 	  	case _ => throw new Exception("Parse error : " + line)
   }
