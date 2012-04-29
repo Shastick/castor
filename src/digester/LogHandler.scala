@@ -3,6 +3,7 @@ import util.messages.SyslogMsg
 import scala.actors.Actor
 import util.messages.AdminMsg
 import util.messages.Comment
+import util.messages.SaveState
 
 /**
  * LogHandler trait: class to group anything able 
@@ -25,6 +26,8 @@ trait LogHandler extends Actor {
 	 */
 	def act() = while(true) receive {
 	    case m: SyslogMsg => procDgram(m)
-	    case m: AdminMsg => procAdminMsg(m)
+	    
+	    case m: AdminMsg => println("Admin MSG received!") 
+	      //procAdminMsg(m)
 	}
 }

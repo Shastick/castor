@@ -26,7 +26,8 @@ class Hasher(next: LogHandler,
    * 
    */
   override def procAdminMsg(m: AdminMsg) = m match {
-    case m: SaveState => writeState
+    case m: SaveState =>println("Got a savestate!") 
+      next ! sc.authenticate(lastHash)
     case _ => next ! m
   } 
   
@@ -46,12 +47,6 @@ class Hasher(next: LogHandler,
     lastHash = crunchArray(toHash)
     in
   }
-  
-  /**
-   * Authentifies the current state and sends it to the downstream LogHandler.
-   */
-  def writeState() =
-    next ! sc.authenticate(lastHash)
 }
 
 /**

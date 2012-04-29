@@ -5,7 +5,7 @@ import util.Stringifier
  * Abstract class representing any "meta-message" (or non-content) that would have to be sent around
  * between the actor or written to the output.
  */
-abstract class AdminMsg extends Message {
+abstract case class AdminMsg extends Message {
   /**
    * Setting the default toString to return an empty string for cases where
    * a message should not be written to the output
@@ -17,7 +17,7 @@ abstract class AdminMsg extends Message {
 /**
  * Wrapper around a hash, its authentication and the ID used to authenticate it.
  */
-class HashState(id: String, hash: String, sig: String) extends AdminMsg {
+case class HashState(id: String, hash: String, sig: String) extends AdminMsg {
   /**
    * Constructor variant with byte arrays.
    */
@@ -33,7 +33,7 @@ class HashState(id: String, hash: String, sig: String) extends AdminMsg {
  * 	- hash: the actual value of the hash chain
  * 	- s,t: the signature of the hash chain
  */
-class IBHashState(id: String, hash: String, s: String, t: String)
+case class IBHashState(id: String, hash: String, s: String, t: String)
 	extends HashState(id, hash, s) {
   /**
    * Constructor variant with byte arrays.
@@ -49,6 +49,6 @@ class IBHashState(id: String, hash: String, s: String, t: String)
  */
 case class SaveState extends AdminMsg
 
-class Comment(c: String) extends AdminMsg{
+case class Comment(c: String) extends AdminMsg{
   override def toString = c
 }

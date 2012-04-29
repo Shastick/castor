@@ -43,9 +43,7 @@ object IBAKeyGen {
    */
   def genKeys(privKey: RSAPrivateKey, quant: Int): List[(String,BigInt)] = {
   	
-  	val bb = ByteBuffer.allocate(int_size)
-  	
-  	(1 to quant) map {i => IntToBytes(i, bb)} map {i => makeKey(i,privKey)} toList 
+  	(1 to quant) map {i => Stringifier(i.toString)} map {i => makeKey(i,privKey)} toList 
   }
   
   /**
@@ -71,16 +69,5 @@ object IBAKeyGen {
   	    new BigInt(k.getModulus))
   	    
   	(Stringifier(id_hash),pk)
-  }
-  /**
-   * Transform an Int to a byte array. The sign bit should be irrelevant,
-   * as long as the verifying process does the exact same thing.
-   */
-  private def IntToBytes(i: Int, bb: ByteBuffer): Array[Byte] = {
-    bb.clear
-    var i_byte = new Array[Byte](int_size)
-  	bb.putInt(i).flip
-  	bb.get(i_byte)  
-  	i_byte
   }
 }
