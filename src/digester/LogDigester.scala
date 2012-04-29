@@ -11,6 +11,7 @@ import util.hasher.IBAKeyGen
 import digester.auth.IBAuthenticator
 import java.util.Random
 import util.messages.SaveState
+import decoder.MessageSync
 
 /**
  * TODO ideas :  - ABE 
@@ -23,14 +24,24 @@ object LogDigester extends Application {
 	//mk.newAESKey("aes_test",256,"")
 	//mk.save
 	
+	/*
 	val writer = new LogFileWriter("test_out.txt")
 	writer.start
+	*/
 	
-	val digest = MessageDigest.getInstance("SHA-512")
+	val screen = new MessageSync
+	screen.start
+	
 	val (pub,priv) = IBAKeyGen.genKeyPair(2048)
+	val digest = MessageDigest.getInstance("SHA-512")
+	val auth_check = new IBAuthenticator(Iterator.empty, new Random, pub, digest)
+	
+	val auther = new Hasher(screen, digest, auth_check)
+	auther.start
+	
 	val kl = IBAKeyGen.genKeys(priv,10)
 	val auth = new IBAuthenticator(kl.toIterator,new Random,pub,digest)
-	val hasher = new Hasher(writer, digest,auth)
+	val hasher = new Hasher(auther, digest, auth)
 	hasher.start
 	
 	/*
@@ -43,6 +54,7 @@ object LogDigester extends Application {
 	val tester = new UDPInput(5555,hasher)
 	tester.start
 	
+	// Schedule regular state saving:
 	val sm = ScheduleManager.scheduler(10000){hasher ! SaveState}
 	
 }

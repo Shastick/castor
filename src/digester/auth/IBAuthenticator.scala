@@ -7,6 +7,10 @@ import java.security.MessageDigest
 import util.messages.IBHashState
 import util.messages.IBHashState
 import util.messages.HashState
+import util.messages.AdminMsg
+import util.messages.HashError
+import util.BASE64
+import util.messages.ValidHash
 
 
 /**
@@ -27,7 +31,7 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
   
 	def block_length = 2048
   
-	def authenticate(data: Array[Byte]): HashState = {
+	def sign(data: Array[Byte]): HashState = {
 	  //TODO handle this more elegantly than by blowing everything up ;-)
 	  if(!keys.hasNext) throw new Exception("No more authentication keys!")
 	  else {
@@ -49,5 +53,33 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
 
 	    new IBHashState(id,data,s.toByteArray,t.toByteArray)
 	  }
+	}
+	
+	def authenticate(h: HashState): AdminMsg = h match {
+	  case m: IBHashState => verify(m)
+	  case _ => HashError("Bad Hash Type received: IBHashSate required, " + h.getClass() + " received instead!")
+	}
+	
+	/**
+	 * Check if the received HashState corresponds to the internal state.
+	 */
+	private def verify(hs: IBHashState): AdminMsg = {
+	  
+	  val (id,m,s,t) = (BigInt(BASE64.dec(hs.id)),
+			  			BASE64.dec(hs.hash),
+			  			BigInt(BASE64.dec(hs.s)),
+			  			BASE64.dec(hs.t))
+	  
+	  val (e,n) = (new BigInt(pubkey.getPublicExponent()),
+			  		new BigInt(pubkey.getModulus()))
+		
+	  md.reset
+	  val f = BigInt(md.digest(t ++ m))
+	  
+	  val checkMe = s.modPow(e,n)
+	  val shouldBe = (id * BigInt(t).modPow(f,n)) mod n
+	  
+	  if(checkMe == shouldBe) ValidHash(id.toString)
+	  else HashError("Hash segment could not be authenticated, id: " + id.toString)
 	}
 }

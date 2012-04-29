@@ -51,6 +51,14 @@ case class IBHashState(id: String, hash: String, s: String, t: String) extends H
  */
 case object SaveState extends AdminMsg
 
-case class Comment(c: String) extends AdminMsg{
+case class Comment(c: String) extends AdminMsg {
   override def toString = "===== " + c + " ====="
+}
+
+case class HashError(e: String) extends AdminMsg {
+  override def toString = "===== ERROR: " + e + " ====="
+}
+
+case class ValidHash(id: String) extends AdminMsg {
+  override def toString = "Valid hash segment: " + id
 }

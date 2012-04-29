@@ -26,7 +26,8 @@ class Hasher(next: LogHandler,
    * 
    */
   override def procAdminMsg(m: AdminMsg) = m match {
-    case SaveState => next ! sc.authenticate(lastHash)
+    case SaveState => next ! sc.sign(lastHash)
+    case h: HashState =>  next ! sc.authenticate(h)
     case _ => next ! m
   } 
   

@@ -5,6 +5,9 @@ import org.bouncycastle.crypto.Digest
 import org.bouncycastle.crypto.params.KeyParameter
 import util.messages.HMACState
 import util.Stringifier
+import util.messages.AdminMsg
+import util.messages.HashState
+import util.messages.HashError
 
 class HMACAuthenticator(keys: Iterator[(String,Array[Byte])], digest: Digest) extends Authenticator{
 	
@@ -14,13 +17,15 @@ class HMACAuthenticator(keys: Iterator[(String,Array[Byte])], digest: Digest) ex
   
 	val hmac = new HMac(digest)
   
-	def authenticate(data: Array[Byte]): HMACState = {
+	def sign(data: Array[Byte]): HMACState = {
 	  if (!keys.hasNext) throw new Exception("No more authentication keys!")
 	  else {
 	    val k = keys.next
 		  new HMACState(k._1,Stringifier(data),Stringifier(hmac(k._2,data)))
 	  }
 	}
+	
+	def authenticate(h: HashState): AdminMsg = HashError("")
 	
 	private def hmac(key: Array[Byte], data: Array[Byte]): Array[Byte] = {
 	 val auth = new Array[Byte](hmac.getMacSize()) // TODO check if 'val' is OK here :-)
