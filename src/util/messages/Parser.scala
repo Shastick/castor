@@ -1,6 +1,5 @@
 package util.messages
 import util.BASE64
-import util.Stringifier
 
 /**
  * Object handling the parsing of strings to Messages. 
@@ -56,10 +55,10 @@ object Parser {
    * a datagram has the form
    * <PRIORITY>TIMESTAMP HOST MSG
    */
-  def fromInput(dgram: String): SyslogMsg = dgram match {
+  def fromInput(dgram: String): Message = dgram match {
     case clr_txt(pri,tstamp,host,msg) => 
       	new ClearSyslogMsg(pri, tstamp,host,msg)
-    case _ => throw new Exception("Parser Error : " + dgram)
+    case _ => Comment("INPUT ERROR - Parse error occured: " + dgram)
       //TODO @julien handle this correctly
   }
   

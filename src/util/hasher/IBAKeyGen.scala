@@ -8,6 +8,7 @@ import java.nio.ByteBuffer
 import util.Stringifier
 import java.security.interfaces.RSAPublicKey
 import java.security.KeyPairGenerator
+import util.BASE64
 
 /**
  * Object intended for disposable keys list and associated master keys generation.
@@ -68,6 +69,6 @@ object IBAKeyGen {
   	    new BigInt(k.getPrivateExponent),
   	    new BigInt(k.getModulus))
   	    
-  	(Stringifier(id_hash),pk)
+  	(BASE64.enc(id_hash),pk)
   }
 }

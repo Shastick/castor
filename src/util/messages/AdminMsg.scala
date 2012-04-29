@@ -1,5 +1,6 @@
 package util.messages
 import util.Stringifier
+import util.BASE64
 
 /**
  * Abstract class representing any "meta-message" (or non-content) that would have to be sent around
@@ -14,7 +15,7 @@ abstract class AdminMsg extends Message {
   override def toString: String = ""
 }
 
-case class HashState extends AdminMsg
+abstract class HashState extends AdminMsg
 
 /**
  * Wrapper around a hash, its authentication and the ID used to authenticate it.
@@ -24,9 +25,9 @@ case class HMACState(id: String, hash: String, sig: String) extends HashState {
    * Constructor variant with byte arrays.
    */
   def this(id: String, hash: Array[Byte], sig: Array[Byte]) =
-		  	this(id,Stringifier(hash),Stringifier(sig))
+		  	this(id,BASE64.enc(hash),BASE64.enc(sig))
   
-  override def toString = "===== HASH CHAIN STATE - HMAC MODE : =====\n" + id + ":" + hash + ":" + sig
+  override def toString = "===== HASH CHAIN STATE FOLLOWS - HMAC MODE : =====\n" + id + ":" + hash + ":" + sig
 }
 
 /**
@@ -40,9 +41,9 @@ case class IBHashState(id: String, hash: String, s: String, t: String) extends H
    * Constructor variant with byte arrays.
    */
   def this(id: String, hash: Array[Byte], s: Array[Byte], t: Array[Byte]) =
-		  	this(id,Stringifier(hash),Stringifier(s), Stringifier(t))
+		  	this(id,BASE64.enc(hash),BASE64.enc(s), BASE64.enc(t))
   
-  override def toString = "===== HASH CHAIN STATE - IBA MODE : ===== \n" + id + ":" + hash + ":" + s + ":" + t
+  override def toString = "===== HASH CHAIN STATE FOLLOWS - IBA MODE : ===== \n" + id + ":" + hash + ":" + s + ":" + t
 }
 
 /**
@@ -51,5 +52,5 @@ case class IBHashState(id: String, hash: String, s: String, t: String) extends H
 case object SaveState extends AdminMsg
 
 case class Comment(c: String) extends AdminMsg{
-  override def toString = c
+  override def toString = "===== " + c + " ====="
 }

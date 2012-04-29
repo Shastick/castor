@@ -43,7 +43,6 @@ object LogDigester extends Application {
 	val tester = new UDPInput(5555,hasher)
 	tester.start
 	
-	//wait(5000)
-	println("Sending a savestate")
-	hasher ! SaveState
+	val sm = ScheduleManager.scheduler(10000){hasher ! SaveState}
+	
 }
