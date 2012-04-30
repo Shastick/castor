@@ -1,20 +1,16 @@
-package digester.input
+package processer.input
 import java.net.DatagramSocket
 import java.net.DatagramPacket
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.io.ByteArrayInputStream
 import util.Stringifier
-import digester.LogHandler
-import digester.LogProcesser
+import processer.Processer
+import processer.Handler
 import util.messages.Parser
-import decoder.reader.LogInput
 
 class UDPInput(socket: DatagramSocket
-				,processer: LogHandler) extends LogInput(processer){
+				,processer: Handler) extends LogInput(processer){
   
 	val packet_length = 2048
-	def this(port: Int, proc: LogProcesser) =
+	def this(port: Int, proc: Processer) =
 	  this(new DatagramSocket(port),proc)
 	
 	def beamLogData() =  loop {

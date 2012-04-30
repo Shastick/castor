@@ -1,6 +1,6 @@
-package digester.auth
-import util.messages.HashState
+package processer.auth
 import util.messages.AdminMsg
+import util.messages.HashState
 
 /**
  * Represents an entity able to authenticate data.

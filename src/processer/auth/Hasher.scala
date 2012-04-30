@@ -1,12 +1,11 @@
-package digester.auth
-import java.security.MessageDigest
-import digester.LogHandler
-import digester.LogProcesser
-import util.messages.HashState
-import util.Stringifier
-import util.messages.SyslogMsg
+package processer.auth
 import util.messages.AdminMsg
+import java.security.MessageDigest
 import util.messages.SaveState
+import util.messages.HashState
+import util.messages.SyslogMsg
+import processer.Processer
+import processer.Handler
 
 /**
  * A Hasher is a stateful class that will be in charge of building a hash chain of the messages 
@@ -15,10 +14,10 @@ import util.messages.SaveState
  * 
  */
 
-class Hasher(next: LogHandler,
+class Hasher(next: Handler,
     md: MessageDigest,
     sc: Authenticator)
-    extends LogProcesser(next) {
+    extends Processer(next) {
 
   private var lastHash = Array.empty[Byte]
   

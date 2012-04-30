@@ -1,18 +1,12 @@
 package util
-import java.security.KeyStore
-import java.io.FileInputStream
-import java.security.KeyStore.PasswordProtection
-import javax.crypto.KeyGenerator
 import java.security.KeyStore.SecretKeyEntry
-import java.io.FileOutputStream
-import java.security.SecureRandom
-import java.security.KeyPairGenerator
+import java.security.KeyStore
+import javax.crypto.KeyGenerator
 import java.security.cert.X509Certificate
 import java.security.Key
-import java.security.cert.CertPath
-import java.security.cert.CertificateFactory
-import java.security.PublicKey
-
+import java.io.FileInputStream
+import java.security.KeyStore.PasswordProtection
+import java.io.FileOutputStream
 
 /**
  *  Utility class for loading keystores, adding keys, etc.

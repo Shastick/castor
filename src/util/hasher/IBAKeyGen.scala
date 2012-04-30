@@ -1,14 +1,12 @@
 package util.hasher
-import java.security.MessageDigest
-import java.security.interfaces.RSAPrivateKey
-import java.security.Security
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import javax.crypto.Cipher
-import java.nio.ByteBuffer
-import util.Stringifier
-import java.security.interfaces.RSAPublicKey
 import java.security.KeyPairGenerator
+import java.security.MessageDigest
 import util.BASE64
+import util.Stringifier
+import java.security.Security
+import java.security.interfaces.RSAPublicKey
+import java.security.interfaces.RSAPrivateKey
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 
 /**
  * Object intended for disposable keys list and associated master keys generation.

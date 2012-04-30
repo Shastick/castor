@@ -1,6 +1,4 @@
 package util.messages
-
-import scala.util.matching.Regex
 import util.BASE64
 import util.Stringifier
 

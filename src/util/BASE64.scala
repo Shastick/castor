@@ -1,6 +1,7 @@
 package util
-
 import org.apache.commons.codec.binary.Base64
+
+
 
 /**
  * Utility singleton for transforming Byte Arrays to BASE64 Strings and vice-versa

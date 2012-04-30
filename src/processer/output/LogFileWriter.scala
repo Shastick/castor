@@ -1,13 +1,13 @@
-package digester.writer
-import java.io.FileWriter
+package processer.output
 import util.messages.SyslogMsg
-import digester.LogHandler
 import util.messages.AdminMsg
+import java.io.FileWriter
+import processer.Handler
 
 /**
  * Handle writing of syslog messages to a file.
  */
-class LogFileWriter(out: FileWriter, line_sep: String) extends LogHandler {
+class LogFileWriter(out: FileWriter, line_sep: String) extends Handler {
   
   /**
    * Overloaded constructor for a filename specified by string.

@@ -1,18 +1,16 @@
-package digester
-import util.messages.SyslogMsg
+package processer
 import scala.actors.Actor
+import util.messages.SyslogMsg
 import util.messages.AdminMsg
-import util.messages.Comment
-import util.messages.SaveState
 
 /**
- * LogHandler trait: class to group anything able 
- * to handle a Datagram, should it be for signing, encrypting or writing.
+ * Handler trait: class to group anything able 
+ * to handle a Datagram, should it be for signing, encrypting, writing or whatever.
  * 
- * It is meant to permit the chaining of several LogProcessers and to end the
- * chain with a LogFileWriter (who also extends LogHandler)
+ * It is meant to permit the chaining of several Processers and to end the
+ * chain with a LogFileWriter (who also extends Handler)
  */
-trait LogHandler extends Actor {
+trait Handler extends Actor {
 	/**
 	 * Defines what is done to the message(s)
 	 */

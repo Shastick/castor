@@ -1,8 +1,9 @@
-package decoder
+package processer
+import processer.crypt.AESProcesser
+import processer.crypt.RSAProcesser
+import processer.input.LogFileInput
+import processer.output.MessageSync
 import util.ManagedKeyStore
-import decoder.reader.LogFileReader
-import digester.crypt.RSAProcesser
-import digester.crypt.AESProcesser
 import javax.crypto.Cipher
 
 object LogDecoder extends Application {

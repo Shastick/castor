@@ -1,12 +1,8 @@
 package util.cipher
 import javax.crypto.Cipher
-import java.security.KeyStore
-import java.security.cert.X509Certificate
-import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
-import java.security.PublicKey
-import java.security.PrivateKey
 import java.security.Key
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 
 class RSACipher(cipher: Cipher) extends LogCipher {
   	

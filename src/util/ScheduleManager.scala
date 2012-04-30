@@ -1,8 +1,5 @@
-package digester
-import scala.actors.IScheduler
-import digester.auth.Hasher
+package util
 import scala.actors.Actor
-import util.messages.SaveState
 import scala.actors.TIMEOUT
 
 object ScheduleManager {

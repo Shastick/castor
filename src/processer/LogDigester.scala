@@ -1,17 +1,14 @@
-package digester
-
-import digester.crypt._
-import digester.input.UDPInput
-import digester.writer.LogFileWriter
-import util.ManagedKeyStore
-import javax.crypto.Cipher
+package processer
+import processer.output.MessageSync
 import java.security.MessageDigest
-import digester.auth.Hasher
+import util.ManagedKeyStore
+import processer.auth.IBAuthenticator
+import processer.input.UDPInput
+import processer.auth.Hasher
 import util.hasher.IBAKeyGen
-import digester.auth.IBAuthenticator
 import java.util.Random
+import util.ScheduleManager
 import util.messages.SaveState
-import decoder.MessageSync
 
 /**
  * TODO ideas :  - ABE 

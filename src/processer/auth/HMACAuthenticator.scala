@@ -1,13 +1,12 @@
-package digester.auth
-
-import org.bouncycastle.crypto.macs.HMac
-import org.bouncycastle.crypto.Digest
-import org.bouncycastle.crypto.params.KeyParameter
-import util.messages.HMACState
-import util.Stringifier
+package processer.auth
 import util.messages.AdminMsg
-import util.messages.HashState
 import util.messages.HashError
+import org.bouncycastle.crypto.macs.HMac
+import util.messages.HMACState
+import util.messages.HashState
+import org.bouncycastle.crypto.Digest
+import util.Stringifier
+import org.bouncycastle.crypto.params.KeyParameter
 
 class HMACAuthenticator(keys: Iterator[(String,Array[Byte])], digest: Digest) extends Authenticator{
 	

@@ -1,5 +1,4 @@
 package util.messages
-import util.Stringifier
 import util.BASE64
 
 /**

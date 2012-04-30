@@ -1,19 +1,16 @@
-package digester
-
-import java.security.KeyStore
-import util.messages.SyslogMsg
-import util.Stringifier
-import util.messages.HashState
+package processer
 import util.messages.AdminMsg
 import util.messages.ClearSyslogMsg
+import util.Stringifier
 import util.messages.CipherSyslogMsg
+import util.messages.SyslogMsg
 
 /**
  * Superclass for any log processor. This class chooses what part
  * of syslog messages should be encrypted and hands them down to the Processer implementations.
  */
 
-abstract class LogProcesser(next: LogHandler) extends LogHandler{
+abstract class Processer(next: Handler) extends Handler{
 
   def procDgram(m: SyslogMsg) = next ! crunchDgram(m)
   

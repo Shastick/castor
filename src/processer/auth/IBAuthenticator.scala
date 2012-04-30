@@ -1,17 +1,13 @@
-package digester.auth
-
-import java.util.Random
-import util.messages.HashState
-import java.security.interfaces.RSAPublicKey
-import java.security.MessageDigest
+package processer.auth
 import util.messages.IBHashState
-import util.messages.IBHashState
-import util.messages.HashState
 import util.messages.AdminMsg
 import util.messages.HashError
+import java.security.MessageDigest
 import util.BASE64
 import util.messages.ValidHash
-
+import util.messages.HashState
+import java.util.Random
+import java.security.interfaces.RSAPublicKey
 
 /**
  * This class is used to periodically authenticate the state of the hash chain.

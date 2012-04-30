@@ -1,9 +1,7 @@
-package digester.crypt
-
-import digester.writer.LogFileWriter
-import digester.LogHandler
-import digester.LogProcesser
+package processer.crypt
 import util.messages.SyslogMsg
+import processer.Processer
+import processer.Handler
 
 /**
  * This class is a wrapper around a the cpabe utility written
@@ -16,7 +14,7 @@ import util.messages.SyslogMsg
  *  - pub_key : location of the public key used to encrypt data with cpabe
  *  - tempfile : file where data to be encrypted is written to
  */
-class CPABEProcesser(next: LogHandler, pub_key: String, tempfile: String) extends LogProcesser(next) {
+class CPABEProcesser(next: Handler, pub_key: String, tempfile: String) extends Processer(next) {
   
   override def crunchDgram(m: SyslogMsg):SyslogMsg = null
   

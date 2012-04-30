@@ -1,13 +1,10 @@
 package util.cipher
 import javax.crypto.spec.SecretKeySpec
 import javax.crypto.Cipher
-import java.security.KeyStore
-import scala.util.Random
-import javax.crypto.spec.IvParameterSpec
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import java.security.Key
 import java.security.Security
-
+import java.security.Key
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import javax.crypto.spec.IvParameterSpec
 
 class AESCipher(cipher: Cipher) extends LogCipher{
 	def crunchArray(input: Array[Byte]):Array[Byte]={

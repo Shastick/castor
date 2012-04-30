@@ -1,8 +1,6 @@
 package util.cipher
-import java.io.FileWriter
-import java.io.FileReader
-import java.io.FileOutputStream
 import java.io.FileInputStream
+import java.io.FileOutputStream
 
 object CPABE {
 	val cpabe_parent = "/opt/local/bin/"
