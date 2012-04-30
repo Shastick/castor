@@ -6,7 +6,7 @@ import digester.LogHandler
 /**
  * Dump trait representing anything able to read log data.
  */
-abstract class LogReader(dest: LogHandler) extends Actor{
+abstract class LogInput(dest: LogHandler) extends Actor{
 
   /**
    * Read the log data and send it to the first LogHandler

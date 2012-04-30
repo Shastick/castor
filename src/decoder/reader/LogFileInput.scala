@@ -11,7 +11,7 @@ import util.messages.Parser
 /**
  * Implements a simple Iterator returning entire lines, initialized with a file name.
  */
-class LogFileReader(dest: LogHandler, lines: Iterator[String]) extends LogReader(dest){
+class LogFileInput(dest: LogHandler, lines: Iterator[String]) extends LogInput(dest){
   
   /**
    * Overloaded constructor to build the reader from a file name.

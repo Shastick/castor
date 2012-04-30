@@ -16,7 +16,7 @@ object LogDecoder extends Application {
 	val aes_proc = new AESProcesser(screen,mk.readKey("aes_test",""),Cipher.DECRYPT_MODE)
 	aes_proc.start
 	
-	val file_reader = new LogFileReader(rsa_proc,"test_out.txt")
+	val file_reader = new LogFileInput(rsa_proc,"test_out.txt")
 	file_reader.start
 	
 }

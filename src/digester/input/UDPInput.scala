@@ -8,16 +8,18 @@ import util.Stringifier
 import digester.LogHandler
 import digester.LogProcesser
 import util.messages.Parser
+import decoder.reader.LogInput
 
 class UDPInput(socket: DatagramSocket
-				,processer: LogHandler) extends MsgInput{
+				,processer: LogHandler) extends LogInput(processer){
   
 	val packet_length = 2048
 	def this(port: Int, proc: LogProcesser) =
 	  this(new DatagramSocket(port),proc)
 	
-	def act() = while(true) 
+	def beamLogData() =  loop {
 		processer ! Parser.fromInput(readDatagram)
+	}
 	
 	def readLine():String = readDatagram()
 	
