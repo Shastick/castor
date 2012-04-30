@@ -7,7 +7,7 @@ import processer.Handler
  * Thank you to Matthias Brändli for this AMMMMMMMMMMAZING name idea.
  */
 
-class MessageSync extends Handler{
+class Screen extends Handler{
 	def procDgram(dg: SyslogMsg) = println(dg.toString)
 	def procAdminMsg(m: AdminMsg) = println(m.toString)
 }

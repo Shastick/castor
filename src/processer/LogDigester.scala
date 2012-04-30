@@ -1,5 +1,5 @@
 package processer
-import processer.output.MessageSync
+import processer.output.Screen
 import java.security.MessageDigest
 import util.ManagedKeyStore
 import processer.auth.IBAuthenticator
@@ -26,7 +26,7 @@ object LogDigester extends Application {
 	writer.start
 	*/
 	
-	val screen = new MessageSync
+	val screen = new Screen
 	screen.start
 	
 	val (pub,priv) = IBAKeyGen.genKeyPair(2048)

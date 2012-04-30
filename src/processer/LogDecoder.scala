@@ -2,7 +2,7 @@ package processer
 import processer.crypt.AESProcesser
 import processer.crypt.RSAProcesser
 import processer.input.LogFileInput
-import processer.output.MessageSync
+import processer.output.Screen
 import util.ManagedKeyStore
 import javax.crypto.Cipher
 
@@ -10,7 +10,7 @@ object LogDecoder extends Application {
 
 	val mk = ManagedKeyStore.load("keystore", "dorloter")
 	
-	val screen = new MessageSync
+	val screen = new Screen
 	screen.start
 	val rsa_proc = new RSAProcesser(screen,mk.readKey("rsa_2","dorloter"), Cipher.DECRYPT_MODE)
 	rsa_proc.start
