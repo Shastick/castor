@@ -1,4 +1,4 @@
-package processer
+package main
 import processer.crypt.AESProcesser
 import processer.crypt.RSAProcesser
 import processer.input.LogFileInput

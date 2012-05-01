@@ -1,5 +1,6 @@
-package processer
+package main
 import processer.output.Screen
+import processer.output.LogFileWriter
 import java.security.MessageDigest
 import util.ManagedKeyStore
 import processer.auth.IBAuthenticator
@@ -9,6 +10,8 @@ import util.hasher.IBAKeyGen
 import java.util.Random
 import util.ScheduleManager
 import util.messages.SaveState
+import java.security.KeyPair
+import java.security.interfaces.RSAPublicKey
 
 /**
  * TODO ideas :  - ABE 
@@ -21,23 +24,30 @@ object LogDigester extends Application {
 	//mk.newAESKey("aes_test",256,"")
 	//mk.save
 	
-	/*
+	
 	val writer = new LogFileWriter("test_out.txt")
 	writer.start
-	*/
 	
+	/*
 	val screen = new Screen
 	screen.start
-	
+	*/
 	val (pub,priv) = IBAKeyGen.genKeyPair(2048)
+	val (dum_pub,dum_priv) = IBAKeyGen.genKeyPair(2048)
+	val kp = new KeyPair(pub,dum_priv)
+	val cert = mk.makeCert(kp)
+	mk.addCert("current",cert)
+	mk.save
 	val digest = MessageDigest.getInstance("SHA-512")
 	val auth_check = new IBAuthenticator(Iterator.empty, new Random, pub, digest)
 	
-	val auther = new Hasher(screen, digest, auth_check)
+	val auther = new Hasher(writer, digest, auth_check)
 	auther.start
 	
 	val kl = IBAKeyGen.genKeys(priv,10)
-	val auth = new IBAuthenticator(kl.toIterator,new Random,pub,digest)
+	val ver_k = mk.readCert("current").getPublicKey.asInstanceOf[RSAPublicKey]
+	
+	val auth = new IBAuthenticator(kl.toIterator,new Random,ver_k,digest)
 	val hasher = new Hasher(auther, digest, auth)
 	hasher.start
 	
