@@ -24,7 +24,6 @@ object LogDigester extends Application {
 	//mk.newAESKey("aes_test",256,"")
 	//mk.save
 	
-	
 	val writer = new LogFileWriter("test_out.txt")
 	writer.start
 	
@@ -38,17 +37,15 @@ object LogDigester extends Application {
 	val cert = mk.makeCert(kp)
 	mk.addCert("current",cert)
 	mk.save
-	val digest = MessageDigest.getInstance("SHA-512")
-	val auth_check = new IBAuthenticator(Iterator.empty, new Random, pub, digest)
 	
-	val auther = new Hasher(writer, digest, auth_check)
-	auther.start
+	val digest = MessageDigest.getInstance("SHA-512")
 	
 	val kl = IBAKeyGen.genKeys(priv,10)
 	val ver_k = mk.readCert("current").getPublicKey.asInstanceOf[RSAPublicKey]
 	
 	val auth = new IBAuthenticator(kl.toIterator,new Random,ver_k,digest)
-	val hasher = new Hasher(auther, digest, auth)
+	
+	val hasher = new Hasher(writer, digest, auth)
 	hasher.start
 	
 	/*
@@ -63,5 +60,6 @@ object LogDigester extends Application {
 	
 	// Schedule regular state saving:
 	val sm = ScheduleManager.scheduler(10000){hasher ! SaveState}
+	sm.start
 	
 }

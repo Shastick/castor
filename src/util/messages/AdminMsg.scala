@@ -14,7 +14,10 @@ abstract class AdminMsg extends Message {
   override def toString: String = ""
 }
 
-abstract class HashState extends AdminMsg
+abstract class HashState extends AdminMsg {
+  def id: String
+  def hash: String
+}
 
 /**
  * Wrapper around a hash, its authentication and the ID used to authenticate it.
@@ -42,7 +45,7 @@ case class IBHashState(id: String, hash: String, s: String, t: String) extends H
   def this(id: String, hash: Array[Byte], s: Array[Byte], t: Array[Byte]) =
 		  	this(id,BASE64.enc(hash),BASE64.enc(s), BASE64.enc(t))
   
-  override def toString = "===== HASH CHAIN STATE FOLLOWS - IBA MODE : ===== \n" + id + ":" + hash + ":" + s + ":" + t
+  override def toString = "===== HASH CHAIN STATE FOLLOWS - IBA MODE : =====\n" + id + ":" + hash + ":" + s + ":" + t
 }
 
 /**
@@ -50,12 +53,16 @@ case class IBHashState(id: String, hash: String, s: String, t: String) extends H
  */
 case object SaveState extends AdminMsg
 
-case class Comment(c: String) extends AdminMsg {
+case class Header(c: String) extends AdminMsg {
   override def toString = "===== " + c + " ====="
 }
 
+case class Notification(n: String) extends AdminMsg {
+  override def toString = "===== NOTIFICATION: " + n + " ====="
+}
+
 case class HashError(e: String) extends AdminMsg {
-  override def toString = "===== ERROR: " + e + " ====="
+  override def toString = "===== HASH-ERROR: " + e + " ====="
 }
 
 case class ValidHash(id: String) extends AdminMsg {

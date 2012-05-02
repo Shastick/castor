@@ -6,6 +6,9 @@ import util.messages.HashState
 import util.messages.SyslogMsg
 import processer.Processer
 import processer.Handler
+import util.Stringifier
+import util.messages.HashError
+import util.BASE64
 
 /**
  * A Hasher is a stateful class that will be in charge of building a hash chain of the messages 
@@ -26,7 +29,7 @@ class Hasher(next: Handler,
    */
   override def procAdminMsg(m: AdminMsg) = m match {
     case SaveState => next ! sc.sign(lastHash)
-    case h: HashState =>  next ! sc.authenticate(h)
+    case h: HashState =>  next ! verify(h)
     case _ => next ! m
   } 
   
@@ -45,6 +48,17 @@ class Hasher(next: Handler,
     val toHash = lastHash ++ in.toBytes
     lastHash = crunchArray(toHash)
     in
+  }
+  
+  /**
+   * Compare received versus computed hash and authenticate if equal
+   */
+  
+  def verify(h: HashState): AdminMsg = {
+    if(BASE64.dec(h.hash).toSeq == lastHash.toSeq) sc.authenticate(h)
+    else HashError("Hash states not corresponding for block ID: " + h.id + "\n" +
+    		h.hash + "\n" +
+    		BASE64.enc(lastHash))
   }
 }
 

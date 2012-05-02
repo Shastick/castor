@@ -3,7 +3,6 @@ import scala.actors.Actor
 import scala.actors.TIMEOUT
 
 object ScheduleManager {
-
   def scheduler(time: Long)(f: => Unit) = {
 	def fixedRateLoop {
 	  Actor.reactWithin(time) {

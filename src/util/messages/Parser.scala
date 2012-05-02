@@ -1,6 +1,7 @@
 package util.messages
 
 import util.BASE64
+import util.Stringifier
 
 /**
  * Object handling the parsing of strings to Messages. 
@@ -42,13 +43,14 @@ object Parser {
    * HashStates regexp's :
    */
    
-  private val m_iba = """^([A-Za-z0-9+/]*):([A-Za-z0-9+/]*):([A-Za-z0-9+/]*):([A-Za-z0-9+/]*)$""".r
-  private val m_hmac = """^([A-Za-z0-9+/]*):([A-Za-z0-9+/]*):([A-Za-z0-9+/]*)$""".r
+  private val m_iba = """^([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*)$""".r
+  private val m_hmac = """^([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*)$""".r
   
   /**
    * Comment regexp :
    */
-  private val comment = """^=====(.*)=====$""".r
+  private val notification = """^===== NOTIFICATION: (.*) =====$""".r
+  private val header = """^===== (.*) =====$""".r
   /**
    * The SyslogParser takes a syslog datagram (in a string formt) as input and parses
    * it into a clear text SyslogMsg.
@@ -59,7 +61,7 @@ object Parser {
   def fromInput(dgram: String): Message = dgram match {
     case clr_txt(pri,tstamp,host,msg) => 
       	new ClearSyslogMsg(pri, tstamp,host,msg)
-    case _ => Comment("INPUT ERROR - Parse error occured: " + dgram)
+    case _ => Notification("INPUT ERROR - Parse error occured: " + dgram)
       //TODO @julien handle this correctly
   }
   
@@ -67,10 +69,14 @@ object Parser {
    * Parse the strings coming from a digested log (that could include various Admin messages too).
    */
   def fromLog(line: String): Message = line match {
-		case c_event(pri,tstamp,host,msg) => makeEvent(pri,tstamp,host,msg)
+    	case c_event(pri,tstamp,host,msg) => makeEvent(pri,tstamp,host,msg)
+    	case clr_txt(pri,tstamp,host,msg) => new ClearSyslogMsg(pri,tstamp,host,msg)
+		
 		case m_iba(id,h,s,t) =>  new IBHashState(id,h,s,t) 
 		case m_hmac(id,h,s) => new HMACState(id,h,s)
-		case comment(m) => new Comment(m)
+		
+		case notification(n) => Notification(n)
+		case header(m) => Header(m)
 	  	case _ => throw new Exception("Parse error : " + line)
   }
   
@@ -79,5 +85,4 @@ object Parser {
     					Left(t),
     					Right(BASE64.dec(h)),
     					Right(BASE64.dec(m)))
-  
 }
