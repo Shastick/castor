@@ -27,10 +27,6 @@ object LogDigester extends Application {
 	val writer = new LogFileWriter("test_out.txt")
 	writer.start
 	
-	/*
-	val screen = new Screen
-	screen.start
-	*/
 	val (pub,priv) = IBAKeyGen.genKeyPair(2048)
 	val (dum_pub,dum_priv) = IBAKeyGen.genKeyPair(2048)
 	val kp = new KeyPair(pub,dum_priv)

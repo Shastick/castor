@@ -9,6 +9,10 @@ import processer.Handler
 import util.Stringifier
 import util.messages.HashError
 import util.BASE64
+import java.util.Random
+import util.hasher.IBAKeyGen
+import java.security.interfaces.RSAPublicKey
+import java.security.interfaces.RSAPrivateKey
 
 /**
  * A Hasher is a stateful class that will be in charge of building a hash chain of the messages 
@@ -25,7 +29,7 @@ class Hasher(next: Handler,
   private var lastHash = Array.empty[Byte]
   
   /**
-   * 
+   * customized procAdminMsg for a Hasher 
    */
   override def procAdminMsg(m: AdminMsg) = m match {
     case SaveState => next ! sc.sign(lastHash)
@@ -54,17 +58,34 @@ class Hasher(next: Handler,
    * Compare received versus computed hash and authenticate if equal
    */
   
-  def verify(h: HashState): AdminMsg = {
+  def verify(h: HashState): AdminMsg =
     if(BASE64.dec(h.hash).toSeq == lastHash.toSeq) sc.authenticate(h)
-    else HashError("Hash states not corresponding for block ID: " + h.id + "\n" +
-    		h.hash + "\n" +
-    		BASE64.enc(lastHash))
-  }
+    else HashError("Hash states not corresponding for block ID: " + h.id)
+
 }
 
 /**
  * Companion Object
  */
 object Hasher {
+  val digest = MessageDigest.getInstance("SHA-512")
+  val rnd = new Random
   
+  /**
+   * Generate a new identity based hasher, using a master private key to generate a one-time
+   * authentication secrets list, and verkey for verification.
+   */
+  def makeFullIBHasher(next: Handler, masterPKey: RSAPrivateKey, verkey: RSAPublicKey, qtt: Int): Hasher = {
+    val kl = IBAKeyGen.genKeys(masterPKey,qtt)
+    val auth = new IBAuthenticator(kl.toIterator,rnd,verkey,digest)
+    new Hasher(next, digest, auth)
+  }
+  
+  /**
+   * This hasher is for verification only (if used for authentication it will throw an exception)
+   */
+  def makeEmptyIBHasher(next: Handler, verkey: RSAPublicKey): Hasher = {
+    val auth = new IBAuthenticator(Iterator.empty, null, verkey, digest)
+    new Hasher(next, digest, auth)
+  }
 }

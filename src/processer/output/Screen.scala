@@ -11,3 +11,7 @@ class Screen extends Handler{
 	def procDgram(dg: SyslogMsg) = println(dg.toString)
 	def procAdminMsg(m: AdminMsg) = println(m.toString)
 }
+
+class AdminScreen extends Screen {
+  override def procDgram(dg: SyslogMsg) = Unit
+}

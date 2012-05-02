@@ -21,7 +21,7 @@ object LogDecoder extends Application {
 	val digest = MessageDigest.getInstance("SHA-512")
 	val ver_k = mk.readCert("current").getPublicKey.asInstanceOf[RSAPublicKey]
 	
-	val auth = new IBAuthenticator(Iterator.empty,new Random,ver_k,digest)
+	val auth = new IBAuthenticator(Iterator.empty,null,ver_k,digest)
 	
 	val hasher = new Hasher(screen, digest, auth)
 	hasher.start
