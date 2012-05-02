@@ -15,8 +15,6 @@ import java.security.interfaces.RSAPublicKey
 
 /**
  * TODO ideas :  - ABE 
- * 				 - Log Authentication ! => Log Chaining ! Needs a secret... 
- * 
  */
 
 object LogDigester extends Application {
@@ -43,6 +41,7 @@ object LogDigester extends Application {
 	
 	val hasher = new Hasher(writer, digest, auth)
 	hasher.start
+	hasher ! SaveState
 	
 	/*
 	val rsa_proc = new RSAProcesser(hasher,mk.readCert("rsa_2").getPublicKey, Cipher.ENCRYPT_MODE)

@@ -10,12 +10,13 @@ import processer.auth.IBAuthenticator
 import java.security.interfaces.RSAPublicKey
 import java.util.Random
 import processer.auth.Hasher
+import processer.output.AdminScreen
 
 object LogDecoder extends Application {
 
 	val mk = ManagedKeyStore.load("keystore", "dorloter")
 	
-	val screen = new Screen
+	val screen = new AdminScreen
 	screen.start
 	
 	val digest = MessageDigest.getInstance("SHA-512")
