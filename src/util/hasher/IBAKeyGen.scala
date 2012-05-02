@@ -14,8 +14,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
  * Disposable keys are generated according to Shamir's proposal of IBA.
  */
 object IBAKeyGen {
-  
-  val int_size = 8
 
   val provider = "BC"
   Security.addProvider(new BouncyCastleProvider())
@@ -56,8 +54,7 @@ object IBAKeyGen {
   }
   
   /**
-   * Build a key.
-   * TODO : check it does the RSA stuff as I think it does, or verification will fail.
+   * Build a one-time key.
    */
   private def makeKey(id: Array[Byte], k: RSAPrivateKey): (String, BigInt) = {
   	digest.reset

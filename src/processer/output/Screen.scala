@@ -2,10 +2,7 @@ package processer.output
 import util.messages.SyslogMsg
 import util.messages.AdminMsg
 import processer.Handler
-
-/**
- * Thank you to Matthias BrŠndli for this AMMMMMMMMMMAZING name idea.
- */
+import util.messages.HashError
 
 class Screen extends Handler{
 	def procDgram(dg: SyslogMsg) = println(dg.toString)
@@ -14,4 +11,12 @@ class Screen extends Handler{
 
 class AdminScreen extends Screen {
   override def procDgram(dg: SyslogMsg) = Unit
+}
+
+class ErrorScreen extends Screen {
+  override def procDgram(dg: SyslogMsg) = Unit
+  override def procAdminMsg(m: AdminMsg) = m match {
+    case HashError(e) => println(m.toString())
+    case _ =>
+  }
 }

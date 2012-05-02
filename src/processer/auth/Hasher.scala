@@ -60,7 +60,7 @@ class Hasher(next: Handler,
   
   def verify(h: HashState): AdminMsg =
     if(BASE64.dec(h.hash).toSeq == lastHash.toSeq) sc.authenticate(h)
-    else HashError("Hash states not corresponding for block ID: " + h.id)
+    else HashError("Hash states not corresponding for segment ID: " + h.id)
 
 }
 

@@ -8,6 +8,7 @@ import util.messages.ValidHash
 import util.messages.HashState
 import java.util.Random
 import java.security.interfaces.RSAPublicKey
+import util.messages.AuthError
 
 /**
  * This class is used to periodically authenticate the state of the hash chain.
@@ -60,7 +61,6 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
 	 * Check if the received HashState corresponds to the internal state.
 	 */
 	private def verify(hs: IBHashState): AdminMsg = {
-	  
 	  val (id,m,s,t) = (BigInt(BASE64.dec(hs.id)),
 			  			BASE64.dec(hs.hash),
 			  			BigInt(BASE64.dec(hs.s)),
@@ -75,7 +75,7 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
 	  val checkMe = s.modPow(e,n)
 	  val shouldBe = (id * BigInt(t).modPow(f,n)) mod n
 	  
-	  if(checkMe == shouldBe) ValidHash(id.toString)
-	  else HashError("Hash segment could not be authenticated, id: " + id.toString)
+	  if(checkMe == shouldBe) ValidHash(hs.hash)
+	  else AuthError("Segment could not be authenticated, id: " + hs.id)
 	}
 }

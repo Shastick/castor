@@ -15,3 +15,4 @@ policy="((pri < $2 and $3) or admin)"
 cpabe-enc -o $temp_file $pub_key <(echo "$1") "$policy"
 cat $temp_file
 rm $temp_file
+exit 0

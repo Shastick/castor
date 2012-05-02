@@ -45,13 +45,18 @@ case class IBHashState(id: String, hash: String, s: String, t: String) extends H
   def this(id: String, hash: Array[Byte], s: Array[Byte], t: Array[Byte]) =
 		  	this(id,BASE64.enc(hash),BASE64.enc(s), BASE64.enc(t))
   
-  override def toString = "===== HASH CHAIN STATE FOLLOWS - IBA MODE : =====\n" + id + ":" + hash + ":" + s + ":" + t
+  override def toString = "===== HASH CHAIN STATE - IBA MODE : =====\n" + id + ":" + hash + ":" + s + ":" + t
 }
 
 /**
  * Message used to tell a Hasher he should now write his state to his output.
  */
 case object SaveState extends AdminMsg
+
+/**
+ * End of stream
+ */
+case object EndOfStream extends AdminMsg
 
 case class Header(c: String) extends AdminMsg {
   override def toString = "===== " + c + " ====="
@@ -61,10 +66,16 @@ case class Notification(n: String) extends AdminMsg {
   override def toString = "===== NOTIFICATION: " + n + " ====="
 }
 
-case class HashError(e: String) extends AdminMsg {
-  override def toString = "===== HASH-ERROR: " + e + " ====="
+abstract class Error extends AdminMsg
+
+case class HashError(e: String) extends Error {
+  override def toString = "HASH-ERROR: " + e
+}
+
+case class AuthError(e: String) extends Error {
+  override def toString = "AUTH-ERROR: " + e
 }
 
 case class ValidHash(id: String) extends AdminMsg {
-  override def toString = "Valid hash segment: " + id
+  override def toString = "Valid segment: " + id
 }
