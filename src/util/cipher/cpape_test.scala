@@ -1,5 +1,7 @@
 package util.cipher
-import cpabe.Cpabe
+import util.cpabe.DirectCPABE
+import util.BASE64
+import util.Stringifier
 
 object cpape_test extends App{
   
@@ -8,10 +10,20 @@ object cpape_test extends App{
     
   val privkey_l = "files/private_key"
   
-  val cp = new Cpabe
-  cp.setup(pubkey_l,masterkey_l)
+  val cp = new DirectCPABE
   
-  cp.keygen(pubkey_l,privkey_l,masterkey_l,"pri:4 role:admin host:poney")
+  //cp.setup(pubkey_l,masterkey_l)
   
+  //cp.keygen(pubkey_l,privkey_l,masterkey_l,"pri:4 role:admin host:poney")
+  val policy = "poney pri<=5 2of2 admin 1of2"
+  val encdat = cp.enc(pubkey_l, policy, "Poney".getBytes)
+  
+  val b64 = BASE64.enc(encdat)
+  println(b64)
+  
+  val d64 = BASE64.dec(b64)
+
+  val orig = cp.dec(pubkey_l, privkey_l,d64)
+  println(Stringifier(orig))
   
 }

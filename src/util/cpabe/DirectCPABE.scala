@@ -2,11 +2,16 @@ package util.cpabe
 import bswabe._
 import cpabe.Cpabe
 import cpabe.AESCoder
+import cpabe.{Common => Util}
+import java.io.ByteArrayInputStream
 
+/**
+ * Scala re-implementation and wrapping of Junwei Wang's cpabe library:
+ * 
+ * http://wakemecn.github.com/cpabe/
+ */
+class DirectCPABE {
 
-class DirectCPABE extends SerializeUtils{
-	
-	val su = new SerializeUtils
 	val cp = new Cpabe
 
 	def setup(pubfile: String, mskfile: String) = cp.setup(pubfile,mskfile)
@@ -17,7 +22,7 @@ class DirectCPABE extends SerializeUtils{
 
 	def enc(pubfile: String, policy: String, inputdata: Array[Byte]): Array[Byte] = {
 
-		val pub_byte = Common.suckFile(pubfile)
+		val pub_byte = Util.suckFile(pubfile)
 		val pub = SerializeUtils.unserializeBswabePub(pub_byte)
 		
 
@@ -31,17 +36,19 @@ class DirectCPABE extends SerializeUtils{
 
 		val aesBuf = AESCoder.encrypt(m.toBytes(), inputdata)
 		
-		Common.makeCpabeData(m.toBytes(), cphBuf, aesBuf)
+		Util.writeCpabeData(m.toBytes(), cphBuf, aesBuf).toByteArray
 	}
 
 	def dec(pubfile: String, prvfile: String, decdata: Array[Byte]): Array[Byte] = {
 		
-		val pub_byte = Common.suckFile(pubfile)
+		val pub_byte = Util.suckFile(pubfile)
 		val pub = SerializeUtils.unserializeBswabePub(pub_byte)
 
 		/* read ciphertext */
-		val (aesBuf, cphBuf,mBuf) = Common.decodeCpabeData(decdata)
-
+		val split = Util.readCpabeData(new ByteArrayInputStream(decdata))
+		
+		val (aesBuf, cphBuf, mBuf) = (split(0),split(1),split(2))
+		
 		val cph = SerializeUtils.bswabeCphUnserialize(pub, cphBuf)
 
 		/* get BswabePrv form prvfile */

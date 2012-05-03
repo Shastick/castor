@@ -6,7 +6,9 @@ import java.io.ByteArrayInputStream
 
 /**
  * This is a custom reimplementation of the Common class contained in 
- * Junwei Wang's cpabe library.
+ * Junwei Wang's cpabe library:
+ * 
+ * http://wakemecn.github.com/cpabe/
  * 
  * It is intended to provide direct byte array interactions without
  * writing/reading through files for encryption and decryption.
@@ -37,7 +39,7 @@ object Common {
 			cphBuf: Array[Byte], aesBuf: Array[Byte]): Array[Byte] = {
 		
 		val os = new ByteArrayOutputStream
-
+		println(aesBuf.length + " " + cphBuf.length + " " + mBuf.length)
 		/* write m_buf */
 		for (i <- 3 to 0)
 			os.write(((mBuf.length & (0xff << 8 * i)) >> 8 * i))
@@ -60,30 +62,34 @@ object Common {
 	def decodeCpabeData(encdata: Array[Byte]): (Array[Byte],Array[Byte],Array[Byte]) = {
 		
 		val is = new ByteArrayInputStream(encdata)
-
+		
 		/* read m buf */
 		var len = 0
-		for (i <- 3 to 0)
+		for (i <- 3 to 0 by -1){
 			len |= is.read() << (i * 8)
-		val mBuf = new Array[Byte](len)
-		is.read(mBuf)
+		}
+		
+		var mBuf = new Array[Byte](len)
 
+		println("Inside length: " + mBuf.length)
 		/* read aes buf */
 		len = 0
-		for (i <- 3 to 0)
+		for (i <- 3 to 0 by -1)
 			len |= is.read() << (i * 8)
+		
 		val aesBuf = new Array[Byte](len)
 		is.read(aesBuf)
 
 		/* read cph buf */
 		len = 0
-		for (i <- 3 to 0)
+		for (i <- 3 to 0 by -1)
 			len |= is.read() << (i * 8)
+	
 		val cphBuf = new Array[Byte](len)
 		is.read(cphBuf)
 
 		is.close()
-
+		println(aesBuf.length + " " + cphBuf.length + " " + mBuf.length)
 		(aesBuf, cphBuf, mBuf)
 	}
 }
