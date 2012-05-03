@@ -4,19 +4,23 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.InputStreamReader
 import java.io.BufferedReader
-import cpabe.Cpabe
-import cpabe.AESCoder
-import bswabe.SerializeUtils
-import cpabe.Common
-import bswabe.Bswabe
 import java.io.ByteArrayInputStream
 import processer.Processer
+import processer.crypt.CPABEProcesserEnc
+import cpabe.Common
+import bswabe.Bswabe
+import bswabe.SerializeUtils
+import cpabe.Cpabe
+import cpabe.AESCoder
 
-class DirectCPABE(pubKey: Array[Byte]) extends LogCipher{
+class DirectCPABE(pubKey: Array[Byte]){
   
+  /**
+   * Alternate constructor
+   */
+  def this(pubkey_loc: String) = this(Common.suckFile(pubkey_loc))
   
-  
-  private def enc(policy: String, inputdata: Array[Byte]): Array[Byte] = {
+  def enc(policy: String, inputdata: Array[Byte]): Array[Byte] = {
 
 		val pub_byte = pubKey
 		val pub = SerializeUtils.unserializeBswabePub(pub_byte)
@@ -35,7 +39,7 @@ class DirectCPABE(pubKey: Array[Byte]) extends LogCipher{
 		Common.writeCpabeData(m.toBytes(), cphBuf, aesBuf).toByteArray
 	}
 
-  def dec(privKey: Array[Byte], decdata: Array[Byte]): Array[Byte] = {
+  def dec(privKey: Array[Byte], decdata: Array[Byte]): Option[Array[Byte]] = {
 		
 		val pub_byte = pubKey
 		val pub = SerializeUtils.unserializeBswabePub(pub_byte)
@@ -53,19 +57,17 @@ class DirectCPABE(pubKey: Array[Byte]) extends LogCipher{
 
 		val beb = Bswabe.dec(pub, prv, cph)
 		if (beb.b) {
+			// TODO : clear this out, it comes from the cpabe library
 			// the right way
 			// plt = AESCoder.decrypt(beb.e.toBytes(), aesBuf);
 			// the wrong way
-			AESCoder.decrypt(mBuf, aesBuf);
-		} else {
-			throw new Exception("Decryption error occured")
-		}
+			Some(AESCoder.decrypt(mBuf, aesBuf))
+		} else None
 	}
 }
 
 object DirectCPABE {
 	val cp = new Cpabe
-	
 	/**
 	 * Master keys generation, data written to files.
 	 */
@@ -75,10 +77,5 @@ object DirectCPABE {
 	 * Private key generation, data read and written from files. 
 	 */
 	def keygen(pubfile: String, prvfile: String, mskfile: String, attr: String) = 
-	  cp.keygen(pubfile,prvfile,mskfile, attr)
-	  
-	/**
-	 * Create a DirectCPABE cipher.
-	 */
-	def create()
+	  cp.keygen(pubfile, prvfile, mskfile, attr)
 }

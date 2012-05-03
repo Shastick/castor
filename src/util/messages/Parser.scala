@@ -18,7 +18,7 @@ object Parser {
   
   /**
    * Cipher text parsing regexps
-   *  - paranoid : every field is crypted
+   *  - paranoid : every field is crypted together (one big array)
    *  - full :  only the PRIORITY field is in cleartext
    *  - event : HOST and MSG only are crypted
    *  - content : only the MSG is crypted
@@ -31,7 +31,7 @@ object Parser {
    *  AND SELECT ONE BASED ON CONFIG ! ! !
    */
   
-  private val c_paranoid = """^<(\S*)>(\S*)\s(\S*)\s(\S*)$""".r
+  private val c_paranoid = """^([A-Za-z0-9+/=]*)$""".r
   private val c_full = """^<(\d{1,3})>(\S*)\s(\S*)\s(\S*)$""".r
   private val c_event = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(\S*)$""".r
   private val c_content = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(\S*)$""".r
@@ -58,10 +58,11 @@ object Parser {
    * a datagram has the form
    * <PRIORITY>TIMESTAMP HOST MSG
    */
-  def fromInput(dgram: String): Message = dgram match {
+
+  def fromInput(dgram: String): SyslogMsg = dgram match {
     case clr_txt(pri,tstamp,host,msg) => 
       	new ClearSyslogMsg(pri, tstamp,host,msg)
-    case _ => Notification("INPUT ERROR - Parse error occured: " + dgram)
+    case _ => MalformedSyslogInput(dgram)
       //TODO @julien handle this correctly
   }
   
@@ -77,6 +78,8 @@ object Parser {
 		
 		case notification(n) => Notification(n)
 		case header(m) => Header(m)
+		
+		case c_paranoid(m) => new FullCipherText(m)
 	  	case _ => throw new Exception("Parse error : " + line)
   }
   

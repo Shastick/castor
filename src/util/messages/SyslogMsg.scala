@@ -49,3 +49,13 @@ class CipherSyslogMsg(
     else BASE64.enc(in.right.get)
 
 }
+
+class FullCipherText(val p: Array[Byte]) extends SyslogMsg {
+  
+  def this(s: String) = this(BASE64.dec(s))
+  
+  override def toBytes = p
+  override def toString = BASE64.enc(p)
+}
+case class MalformedSyslogInput(d: String) extends SyslogMsg
+case object UnauthorizedAccess extends SyslogMsg

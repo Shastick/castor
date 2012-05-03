@@ -12,12 +12,14 @@ import util.ScheduleManager
 import util.messages.SaveState
 import java.security.KeyPair
 import java.security.interfaces.RSAPublicKey
+import util.cipher.DirectCPABE
+import processer.crypt.CPABEProcesserEnc
 
 /**
  * TODO ideas :  - ABE 
  */
 
-object LogDigester extends Application {
+object LogDigester extends App {
 	val mk = ManagedKeyStore.load("keystore", "dorloter")
 	//mk.newAESKey("aes_test",256,"")
 	//mk.save
@@ -25,6 +27,7 @@ object LogDigester extends Application {
 	val writer = new LogFileWriter("test_out.txt")
 	writer.start
 	
+	/*
 	val (pub,priv) = IBAKeyGen.genKeyPair(2048)
 	val (dum_pub,dum_priv) = IBAKeyGen.genKeyPair(2048)
 	val kp = new KeyPair(pub,dum_priv)
@@ -42,7 +45,13 @@ object LogDigester extends Application {
 	val hasher = new Hasher(writer, digest, auth)
 	hasher.start
 	hasher ! SaveState
-	
+	*/
+	val pubkey_l = "files/pub_key"
+	val masterkey_l = "files/master_key"
+    
+	//DirectCPABE.setup(pubkey_l,masterkey_l)
+	val aber = new CPABEProcesserEnc(writer,pubkey_l)
+	aber.start
 	/*
 	val rsa_proc = new RSAProcesser(hasher,mk.readCert("rsa_2").getPublicKey, Cipher.ENCRYPT_MODE)
 	rsa_proc.start
@@ -50,11 +59,11 @@ object LogDigester extends Application {
 	aes_proc.start
 	*/
 	
-	val tester = new UDPInput(5555,hasher)
+	val tester = new UDPInput(5555,aber)
 	tester.start
 	
 	// Schedule regular state saving:
-	val sm = ScheduleManager.scheduler(10000){hasher ! SaveState}
-	sm.start
+	//val sm = ScheduleManager.scheduler(10000){hasher ! SaveState}
+	//sm.start
 	
 }
