@@ -10,7 +10,7 @@ class UDPInput(socket: DatagramSocket
 				,processer: Handler) extends LogInput(processer){
   
 	val packet_length = 2048
-	def this(port: Int, proc: Processer) =
+	def this(port: Int, proc: Handler) =
 	  this(new DatagramSocket(port),proc)
 	
 	def beamLogData() =  loop {

@@ -14,7 +14,10 @@ object Parser {
    * TODO : check EVERY timestamp format FFS !
    */
   
-  private val clr_txt = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(.*)$""".r
+  private val tstamp_BSD = """\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2}"""
+  private val tstamp_sys = """\d{4}-\d{2}-\d{2}[\sT]\d\d:\d\d:\d\d\.\d{2,6}(-\d\d:\d\d)?Z?"""
+  private val tstamp = """(""" + tstamp_BSD + """|""" + tstamp_sys + """)"""
+  private val clr_txt = ("""^<(\d{1,3})>""" + tstamp + """\s(\S*)\s(.*)$""").r
   
   /**
    * Cipher text parsing regexps
@@ -33,10 +36,10 @@ object Parser {
   
   private val c_paranoid = """^([A-Za-z0-9+/=]*)$""".r
   private val c_full = """^<(\d{1,3})>(\S*)\s(\S*)\s(\S*)$""".r
-  private val c_event = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(\S*)$""".r
-  private val c_content = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(\S*)$""".r
+  private val c_event = ("""^<(\d{1,3})>""" + tstamp + """\s(\S*)\s(\S*)$""").r
+  private val c_content = ("""^<(\d{1,3})>""" + tstamp + """\s(\S*)\s(\S*)$""").r
   private val c_timeless = """^<(\d{1,3})>(\S*)\s(\S*)\s(.*)$""".r
-  private val c_anonymous = """^<(\d{1,3})>(\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2})\s(\S*)\s(.*)$""".r
+  private val c_anonymous = ("""^<(\d{1,3})>""" + tstamp + """\s(\S*)\s(.*)$""").r
   private val c_blind = """^<(\d{1,3})>(\S*)\s(\S*)\s(.*)$""".r
   
   /**
@@ -60,8 +63,8 @@ object Parser {
    */
 
   def fromInput(dgram: String): SyslogMsg = dgram match {
-    case clr_txt(pri,tstamp,host,msg) => 
-      	new ClearSyslogMsg(pri, tstamp,host,msg)
+    case clr_txt(pri,tstamp,_,host,msg) =>
+      	new ClearSyslogMsg(pri, tstamp, host,msg)
     case _ => MalformedSyslogInput(dgram)
       //TODO @julien handle this correctly
   }
@@ -70,8 +73,9 @@ object Parser {
    * Parse the strings coming from a digested log (that could include various Admin messages too).
    */
   def fromLog(line: String): Message = line match {
-    	case c_event(pri,tstamp,host,msg) => makeEvent(pri,tstamp,host,msg)
-    	case clr_txt(pri,tstamp,host,msg) => new ClearSyslogMsg(pri,tstamp,host,msg)
+    	case c_event(pri,tstamp,_,host,msg) => makeEvent(pri,tstamp,host,msg)
+    	
+    	case clr_txt(pri,tstamp,_,host,msg) => new ClearSyslogMsg(pri,tstamp,host,msg)
 		
 		case m_iba(id,h,s,t) =>  new IBHashState(id,h,s,t) 
 		case m_hmac(id,h,s) => new HMACState(id,h,s)

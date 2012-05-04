@@ -27,6 +27,9 @@ object LogDigester extends App {
 	val writer = new LogFileWriter("test_out.txt")
 	writer.start
 	
+	val screen = new Screen
+	screen.start
+	
 	/*
 	val (pub,priv) = IBAKeyGen.genKeyPair(2048)
 	val (dum_pub,dum_priv) = IBAKeyGen.genKeyPair(2048)
@@ -50,7 +53,7 @@ object LogDigester extends App {
 	val masterkey_l = "files/master_key"
     
 	//DirectCPABE.setup(pubkey_l,masterkey_l)
-	val aber = new CPABEProcesserEnc(writer,pubkey_l)
+	val aber = new CPABEProcesserEnc(screen,pubkey_l)
 	aber.start
 	/*
 	val rsa_proc = new RSAProcesser(hasher,mk.readCert("rsa_2").getPublicKey, Cipher.ENCRYPT_MODE)
@@ -59,7 +62,7 @@ object LogDigester extends App {
 	aes_proc.start
 	*/
 	
-	val tester = new UDPInput(5555,aber)
+	val tester = new UDPInput(5555,screen)
 	tester.start
 	
 	// Schedule regular state saving:
