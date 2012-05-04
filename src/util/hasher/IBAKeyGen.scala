@@ -25,23 +25,21 @@ object IBAKeyGen {
   
   val default_hash = "SHA-512"
   val digest = MessageDigest.getInstance(default_hash, provider)
-    
+  
+  val pad_bytes = 192
+  val hash_byte_size = 64 
   /**
    * Generates a list of <quant> keys and their associated ID's
    * 
    * The values from 1 to <quant> are hashed and the hash output serves as the Identifier
    * to be encrypted.
    * 
-   * TODO : NO PADDING IS CURRENTLY USED. CHECK IF THIS MUST BE CORRECTED
-   * 	=> is this really a problem, as the 'encrypted' message H(id) is known ?
-   * 	=> a standard padding scheme cannot be used as the private key is never 'decrypted'
-   * 	=> hence, the padding would be predictive and would not add much ?
+   * TODO : actually padding the end of the id string with all ones.
    * 
    */
-  def genKeys(privKey: RSAPrivateKey, quant: Int): List[(String,BigInt)] = {
-  	
+  def genKeys(privKey: RSAPrivateKey, quant: Int): List[(String,BigInt)] = 
   	(1 to quant) map {i => Stringifier(i.toString)} map {i => makeKey(i,privKey)} toList 
-  }
+ 
   
   /**
    * Generate a new random key pair.
@@ -58,9 +56,12 @@ object IBAKeyGen {
    */
   private def makeKey(id: Array[Byte], k: RSAPrivateKey): (String, BigInt) = {
   	digest.reset
-  	
+  	// Pad the hash with all ones
+  	val pad = Array.fill[Byte](pad_bytes)((new java.lang.Integer(-1)).toByte) _
   	val id_hash = digest.digest(id)
-  	val pk = BigInt(id_hash).modPow(
+  	val padded = id_hash ++ pad
+
+  	val pk = BigInt(padded).modPow(
   	    new BigInt(k.getPrivateExponent),
   	    new BigInt(k.getModulus))
   	    

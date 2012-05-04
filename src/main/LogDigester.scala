@@ -30,7 +30,7 @@ object LogDigester extends App {
 	val screen = new Screen
 	screen.start
 	
-	/*
+	
 	val (pub,priv) = IBAKeyGen.genKeyPair(2048)
 	val (dum_pub,dum_priv) = IBAKeyGen.genKeyPair(2048)
 	val kp = new KeyPair(pub,dum_priv)
@@ -48,7 +48,7 @@ object LogDigester extends App {
 	val hasher = new Hasher(writer, digest, auth)
 	hasher.start
 	hasher ! SaveState
-	*/
+	
 	val pubkey_l = "files/pub_key"
 	val masterkey_l = "files/master_key"
     
@@ -62,7 +62,7 @@ object LogDigester extends App {
 	aes_proc.start
 	*/
 	
-	val tester = new UDPInput(5555,screen)
+	val tester = new UDPInput(5555,hasher)
 	tester.start
 	
 	// Schedule regular state saving:

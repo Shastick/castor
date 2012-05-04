@@ -21,7 +21,7 @@ object LogDecoder extends App {
 	val screen = new Screen
 	screen.start
 	
-	/*
+	
 	val digest = MessageDigest.getInstance("SHA-512")
 	val ver_k = mk.readCert("current").getPublicKey.asInstanceOf[RSAPublicKey]
 	
@@ -29,7 +29,7 @@ object LogDecoder extends App {
 	
 	val hasher = new Hasher(screen, digest, auth)
 	hasher.start
-	*/
+	
 	
 	val pubkey_l = "files/pub_key"
 	val masterkey_l = "files/master_key"
@@ -51,6 +51,6 @@ object LogDecoder extends App {
 	auther.start
 	*/
 	
-	val file_reader = new LogFileInput(aber,"test_out.txt")
+	val file_reader = new LogFileInput(hasher,"test_out.txt")
 	file_reader.start
 }

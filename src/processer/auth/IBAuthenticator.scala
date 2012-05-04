@@ -61,11 +61,16 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
 	 * Check if the received HashState corresponds to the internal state.
 	 */
 	private def verify(hs: IBHashState): AdminMsg = {
-	  val (id,m,s,t) = (BigInt(BASE64.dec(hs.id)),
+	  val (id_in,m,s,t) = (BASE64.dec(hs.id),
 			  			BASE64.dec(hs.hash),
 			  			BigInt(BASE64.dec(hs.s)),
 			  			BASE64.dec(hs.t))
 	  
+			  			//TODO DO THE PADDING IN ONE PLACE
+      val pad_bytes = 192
+	  val pad = Array.fill[Byte](pad_bytes)((new java.lang.Integer(-1)).toByte) _
+
+  	  val id = BigInt(id_in ++ pad)
 	  val (e,n) = (new BigInt(pubkey.getPublicExponent()),
 			  		new BigInt(pubkey.getModulus()))
 		
