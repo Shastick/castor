@@ -29,7 +29,7 @@ class CPABEProcesserEnc(next: Handler, c: DirectCPABE) extends Processer(next){
   
   override def crunchDgram(m: SyslogMsg): SyslogMsg = m match {
     case m: ClearSyslogMsg =>
-      val policy = "host:" + m.host + " role:admin 1of2"
+      val policy = "host:" + m.host + " pri:" + m.pri + " 2of2 role:admin 1of2"
       new FullCipherText(c.enc(policy,m.toBytes))
     case m: CipherSyslogMsg =>
       throw new Exception("Encryption CPABE Processor does not support Ciphertext inputs.")

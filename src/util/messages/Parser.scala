@@ -15,7 +15,7 @@ object Parser {
    */
   
   private val tstamp_BSD = """\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2}"""
-  private val tstamp_sys = """\d{4}-\d{2}-\d{2}[\sT]\d\d:\d\d:\d\d\.\d{2,6}(-\d\d:\d\d)?Z?"""
+  private val tstamp_sys = """\d{4}-\d{2}-\d{2}[\sT]\d\d:\d\d:\d\d\.\d{2,6}([+-]\d\d:\d\d)?Z?"""
   private val tstamp = """(""" + tstamp_BSD + """|""" + tstamp_sys + """)"""
   private val clr_txt = ("""^<(\d{1,3})>""" + tstamp + """\s(\S*)\s(.*)$""").r
   
