@@ -14,6 +14,10 @@ import java.security.KeyPair
 import java.security.interfaces.RSAPublicKey
 import util.cipher.DirectCPABE
 import processer.crypt.CPABEProcesserEnc
+import java.io.File
+import config.ScreenConfig
+import com.twitter.util.Eval
+import processer.Handler
 
 /**
  * TODO ideas :  - ABE 
@@ -24,7 +28,13 @@ object LogDigester extends App {
 	//mk.newAESKey("aes_test",256,"")
 	//mk.save
 	
-	val writer = new LogFileWriter("test_out.txt")
+	val configFile = new File("digester_config.scala")
+	val eval = new Eval
+	val config = eval[com.twitter.util.Config[Set[Handler]]](configFile)
+	config.validate()
+	val widgetService = config()
+	
+	/*val writer = new LogFileWriter("test_out.txt",None)
 	writer.start
 	
 	val screen = new Screen
@@ -68,5 +78,5 @@ object LogDigester extends App {
 	// Schedule regular state saving:
 	//val sm = ScheduleManager.scheduler(10000){hasher ! SaveState}
 	//sm.start
-	
+	*/
 }

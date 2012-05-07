@@ -13,6 +13,7 @@ object LogBuild extends Build {
   
   lazy val DigesterSettings = Seq(
 	libraryDependencies ++= Seq(
+	  "com.twitter" % "util-eval" % "1.12.13",
 	  "com.twitter" % "util-core" % "1.9.2",
 	  "com.twitter" % "ostrich" % "2.3.0",
 	  "com.twitter" % "xrayspecs_2.8.0" % "2.1.1",

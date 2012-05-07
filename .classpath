@@ -5,7 +5,9 @@
 	<classpathentry kind="lib" path="lib/commons-codec-1.6.jar"/>
 	<classpathentry kind="lib" path="lib/syslog4j-0.9.46-bin.jar"/>
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/com.twitter/util-core/jars/util-core-1.9.2.jar"/>
+	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/com.twitter/util-eval/jars/util-eval-1.12.13.jar"/>
+	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_COMPILER_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/com.twitter/util-core/jars/util-core-1.12.13.jar"/>
 	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/com.twitter/ostrich/jars/ostrich-2.3.0.jar"/>
 	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/org.jboss.netty/netty/bundles/netty-3.1.5.GA.jar"/>
 	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/asm/asm/jars/asm-1.5.3.jar"/>
@@ -32,6 +34,7 @@
 	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/org.markdownj/markdownj/jars/markdownj-0.3.0-1.0.2b4.jar"/>
 	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/org.bouncycastle/bcprov-jdk16/jars/bcprov-jdk16-1.46.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/cpabe"/>
 	<classpathentry kind="lib" path="lib-cpabe/bcprov-jdk16-1.46.jar"/>
 	<classpathentry kind="lib" path="lib-cpabe/jna-3.2.5.jar"/>
 	<classpathentry kind="lib" path="lib-cpabe/jpbc-api-1.2.0.jar"/>
@@ -39,6 +42,5 @@
 	<classpathentry kind="lib" path="lib-cpabe/jpbc-crypto-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib-cpabe/jpbc-pbc-1.2.0.jar"/>
 	<classpathentry kind="lib" path="lib-cpabe/jpbc-plaf-1.2.0.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/cpabe"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
