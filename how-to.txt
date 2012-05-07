@@ -1,0 +1,3 @@
+JPBC dependencies : http://gas.dia.unisa.it/projects/jpbc/download.html
+shared pbc library must be installed and the wrapper must be compiled too.
+see : http://gas.dia.unisa.it/projects/jpbc/docs/pbcwrapper.html
