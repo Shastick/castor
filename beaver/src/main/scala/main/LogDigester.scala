@@ -26,12 +26,8 @@ import scala.actors.Actor
  */
 
 object LogDigester extends App {
-	//val mk = ManagedKeyStore.load("keystore", "dorloter")
-	//mk.newAESKey("aes_test",256,"")
-	//mk.save
-  
 	println("Loading configuration file...")
-	val configFile = new File("digester_config.scala")
+	val configFile = new File("conf/digester_config.scala")
 	val eval = new Eval
 	println("Compiling configuration file...")
 	val config = eval[com.twitter.util.Config[Set[Actor]]](configFile)
