@@ -6,11 +6,13 @@ import Keys._
 
 object LogBuild extends Build {
 
-  scalaVersion := "2.9.0-1"
-
-  lazy val liftVersion = "2.4"
-
+  name := "log digester"
+  version := "0.1"
   
+  scalaVersion := "2.9.0-1"
+    
+  sourceDirectories in Compile := Seq(new File("src"))
+ 
   lazy val DigesterSettings = Seq(
 	libraryDependencies ++= Seq(
 	  "com.twitter" % "util-eval" % "1.12.13",

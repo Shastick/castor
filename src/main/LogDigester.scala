@@ -18,21 +18,24 @@ import java.io.File
 import config.ScreenConfig
 import com.twitter.util.Eval
 import processer.Handler
+import config.ScreenConfig
+import scala.actors.Actor
 
 /**
  * TODO ideas :  - ABE 
  */
 
 object LogDigester extends App {
-	val mk = ManagedKeyStore.load("keystore", "dorloter")
+	//val mk = ManagedKeyStore.load("keystore", "dorloter")
 	//mk.newAESKey("aes_test",256,"")
 	//mk.save
 	
 	val configFile = new File("digester_config.scala")
 	val eval = new Eval
-	val config = eval[com.twitter.util.Config[Set[Handler]]](configFile)
+	val config = eval[com.twitter.util.Config[Set[Actor]]](configFile)
 	config.validate()
-	val widgetService = config()
+	val hdlrs = config()
+	hdlrs.foreach(_.start)
 	
 	/*val writer = new LogFileWriter("test_out.txt",None)
 	writer.start

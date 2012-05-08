@@ -28,9 +28,4 @@ trait Handler extends Actor {
 	    	case m: AdminMsg => procAdminMsg(m)
 		}
 	}
-	
-	/**
-	 * TODO : Clear out strange behavior => case class that extends a normal class is not matched
-	 * if m: SuperClass is mentioned in the case, but if case CaseClass is specified, it does.
-	 */
 }
