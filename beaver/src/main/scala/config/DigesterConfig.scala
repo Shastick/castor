@@ -124,7 +124,7 @@ class IBHasherConfig extends Config[Hasher] {
   lazy val apply = {
     keystore.storePublicKey(keyAlias,pub)
     //TODO : possible to ensure the private key is deleted ?
-    val auth = new IBAuthenticator(keys, new Random, pub, digest)
+    val auth = new IBAuthenticator((keyAlias, keys), new Random, pub, digest)
     new Hasher(next, digest, auth)
   }
 }
@@ -138,7 +138,7 @@ class IBVerifierConfig extends Config[Hasher] {
   lazy val digest = MessageDigest.getInstance("SHA-512")
   
   lazy val apply = {
-    val auth = new IBAuthenticator(Iterator.empty, null, pub, digest)
+    val auth = new IBAuthenticator(("",Iterator.empty), null, pub, digest)
     new Hasher(next, digest, auth)
   }
 }

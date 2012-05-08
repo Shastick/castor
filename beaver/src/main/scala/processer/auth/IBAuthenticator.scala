@@ -16,7 +16,8 @@ import util.messages.AuthError
  * "Identity Based CryptoSystems And Signature Schemes"
  */
 
-class IBAuthenticator(keys: Iterator[(String,BigInt)],
+//TODO : handle public key ID's memorizing and key refilling.
+class IBAuthenticator(keyList: (String,Iterator[(String,BigInt)]),
 			rangen: Random,
 			pubkey: RSAPublicKey,
 			md: MessageDigest) extends Authenticator {
@@ -30,6 +31,7 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
   
 	def sign(data: Array[Byte]): HashState = {
 	  //TODO handle this more elegantly than by blowing everything up ;-)
+	  val (kid,keys) = keyList
 	  if(!keys.hasNext) throw new Exception("No more authentication keys!")
 	  else {
 	    val e = new BigInt(pubkey.getPublicExponent)
@@ -48,7 +50,7 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
 	    
 	    val s = (k*r.modPow(f, n)) mod n
 
-	    new IBHashState(id,data,s.toByteArray,t.toByteArray)
+	    new IBHashState(id,data,s.toByteArray,t.toByteArray,kid)
 	  }
 	}
 	
@@ -61,10 +63,11 @@ class IBAuthenticator(keys: Iterator[(String,BigInt)],
 	 * Check if the received HashState corresponds to the internal state.
 	 */
 	private def verify(hs: IBHashState): AdminMsg = {
-	  val (id_in,m,s,t) = (BASE64.dec(hs.id),
+	  val (id_in,m,s,t,kid) = (BASE64.dec(hs.id),
 			  			BASE64.dec(hs.hash),
 			  			BigInt(BASE64.dec(hs.s)),
-			  			BASE64.dec(hs.t))
+			  			BASE64.dec(hs.t),
+			  			hs.kid)
 	  
 			  			//TODO DO THE PADDING IN ONE PLACE
       val pad_bytes = 192

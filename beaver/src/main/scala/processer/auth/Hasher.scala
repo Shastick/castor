@@ -63,29 +63,3 @@ class Hasher(next: Handler,
     else HashError("Hash states not corresponding for segment ID: " + h.id)
 
 }
-
-/**
- * Companion Object
- */
-object Hasher {
-  val digest = MessageDigest.getInstance("SHA-512")
-  val rnd = new Random
-  
-  /**
-   * Generate a new identity based hasher, using a master private key to generate a one-time
-   * authentication secrets list, and verkey for verification.
-   */
-  def makeFullIBHasher(next: Handler, masterPKey: RSAPrivateKey, verkey: RSAPublicKey, qtt: Int): Hasher = {
-    val kl = IBAKeyGen.genKeys(masterPKey,qtt)
-    val auth = new IBAuthenticator(kl.toIterator,rnd,verkey,digest)
-    new Hasher(next, digest, auth)
-  }
-  
-  /**
-   * This hasher is for verification only (if used for authentication it will throw an exception)
-   */
-  def makeEmptyIBHasher(next: Handler, verkey: RSAPublicKey): Hasher = {
-    val auth = new IBAuthenticator(Iterator.empty, null, verkey, digest)
-    new Hasher(next, digest, auth)
-  }
-}

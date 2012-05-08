@@ -46,7 +46,7 @@ object Parser {
    * HashStates regexp's :
    */
    
-  private val m_iba = """^([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*)$""".r
+  private val m_iba = """^([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*):(\S*)$""".r
   private val m_hmac = """^([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*):([A-Za-z0-9+/=]*)$""".r
   
   /**
@@ -77,7 +77,7 @@ object Parser {
     	
     	case clr_txt(pri,tstamp,_,host,msg) => new ClearSyslogMsg(pri,tstamp,host,msg)
 		
-		case m_iba(id,h,s,t) =>  new IBHashState(id,h,s,t) 
+		case m_iba(id,h,s,t,kid) =>  new IBHashState(id,h,s,t,kid) 
 		case m_hmac(id,h,s) => new HMACState(id,h,s)
 		
 		case notification(n) => Notification(n)

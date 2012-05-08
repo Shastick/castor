@@ -37,15 +37,17 @@ case class HMACState(id: String, hash: String, sig: String) extends HashState {
  *  - id: the of which the private key was used to sign the hash
  * 	- hash: the actual value of the hash chain
  * 	- s,t: the signature of the hash chain
+ *  - kid: the alias of the public key needed for verification
  */
-case class IBHashState(id: String, hash: String, s: String, t: String) extends HashState {
+case class IBHashState(id: String, hash: String, s: String, t: String, kid: String) extends HashState {
   /**
    * Constructor variant with byte arrays.
    */
-  def this(id: String, hash: Array[Byte], s: Array[Byte], t: Array[Byte]) =
-		  	this(id,BASE64.enc(hash),BASE64.enc(s), BASE64.enc(t))
+  def this(id: String, hash: Array[Byte], s: Array[Byte], t: Array[Byte], kid: String) =
+		  	this(id,BASE64.enc(hash),BASE64.enc(s), BASE64.enc(t), kid)
   
-  override def toString = "===== HASH CHAIN STATE - IBA MODE : =====\n" + id + ":" + hash + ":" + s + ":" + t
+  override def toString = "===== HASH CHAIN STATE - IBA MODE : =====\n" +
+		  				id + ":" + hash + ":" + s + ":" + t + ":" + kid
 }
 
 /**
