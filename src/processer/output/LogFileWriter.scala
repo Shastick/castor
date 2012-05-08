@@ -12,7 +12,7 @@ class LogFileWriter(out: FileWriter, line_sep: String) extends Handler {
   /**
    * Overloaded constructor for a filename specified by string.
    */
-  def this(fname: String, sep: Option[String]) = this(new FileWriter(fname,true), sep.getOrElse("\n"))
+  def this(fname: String, sep: String) = this(new FileWriter(fname,true), sep)
   
   def procDgram(s: SyslogMsg) = writeLine(s.toString)
   

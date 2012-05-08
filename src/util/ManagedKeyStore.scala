@@ -1,25 +1,30 @@
 package util
-import java.security.KeyPair
-import org.bouncycastle.x509.X509V3CertificateGenerator
-import java.security.KeyStore.SecretKeyEntry
-import java.security.KeyStore
-import java.security.Security
-import javax.crypto.KeyGenerator
-import java.security.cert.X509Certificate
-import java.security.Key
 import java.io.FileInputStream
-import java.security.KeyStore.PasswordProtection
 import java.io.FileOutputStream
 import java.math.BigInteger
-import javax.security.auth.x500.X500Principal
-import org.bouncycastle.asn1.x509.X509Extensions
+import java.security.KeyStore.PasswordProtection
+import java.security.KeyStore.SecretKeyEntry
+import java.security.cert.X509Certificate
+import java.security.interfaces.RSAPublicKey
+import java.security.spec.RSAPublicKeySpec
+import java.security.Key
+import java.security.KeyFactory
+import java.security.KeyPair
+import java.security.KeyStore
 import java.util.Date
 import org.bouncycastle.asn1.x509.BasicConstraints
-import org.bouncycastle.asn1.x509.KeyUsage
-import org.bouncycastle.asn1.x509.GeneralNames
 import org.bouncycastle.asn1.x509.ExtendedKeyUsage
-import org.bouncycastle.asn1.x509.KeyPurposeId
 import org.bouncycastle.asn1.x509.GeneralName
+import org.bouncycastle.asn1.x509.GeneralNames
+import org.bouncycastle.asn1.x509.KeyPurposeId
+import org.bouncycastle.asn1.x509.KeyUsage
+import org.bouncycastle.asn1.x509.X509Extensions
+import org.bouncycastle.x509.X509V3CertificateGenerator
+import javax.crypto.KeyGenerator
+import javax.security.auth.x500.X500Principal
+import java.security.spec.RSAPrivateKeySpec
+import java.security.interfaces.RSAPrivateKey
+import java.security.KeyPairGenerator
 
 
 /**
@@ -42,6 +47,16 @@ class ManagedKeyStore(
   
   def storeKey(k: Key, alias: String, pwd: String) {
     ks.setKeyEntry(alias, k, pwd.toCharArray,null)
+  }
+  
+  /**
+   * Store an RSA key in a certificate with a dummy private key 
+   * (ugly hack to only store a public key )
+   */
+  def storePublicKey(alias: String, k: RSAPublicKey) {
+	val (_,dummy) = genKeyPair(k.getEncoded.size * 8)
+    val cert = makeCert(new KeyPair(k,dummy))
+    addCert(alias, cert)
   }
   
   // Courtesy 
@@ -80,6 +95,16 @@ class ManagedKeyStore(
   
   def save = ks.store(new FileOutputStream(file), pwd.toCharArray())
 
+  /**
+   * Generate a new random RSA key pair.
+   */
+  def genKeyPair(bit_size: Int): (RSAPublicKey,RSAPrivateKey) = {
+    val kg = KeyPairGenerator.getInstance("RSA", "BC")
+    kg.initialize(bit_size)
+    val kp = kg.genKeyPair()
+    (kp.getPublic.asInstanceOf[RSAPublicKey],kp.getPrivate.asInstanceOf[RSAPrivateKey])
+  }
+  
   private def getCert(ks: KeyStore, c_alias: String):X509Certificate =
   	ks.getCertificate(c_alias) match {
   		case c:X509Certificate => c

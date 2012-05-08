@@ -42,21 +42,11 @@ object IBAKeyGen {
  
   
   /**
-   * Generate a new random key pair.
-   */
-  def genKeyPair(bit_size: Int): (RSAPublicKey,RSAPrivateKey) = {
-    val kg = KeyPairGenerator.getInstance("RSA")
-    kg.initialize(bit_size)
-    val kp = kg.genKeyPair()
-    (kp.getPublic.asInstanceOf[RSAPublicKey],kp.getPrivate.asInstanceOf[RSAPrivateKey])
-  }
-  
-  /**
    * Build a one-time key.
    */
   private def makeKey(id: Array[Byte], k: RSAPrivateKey): (String, BigInt) = {
   	digest.reset
-  	// Pad the hash with all ones
+  	// Pad the hash with all ones TODO : do it in one place...
   	val pad = Array.fill[Byte](pad_bytes)((new java.lang.Integer(-1)).toByte) _
   	val id_hash = digest.digest(id)
   	val padded = id_hash ++ pad
