@@ -9,7 +9,7 @@ import config._
  */
 
 val ks = new KeystoreConfig {
-  location = "keystore"
+  location = "files/keystore"
   password = "dorloter"
 } apply
   
@@ -51,7 +51,7 @@ val cpabe_enc = new CPABEEncConfig {
 
 val iba = new IBHasherConfig {
   next = out
-  quantity = 10
+  quantity = 100
   keystore = ks
   keyAlias = "iba_testing"
 } apply

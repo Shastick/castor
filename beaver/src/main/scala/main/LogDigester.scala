@@ -31,7 +31,9 @@ object LogDigester extends App {
 	val eval = new Eval
 	println("Compiling configuration file...")
 	val config = eval[com.twitter.util.Config[Set[Actor]]](configFile)
+	println("Validating...")
 	config.validate()
+	println("Extracting...")
 	val hdlrs = config()
 	println("Starting handlers...")
 	hdlrs.foreach(_.start)

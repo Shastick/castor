@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" output="target/scala-2.9.1/classes" path="src/main/scala"/>
-	<classpathentry kind="lib" path="../beaver/lib/bcprov-jdk15on-147.jar"/>
-	<classpathentry kind="lib" path="../beaver/lib/commons-codec-1.6.jar"/>
-	<classpathentry kind="lib" path="../beaver/lib/syslog4j-0.9.46-bin.jar"/>
 	<classpathentry kind="lib" path="../cpabe/lib/jna-3.2.5.jar"/>
 	<classpathentry kind="lib" path="../cpabe/lib/jpbc-api-1.2.0.jar"/>
 	<classpathentry kind="lib" path="../cpabe/lib/jpbc-benchmark-1.2.0.jar"/>
@@ -39,6 +36,7 @@
 	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/org.eclipse.mylyn.wikitext/wikitext.confluence/jars/wikitext.confluence-0.9.4.I20090220-1600-e3x.jar"/>
 	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/org.eclipse.mylyn.wikitext/wikitext.mediawiki/jars/wikitext.mediawiki-0.9.4.I20090220-1600-e3x.jar"/>
 	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/org.markdownj/markdownj/jars/markdownj-0.3.0-1.0.2b4.jar"/>
+	<classpathentry kind="lib" path="/Users/julien/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.6.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/cpabe"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
