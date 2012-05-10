@@ -22,7 +22,7 @@ trait Authenticator extends Actor {
 	
 	def act() = loop {
 	  react {
-	    case SigRequest(a) => println("Sign request received.");reply(sign(a))
+	    case SigRequest(a) => reply(sign(a))
 	    case AuthRequest(m) => reply(authenticate(m))
 	    case IBAKeys(t) => addKeys(t)
 	  }

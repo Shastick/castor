@@ -165,7 +165,7 @@ class HashSchedulerConfig extends Config[Actor] {
   var slave = required[Hasher]
   var interval = required[Int] // Interval in seconds
   
-  lazy val apply = ScheduleManager.scheduler(interval){println("Sending Savestate.");slave ! SaveState}
+  lazy val apply = ScheduleManager.scheduler(interval){slave ! SaveState}
 }
 
 /**

@@ -13,8 +13,8 @@ class KeyRefiller(ks: ManagedKeyStore) extends Actor {
   val rnd = new Random()
   
   def act() = loop {
-		receive {
-		  case IBARefill(n) => println("RefillRequest received!");reply(genIBA(n))
+		react {
+		  case IBARefill(n) => reply(genIBA(n))
 		}
 	}
   
