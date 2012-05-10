@@ -51,7 +51,8 @@ class ManagedKeyStore(
   
   /**
    * Store an RSA key in a certificate with a dummy private key 
-   * (ugly hack to only store a public key )
+   * (ugly way to only store a public key)
+   * TODO: investigate trust-stores
    */
   def storePublicKey(alias: String, k: RSAPublicKey) {
 	val (_,dummy) = genKeyPair(k.getEncoded.size * 8)
@@ -104,6 +105,8 @@ class ManagedKeyStore(
     val kp = kg.genKeyPair()
     (kp.getPublic.asInstanceOf[RSAPublicKey],kp.getPrivate.asInstanceOf[RSAPrivateKey])
   }
+  
+  def contains(alias: String) = ks.containsAlias(alias)
   
   private def getCert(ks: KeyStore, c_alias: String):X509Certificate =
   	ks.getCertificate(c_alias) match {

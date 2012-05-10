@@ -123,6 +123,7 @@ class IBHasherConfig extends Config[Hasher] {
   
   lazy val apply = {
     keystore.storePublicKey(keyAlias,pub)
+    keystore.save
     //TODO : possible to ensure the private key is deleted ?
     val auth = new IBAuthenticator((keyAlias, keys), new Random, pub, digest)
     new Hasher(next, digest, auth)

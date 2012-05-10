@@ -8,5 +8,5 @@ package util.hasher
  */
 
 object HMACKeyGen {
-
+	//TODO : actually implement this ;-)
 }

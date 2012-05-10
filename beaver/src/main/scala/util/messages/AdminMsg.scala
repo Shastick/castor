@@ -81,3 +81,6 @@ case class AuthError(e: String) extends Error {
 case class ValidHash(id: String) extends AdminMsg {
   override def toString = "Valid segment: " + id
 }
+
+case class IBARefill(n: Int)
+case class IBAKeys(l: (String,Iterator[(String,BigInt)]))

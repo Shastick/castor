@@ -21,6 +21,7 @@ object IBAKeyGen {
   /**
    * Default Hash we will use
    * TODO : also use BouncyCastle here for coherence ?
+   * TODO : make the pad_bytes size dynamic (if the key size changes it should adapt)
    */
   
   val default_hash = "SHA-512"
