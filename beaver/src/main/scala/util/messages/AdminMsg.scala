@@ -1,6 +1,7 @@
 package util.messages
 import util.BASE64
 import java.security.interfaces.RSAPublicKey
+import util.IBAKeychain
 
 /**
  * Abstract class representing any "meta-message" (or non-content) that would have to be sent around
@@ -30,7 +31,7 @@ case class HMACState(id: String, hash: String, sig: String) extends HashState {
   def this(id: String, hash: Array[Byte], sig: Array[Byte]) =
 		  	this(id,BASE64.enc(hash),BASE64.enc(sig))
   
-  override def toString = "===== HASH CHAIN STATE FOLLOWS - HMAC MODE : =====\n" + id + ":" + hash + ":" + sig
+  override def toString = "===== HASH CHAIN STATE - HMAC MODE : =====\n" + id + ":" + hash + ":" + sig
 }
 
 /**
@@ -95,4 +96,4 @@ case class AuthRequest(m: HashState)
  * Keylist Refilling messages
  */
 case class IBARefill(n: Int)
-case class IBAKeys(l: (String,RSAPublicKey,Iterator[(String,BigInt)]))
+case class IBAKeys(k: IBAKeychain)

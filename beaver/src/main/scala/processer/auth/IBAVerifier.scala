@@ -9,6 +9,7 @@ import util.messages.HashState
 import util.ManagedKeyStore
 import java.security.MessageDigest
 import java.security.interfaces.RSAPublicKey
+import util.Keychain
 
 class IBAVerifier(ks: ManagedKeyStore, md: MessageDigest) extends Authenticator {
 	var block_length = 2048
@@ -47,6 +48,6 @@ class IBAVerifier(ks: ManagedKeyStore, md: MessageDigest) extends Authenticator 
 	  else AuthError("Segment could not be authenticated, id: " + hs.id)
 	}
 	
-	def addKeys(t: (String, RSAPublicKey, Iterator[(String, BigInt)])) = throw new Exception("addKeys() not available in verification mode.")
+	def addKeys(kc: Keychain) = throw new Exception("addKeys() not available in verification mode.")
 	def sign(d: Array[Byte]) = throw new Exception("sign() not available in verification mode.")
 }

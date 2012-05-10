@@ -6,6 +6,7 @@ import util.messages.IBAKeys
 import util.hasher.IBAKeyGen
 import java.util.Random
 import util.BASE64
+import util.IBAKeychain
 
 class KeyRefiller(ks: ManagedKeyStore) extends Actor {
   //TODO : harmonize bit size definitions
@@ -29,7 +30,8 @@ class KeyRefiller(ks: ManagedKeyStore) extends Actor {
     val alias = makeAlias
     ks.storePublicKey(alias,pub)
     ks.save
-    IBAKeys((alias,pub,keys))
+    //TODO : get rid of the 'key' messages and directly send keychains
+    IBAKeys(IBAKeychain(alias,pub,keys))
   }
   
   def makeAlias(): String = {

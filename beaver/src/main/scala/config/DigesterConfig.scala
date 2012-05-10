@@ -1,29 +1,33 @@
 package config
+import java.security.interfaces.RSAPublicKey
+import java.security.MessageDigest
+import java.util.Random
+import scala.actors.Actor
 import com.twitter.util.Config
 import javax.crypto.Cipher
+import processer.auth.Authenticator
+import processer.auth.HMACAuthenticator
+import processer.auth.Hasher
+import processer.auth.IBASigner
+import processer.auth.IBAVerifier
+import processer.auth.KeyRefiller
 import processer.crypt.AESProcesser
-import processer.crypt.RSAProcesser
 import processer.crypt.CPABEProcesserDec
 import processer.crypt.CPABEProcesserEnc
+import processer.crypt.RSAProcesser
 import processer.input.LogFileInput
 import processer.input.UDPInput
 import processer.output.LogFileWriter
 import processer.output.Screen
 import processer.Handler
 import processer.Processer
-import util.ManagedKeyStore
-import scala.actors.Actor
-import processer.auth.IBASigner
 import util.hasher.IBAKeyGen
-import java.security.MessageDigest
-import java.util.Random
-import java.security.interfaces.RSAPublicKey
-import processer.auth.Authenticator
-import util.ScheduleManager
-import processer.auth.Hasher
 import util.messages.SaveState
-import processer.auth.KeyRefiller
-import processer.auth.IBAVerifier
+import util.ManagedKeyStore
+import util.ScheduleManager
+import util.hasher.HMACKeyGen
+import org.bouncycastle.crypto.digests.SHA512Digest
+import util.IBAKeychain
 
 /**
  * Outputs
@@ -142,7 +146,7 @@ class IBASignerConfig extends Config[Authenticator] {
     // Calling the garbage collector to make sure the private key is removed ASAP
     // TODO: make sure this is actually usefull...
     System.gc
-    new IBASigner(List((keyAlias, pub, keys)), new Random, digest, refiller, quantity)
+    new IBASigner(List(IBAKeychain(keyAlias, pub, keys)), new Random, digest, refiller, quantity)
   }
 }
 
@@ -150,10 +154,22 @@ class IBAHasherConfig extends Config[Hasher] {
   var next = required[Handler]
   var auth = required[Authenticator]
   
-  lazy val digest = MessageDigest.getInstance("SHA-512")
+  val digest = MessageDigest.getInstance("SHA-512")
   
   lazy val apply = new Hasher(next, digest, auth)
 
+}
+
+class HMACSignerConfig extends Config[HMACAuthenticator] {
+  
+  var secret = required[String]
+  var quantity = required[Int]
+  
+  //TODO : bring EVERY digest in the code under bouncycastle's implementation ?
+  val digest = new SHA512Digest()
+  
+  lazy val apply =
+    new HMACAuthenticator(HMACKeyGen.genKeys(secret,quantity), digest)
 }
 
 class HashSchedulerConfig extends Config[Actor] {

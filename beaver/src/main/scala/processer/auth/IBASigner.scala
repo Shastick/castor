@@ -10,14 +10,15 @@ import java.util.Random
 import java.security.interfaces.RSAPublicKey
 import util.messages.AuthError
 import util.messages.IBARefill
+import util.Keychain
+import util.IBAKeychain
 
 /**
  * This class is used to periodically authenticate the state of the hash chain.
  * It uses IBA (Identity Based Authentication) as proposed by Shamir in his 1984 paper
  * "Identity Based CryptoSystems And Signature Schemes"
  */
-//TODO split the Authenticator and the verifier in two classes, it's getting too messy.
-class IBASigner(var key_reserve: List[(String,RSAPublicKey,Iterator[(String,BigInt)])],
+class IBASigner(var key_reserve: List[IBAKeychain],
 			rangen: Random,
 			md: MessageDigest,
 			krf: KeyRefiller,
@@ -70,8 +71,9 @@ class IBASigner(var key_reserve: List[(String,RSAPublicKey,Iterator[(String,BigI
 	/**
 	 * Append a new String-Iterator tuple to the key list.
 	 */
-	def addKeys(kt: (String, RSAPublicKey, Iterator[(String,BigInt)])) = {
-	  key_reserve :+= kt
+	def addKeys(kc: Keychain) = kc match {
+	  case m: IBAKeychain => key_reserve :+= m
+	  case _ => throw new Exception("Not a IBAKeychain received for refill.")
 	}
 	/**
 	 * Removes the head of the key list and returns it.
@@ -79,7 +81,7 @@ class IBASigner(var key_reserve: List[(String,RSAPublicKey,Iterator[(String,BigI
 	def popKeys(): (String, RSAPublicKey, Iterator[(String, BigInt)]) = {
 	  val t = key_reserve.head
 	  key_reserve --= List(t)
-	  t
+	  (t.id, t.pub, t.keys)
 	}
 	
 	

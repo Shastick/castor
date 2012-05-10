@@ -7,24 +7,28 @@ import util.messages.HashState
 import org.bouncycastle.crypto.Digest
 import util.Stringifier
 import org.bouncycastle.crypto.params.KeyParameter
+import util.HMACKeychain
+import util.Keychain
+import util.BASE64
 
 //TODO actually implement this...
-/**
-class HMACAuthenticator(keys: List[(String,Iterator[(String,BigInt)])], digest: Digest) extends Authenticator{
+
+class HMACAuthenticator(kc: HMACKeychain, digest: Digest) extends Authenticator{
 	
 	/**
 	 * Using Bouncycastle's Hmac implementation
 	 */
   
 	val hmac = new HMac(digest)
+	
+	val keys = kc.keys
   
-	def sign(data: Array[Byte]): HMACState = {
+	def sign(data: Array[Byte]): HMACState = 
 	  if (!keys.hasNext) throw new Exception("No more authentication keys!")
 	  else {
-	    val k = keys.next
-		  new HMACState(k._1,Stringifier(data),Stringifier(hmac(k._2,data)))
+	    val (id,k) = keys.next
+		new HMACState(id,BASE64.enc(data),BASE64.enc(hmac(k,data)))
 	  }
-	}
 	
 	def authenticate(h: HashState): AdminMsg = HashError("")
 	
@@ -35,4 +39,7 @@ class HMACAuthenticator(keys: List[(String,Iterator[(String,BigInt)])], digest: 
 	 hmac.doFinal(auth,0)
 	 auth
 	}
-}*/
+	
+	def addKeys(kc: Keychain) = throw new Exception("HMACAuthenticator currently does not support" +
+			"kes refilling.")
+}

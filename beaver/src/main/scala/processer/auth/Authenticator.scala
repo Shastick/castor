@@ -6,6 +6,7 @@ import util.messages.SigRequest
 import util.messages.AuthRequest
 import util.messages.IBAKeys
 import java.security.interfaces.RSAPublicKey
+import util.Keychain
 
 /**
  * Represents an entity able to authenticate data.
@@ -20,7 +21,7 @@ trait Authenticator extends Actor {
 	def authenticate(s: HashState): AdminMsg
 	
 	//TODO : wrap the notion of key into something abstract
-	def addKeys(t: (String, RSAPublicKey, Iterator[(String, BigInt)]))
+	def addKeys(kc : Keychain)
 	
 	def act() = loop {
 	  react {

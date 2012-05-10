@@ -53,6 +53,11 @@ val keyGen = new KeyRefillerConfig {
   keystore = ks
 } apply
 
+val hmacAuth = new HMACSignerConfig {
+  secret = "retolrod"
+  quantity = 10
+} apply
+
 val ibaAuth = new IBASignerConfig {
   quantity = 10
   keystore = ks
@@ -60,13 +65,13 @@ val ibaAuth = new IBASignerConfig {
   refiller = keyGen 
 } apply
 
-val ibaHash = new IBAHasherConfig {
-  next = file_out
-  auth = ibaAuth
+val hasher = new IBAHasherConfig {
+  next = out
+  auth = hmacAuth
 } apply
 
 val sched = new HashSchedulerConfig {
-  slave = ibaHash
+  slave = hasher
   interval = 5
 } apply
 
@@ -80,7 +85,7 @@ val file_in = new LogFileInputConfig {
 } apply
 
 val udp = new UDPConfig {
-  next = ibaHash
+  next = hasher
   port = 5555
 } apply
 
@@ -90,5 +95,5 @@ val udp = new UDPConfig {
  * and no 'apply' is required here.
  */
 new HandlerSet {
-  handlers = Set(file_out, keyGen, ibaAuth, ibaHash, sched, udp)
+  handlers = Set(out, keyGen, hmacAuth, ibaAuth, hasher, sched, udp)
 }
