@@ -5,6 +5,7 @@ import scala.actors.Actor
 import util.messages.SigRequest
 import util.messages.AuthRequest
 import util.messages.IBAKeys
+import java.security.interfaces.RSAPublicKey
 
 /**
  * Represents an entity able to authenticate data.
@@ -18,7 +19,8 @@ trait Authenticator extends Actor {
 	
 	def authenticate(s: HashState): AdminMsg
 	
-	def addKeys(t: (String, Iterator[(String, BigInt)]))
+	//TODO : wrap the notion of key into something abstract
+	def addKeys(t: (String, RSAPublicKey, Iterator[(String, BigInt)]))
 	
 	def act() = loop {
 	  react {

@@ -94,6 +94,8 @@ class ManagedKeyStore(
   def readKey(alias: String):Key = readKey(alias, "")
   def readKey(alias: String, password: String):Key = ks.getKey(alias,password.toCharArray())
   
+  def readPublicKey(alias: String) = readCert(alias).getPublicKey.asInstanceOf[RSAPublicKey]
+  
   def save = ks.store(new FileOutputStream(file), pwd.toCharArray())
 
   /**

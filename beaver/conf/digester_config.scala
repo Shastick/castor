@@ -53,15 +53,15 @@ val keyGen = new KeyRefillerConfig {
   keystore = ks
 } apply
 
-val ibaAuth = new IBAuthenticatorConfig {
+val ibaAuth = new IBASignerConfig {
   quantity = 10
   keystore = ks
   keyAlias = "iba_testing"
   refiller = keyGen 
 } apply
 
-val ibaHash = new IBHasherConfig {
-  next = out
+val ibaHash = new IBAHasherConfig {
+  next = file_out
   auth = ibaAuth
 } apply
 
@@ -90,5 +90,5 @@ val udp = new UDPConfig {
  * and no 'apply' is required here.
  */
 new HandlerSet {
-  handlers = Set(udp,keyGen,ibaAuth,ibaHash,sched,out)
+  handlers = Set(file_out, keyGen, ibaAuth, ibaHash, sched, udp)
 }

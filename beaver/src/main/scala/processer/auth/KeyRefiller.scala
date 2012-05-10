@@ -18,13 +18,18 @@ class KeyRefiller(ks: ManagedKeyStore) extends Actor {
 		}
 	}
   
+  /**
+   * Generates q new one-time auth keys based on a new public/private 
+   * keypair. The private key is immediately discarded while the public
+   * key is stored in the keystore under a new alias.
+   */
   def genIBA(q: Int): IBAKeys = {
     val (pub,priv) = ks.genKeyPair(keySize)
     val keys = IBAKeyGen.genKeys(priv, q).toIterator
     val alias = makeAlias
     ks.storePublicKey(alias,pub)
     ks.save
-    IBAKeys((makeAlias,keys))
+    IBAKeys((alias,pub,keys))
   }
   
   def makeAlias(): String = {

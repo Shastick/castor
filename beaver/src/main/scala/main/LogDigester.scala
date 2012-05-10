@@ -3,7 +3,7 @@ import processer.output.Screen
 import processer.output.LogFileWriter
 import java.security.MessageDigest
 import util.ManagedKeyStore
-import processer.auth.IBAuthenticator
+import processer.auth.IBASigner
 import processer.input.UDPInput
 import processer.auth.Hasher
 import util.hasher.IBAKeyGen

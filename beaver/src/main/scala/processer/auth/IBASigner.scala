@@ -17,9 +17,8 @@ import util.messages.IBARefill
  * "Identity Based CryptoSystems And Signature Schemes"
  */
 //TODO split the Authenticator and the verifier in two classes, it's getting too messy.
-class IBAuthenticator(var key_reserve: List[(String,Iterator[(String,BigInt)])],
+class IBASigner(var key_reserve: List[(String,RSAPublicKey,Iterator[(String,BigInt)])],
 			rangen: Random,
-			pubkey: RSAPublicKey,
 			md: MessageDigest,
 			krf: KeyRefiller,
 			refill_size: Int) extends Authenticator {
@@ -29,16 +28,19 @@ class IBAuthenticator(var key_reserve: List[(String,Iterator[(String,BigInt)])],
    * (And make it coherent with all the key sizes.)
    */
 	
-	def block_length = 2048
+	var block_length = 2048
 	
 	//TODO : make sure this works to define an empty iterator of the correct type...
-	var (pkid, keys) = ("", Iterator.empty.asInstanceOf[Iterator[(String,BigInt)]])
+	var (pkid, pubkey, keys) = ("",
+			null.asInstanceOf[RSAPublicKey],
+			Iterator.empty.asInstanceOf[Iterator[(String,BigInt)]])
   
 	def sign(data: Array[Byte]): HashState = {
 	  if(!keys.hasNext) {
 	    val tup = popKeys
 	    pkid = tup._1
-	    keys = tup._2
+	    pubkey = tup._2
+	    keys = tup._3
 	    krf ! IBARefill(refill_size)
 	  }
 	  
@@ -62,51 +64,23 @@ class IBAuthenticator(var key_reserve: List[(String,Iterator[(String,BigInt)])],
 	  
 	}
 	
-	def authenticate(h: HashState): AdminMsg = h match {
-	  case m: IBHashState => verify(m)
-	  case _ => HashError("Bad Hash Type received: IBHashSate required, " + h.getClass() + " received instead!")
-	}
+	def authenticate(h: HashState): AdminMsg = throw new Exception("authenticate() method" +
+			"not available in IBA Sign mode.")
 	
 	/**
 	 * Append a new String-Iterator tuple to the key list.
 	 */
-	def addKeys(kt: (String, Iterator[(String,BigInt)])) = {
+	def addKeys(kt: (String, RSAPublicKey, Iterator[(String,BigInt)])) = {
 	  key_reserve :+= kt
 	}
 	/**
 	 * Removes the head of the key list and returns it.
 	 */
-	def popKeys(): (String, Iterator[(String, BigInt)]) = {
+	def popKeys(): (String, RSAPublicKey, Iterator[(String, BigInt)]) = {
 	  val t = key_reserve.head
 	  key_reserve --= List(t)
 	  t
 	}
 	
-	/**
-	 * Check if the received HashState corresponds to the internal state.
-	 */
-	private def verify(hs: IBHashState): AdminMsg = {
-	  val (id_in,m,s,t,kid) = (BASE64.dec(hs.id),
-			  			BASE64.dec(hs.hash),
-			  			BigInt(BASE64.dec(hs.s)),
-			  			BASE64.dec(hs.t),
-			  			hs.kid)
-	  
-			  			//TODO DO THE PADDING IN ONE PLACE
-      val pad_bytes = 192
-	  val pad = Array.fill[Byte](pad_bytes)((new java.lang.Integer(-1)).toByte) _
-
-  	  val id = BigInt(id_in ++ pad)
-	  val (e,n) = (new BigInt(pubkey.getPublicExponent()),
-			  		new BigInt(pubkey.getModulus()))
-		
-	  md.reset
-	  val f = BigInt(md.digest(t ++ m))
-	  
-	  val checkMe = s.modPow(e,n)
-	  val shouldBe = (id * BigInt(t).modPow(f,n)) mod n
-	  
-	  if(checkMe == shouldBe) ValidHash(hs.hash)
-	  else AuthError("Segment could not be authenticated, id: " + hs.id)
-	}
+	
 }

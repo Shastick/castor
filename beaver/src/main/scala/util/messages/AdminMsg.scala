@@ -1,5 +1,6 @@
 package util.messages
 import util.BASE64
+import java.security.interfaces.RSAPublicKey
 
 /**
  * Abstract class representing any "meta-message" (or non-content) that would have to be sent around
@@ -94,4 +95,4 @@ case class AuthRequest(m: HashState)
  * Keylist Refilling messages
  */
 case class IBARefill(n: Int)
-case class IBAKeys(l: (String,Iterator[(String,BigInt)]))
+case class IBAKeys(l: (String,RSAPublicKey,Iterator[(String,BigInt)]))

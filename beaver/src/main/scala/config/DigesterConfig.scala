@@ -13,7 +13,7 @@ import processer.Handler
 import processer.Processer
 import util.ManagedKeyStore
 import scala.actors.Actor
-import processer.auth.IBAuthenticator
+import processer.auth.IBASigner
 import util.hasher.IBAKeyGen
 import java.security.MessageDigest
 import java.util.Random
@@ -23,6 +23,7 @@ import util.ScheduleManager
 import processer.auth.Hasher
 import util.messages.SaveState
 import processer.auth.KeyRefiller
+import processer.auth.IBAVerifier
 
 /**
  * Outputs
@@ -114,7 +115,14 @@ class KeyRefillerConfig extends Config[KeyRefiller] {
   lazy val apply = new KeyRefiller(keystore)
 }
 
-class IBAuthenticatorConfig extends Config[Authenticator] {
+class IBAVerifierConfig extends Config[Authenticator] {
+  var keystore = required[ManagedKeyStore]
+  
+  lazy val digest = MessageDigest.getInstance("SHA-512")
+  lazy val apply = new IBAVerifier(keystore, digest)
+}
+
+class IBASignerConfig extends Config[Authenticator] {
   var quantity = required[Int] // How many one-time keys to generate initially and at refill
   var keystore = required[ManagedKeyStore] // the keystore that will hold the public verification key
   var keyAlias = required[String] // Alias under which the public key will be stored
@@ -123,21 +131,22 @@ class IBAuthenticatorConfig extends Config[Authenticator] {
   var bitSize = optional[Int]
   
   lazy val bits = bitSize.getOrElse(2048)
-  lazy val (pub,priv) = keystore.genKeyPair(bits)
-  lazy val keys = IBAKeyGen.genKeys(priv,quantity).toIterator
   lazy val digest = MessageDigest.getInstance("SHA-512")
   
   lazy val apply = {
+    println("Generating initial key list")
+    val (pub,priv) = keystore.genKeyPair(bits)
+    val keys = IBAKeyGen.genKeys(priv,quantity).toIterator
     keystore.storePublicKey(keyAlias,pub)
     keystore.save
     // Calling the garbage collector to make sure the private key is removed ASAP
     // TODO: make sure this is actually usefull...
     System.gc
-    new IBAuthenticator(List((keyAlias, keys)), new Random, pub, digest, refiller, quantity)
+    new IBASigner(List((keyAlias, pub, keys)), new Random, digest, refiller, quantity)
   }
 }
 
-class IBHasherConfig extends Config[Hasher] {
+class IBAHasherConfig extends Config[Hasher] {
   var next = required[Handler]
   var auth = required[Authenticator]
   
@@ -145,20 +154,6 @@ class IBHasherConfig extends Config[Hasher] {
   
   lazy val apply = new Hasher(next, digest, auth)
 
-}
-
-class IBVerifierConfig extends Config[Hasher] {
-  var next = required[Handler]
-  var keystore = required[ManagedKeyStore]
-  var keyAlias = required[String]
-  
-  lazy val pub = keystore.readCert(keyAlias).getPublicKey.asInstanceOf[RSAPublicKey]
-  lazy val digest = MessageDigest.getInstance("SHA-512")
-  
-  lazy val apply = {
-    val auth = new IBAuthenticator(List(("",Iterator.empty)), null, pub, digest,null,0)
-    new Hasher(next, digest, auth)
-  }
 }
 
 class HashSchedulerConfig extends Config[Actor] {

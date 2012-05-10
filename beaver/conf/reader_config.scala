@@ -9,7 +9,7 @@ import config._
  */
 
 val ks = new KeystoreConfig {
-  location = "keystore"
+  location = "files/keystore"
   password = "dorloter"
 } apply
   
@@ -25,7 +25,9 @@ val out = new ScreenConfig apply
 
 /**
  * Processing (Crypt, Auth and scheduling)
+ * TODO : test decryption
  */
+/*
 val aes = new AESConfig {
   next = out
   mode = "DEC"
@@ -39,31 +41,29 @@ val rsa = new RSAConfig {
   keystore = ks
   keyAlias = "rsa_2"
 } apply
-
+*/
 val cpabe_dec = new CPABEDecConfig {
   next = out
   publicKey = "files/pub_key"
   privateKey = "files/private_key"
 } apply
 
-val iba = new IBVerifierConfig {
-  next = out
+val ibaAuth = new IBAVerifierConfig {
   keystore = ks
-  keyAlias = "iba_testing"
 } apply
 
+val hasher = new IBAHasherConfig {
+  next = out
+  auth = ibaAuth
+} apply
 /**
  * Input
  */
 val file_in = new LogFileInputConfig {
   source = "test_out.txt"
-  next = out
+  next = hasher
 } apply
 
-val udp = new UDPConfig {
-  next = iba
-  port = 5555
-} apply
 
 /**
  * Define the Set containing the previously defined elements
@@ -71,5 +71,5 @@ val udp = new UDPConfig {
  * and no 'apply' is required here.
  */
 new HandlerSet {
-  handlers = Set(udp,iba,out)
+  handlers = Set(out,ibaAuth,hasher,file_in)
 }
