@@ -13,6 +13,8 @@ import java.util.Random
 import util.hasher.IBAKeyGen
 import java.security.interfaces.RSAPublicKey
 import java.security.interfaces.RSAPrivateKey
+import util.messages.AuthRequest
+import util.messages.SigRequest
 
 /**
  * A Hasher is a stateful class that will be in charge of building a hash chain of the messages 
@@ -23,17 +25,23 @@ import java.security.interfaces.RSAPrivateKey
 
 class Hasher(next: Handler,
     md: MessageDigest,
-    sc: Authenticator)
+    auth: Authenticator)
     extends Processer(next) {
 
   private var lastHash = Array.empty[Byte]
   
   /**
-   * customized procAdminMsg for a Hasher 
+   * customized procAdminMsg for a Hasher.
+   * If a save state is received, a message is sent to the authenticator and
+   * an answer is awaited (the !? function).
+   * This answer is then sent further to the next handler.
+   * idem for HashState verification
    */
   override def procAdminMsg(m: AdminMsg) = m match {
-    case SaveState => next ! sc.sign(lastHash)
-    case h: HashState =>  next ! verify(h)
+    case SaveState => next ! (auth !? SigRequest(lastHash))
+    case h: HashState =>  
+      next ! (if(verify(h)) auth !? AuthRequest(h)
+    		  else HashError("Hash states not corresponding for segment ID: " + h.id))
     case _ => next ! m
   } 
   
@@ -58,8 +66,7 @@ class Hasher(next: Handler,
    * Compare received versus computed hash and authenticate if equal
    */
   
-  def verify(h: HashState): AdminMsg =
-    if(BASE64.dec(h.hash).toSeq == lastHash.toSeq) sc.authenticate(h)
-    else HashError("Hash states not corresponding for segment ID: " + h.id)
+  def verify(h: HashState): Boolean =
+    BASE64.dec(h.hash).toSeq == lastHash.toSeq
 
 }

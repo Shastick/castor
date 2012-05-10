@@ -68,6 +68,9 @@ case class Notification(n: String) extends AdminMsg {
   override def toString = "===== NOTIFICATION: " + n + " ====="
 }
 
+/**
+ * Authentication status messages
+ */
 abstract class Error extends AdminMsg
 
 case class HashError(e: String) extends Error {
@@ -81,6 +84,14 @@ case class AuthError(e: String) extends Error {
 case class ValidHash(id: String) extends AdminMsg {
   override def toString = "Valid segment: " + id
 }
+/**
+ * Authentication requests traffic
+ */
 
+case class SigRequest(a: Array[Byte])
+case class AuthRequest(m: HashState)
+/**
+ * Keylist Refilling messages
+ */
 case class IBARefill(n: Int)
 case class IBAKeys(l: (String,Iterator[(String,BigInt)]))

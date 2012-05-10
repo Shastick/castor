@@ -8,7 +8,9 @@ import org.bouncycastle.crypto.Digest
 import util.Stringifier
 import org.bouncycastle.crypto.params.KeyParameter
 
-class HMACAuthenticator(keys: Iterator[(String,Array[Byte])], digest: Digest) extends Authenticator{
+//TODO actually implement this...
+/**
+class HMACAuthenticator(keys: List[(String,Iterator[(String,BigInt)])], digest: Digest) extends Authenticator{
 	
 	/**
 	 * Using Bouncycastle's Hmac implementation
@@ -33,4 +35,4 @@ class HMACAuthenticator(keys: Iterator[(String,Array[Byte])], digest: Digest) ex
 	 hmac.doFinal(auth,0)
 	 auth
 	}
-}
+}*/

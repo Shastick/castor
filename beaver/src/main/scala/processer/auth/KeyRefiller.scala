@@ -8,12 +8,13 @@ import java.util.Random
 import util.BASE64
 
 class KeyRefiller(ks: ManagedKeyStore) extends Actor {
+  //TODO : harmonize bit size definitions
   val keySize = 2048
   val rnd = new Random()
   
   def act() = loop {
 		receive {
-		  case IBARefill(n) => sender ! genIBA(n)
+		  case IBARefill(n) => println("RefillRequest received!");reply(genIBA(n))
 		}
 	}
   

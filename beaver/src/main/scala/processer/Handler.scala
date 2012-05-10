@@ -23,7 +23,7 @@ trait Handler extends Actor {
 	 * handles one message at a time.
 	 */
 	def act() = loop {
-		receive {
+		react {
 	    	case m: SyslogMsg => procDgram(m)
 	    	case m: AdminMsg => procAdminMsg(m)
 		}

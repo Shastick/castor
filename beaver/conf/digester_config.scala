@@ -49,27 +49,38 @@ val cpabe_enc = new CPABEEncConfig {
   publicKey = "files/pub_key"
 } apply
 
-val iba = new IBHasherConfig {
-  next = out
-  quantity = 100
+val keyGen = new KeyRefillerConfig {
+  keystore = ks
+} apply
+
+val ibaAuth = new IBAuthenticatorConfig {
+  quantity = 10
   keystore = ks
   keyAlias = "iba_testing"
+  refiller = keyGen 
+} apply
+
+val ibaHash = new IBHasherConfig {
+  next = out
+  auth = ibaAuth
 } apply
 
 val sched = new HashSchedulerConfig {
-  slave = iba
+  slave = ibaHash
   interval = 5
 } apply
+
 /**
  * Input
  */
+
 val file_in = new LogFileInputConfig {
   source = "test_out.txt"
   next = out
 } apply
 
 val udp = new UDPConfig {
-  next = iba
+  next = ibaHash
   port = 5555
 } apply
 
@@ -79,5 +90,5 @@ val udp = new UDPConfig {
  * and no 'apply' is required here.
  */
 new HandlerSet {
-  handlers = Set(udp,iba,sched,out)
+  handlers = Set(udp,keyGen,ibaAuth,ibaHash,sched,out)
 }

@@ -9,31 +9,39 @@ import util.messages.HashState
 import java.util.Random
 import java.security.interfaces.RSAPublicKey
 import util.messages.AuthError
+import util.messages.IBARefill
 
 /**
  * This class is used to periodically authenticate the state of the hash chain.
  * It uses IBA (Identity Based Authentication) as proposed by Shamir in his 1984 paper
  * "Identity Based CryptoSystems And Signature Schemes"
  */
-
-//TODO : handle public key ID's memorizing and key refilling.
-class IBAuthenticator(keyList: (String,Iterator[(String,BigInt)]),
+//TODO split the Authenticator and the verifier in two classes, it's getting too messy.
+class IBAuthenticator(var key_reserve: List[(String,Iterator[(String,BigInt)])],
 			rangen: Random,
 			pubkey: RSAPublicKey,
-			md: MessageDigest) extends Authenticator {
-	
+			md: MessageDigest,
+			krf: KeyRefiller,
+			refill_size: Int) extends Authenticator {
+  
   /**
    * TODO make sure it is meaningful => should be of same size than the RSA modulus (?)
    * (And make it coherent with all the key sizes.)
    */
-  
+	
 	def block_length = 2048
+	
+	//TODO : make sure this works to define an empty iterator of the correct type...
+	var (pkid, keys) = ("", Iterator.empty.asInstanceOf[Iterator[(String,BigInt)]])
   
 	def sign(data: Array[Byte]): HashState = {
-	  //TODO handle this more elegantly than by blowing everything up ;-)
-	  val (kid,keys) = keyList
-	  if(!keys.hasNext) throw new Exception("No more authentication keys!")
-	  else {
+	  if(!keys.hasNext) {
+	    val tup = popKeys
+	    pkid = tup._1
+	    keys = tup._2
+	    krf ! IBARefill(refill_size)
+	  }
+	  
 	    val e = new BigInt(pubkey.getPublicExponent)
 	    val n = new BigInt(pubkey.getModulus)
 	    
@@ -50,13 +58,28 @@ class IBAuthenticator(keyList: (String,Iterator[(String,BigInt)]),
 	    
 	    val s = (k*r.modPow(f, n)) mod n
 
-	    new IBHashState(id,data,s.toByteArray,t.toByteArray,kid)
-	  }
+	    new IBHashState(id,data,s.toByteArray,t.toByteArray,pkid)
+	  
 	}
 	
 	def authenticate(h: HashState): AdminMsg = h match {
 	  case m: IBHashState => verify(m)
 	  case _ => HashError("Bad Hash Type received: IBHashSate required, " + h.getClass() + " received instead!")
+	}
+	
+	/**
+	 * Append a new String-Iterator tuple to the key list.
+	 */
+	def addKeys(kt: (String, Iterator[(String,BigInt)])) = {
+	  key_reserve :+= kt
+	}
+	/**
+	 * Removes the head of the key list and returns it.
+	 */
+	def popKeys(): (String, Iterator[(String, BigInt)]) = {
+	  val t = key_reserve.head
+	  key_reserve --= List(t)
+	  t
 	}
 	
 	/**
