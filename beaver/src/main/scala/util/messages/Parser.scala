@@ -62,7 +62,7 @@ object Parser {
    * <PRIORITY>TIMESTAMP HOST MSG
    */
 
-  def fromInput(dgram: String): SyslogMsg = dgram match {
+  def fromInput(dgram: String): Message = dgram match {
     case clr_txt(pri,tstamp,_,host,msg) =>
       	new ClearSyslogMsg(pri, tstamp, host,msg)
     case _ => MalformedSyslogInput(dgram)

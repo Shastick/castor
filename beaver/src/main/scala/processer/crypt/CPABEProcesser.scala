@@ -20,6 +20,7 @@ import util.messages.FullCipherText
 import util.messages.Parser
 import util.Stringifier
 import util.messages.UnauthorizedAccess
+import util.messages.Message
 
 class CPABEProcesserEnc(next: Handler, c: DirectCPABE) extends Processer(next){
 	/**
@@ -47,11 +48,11 @@ class CPABEProcesserDec(next: Handler, c: DirectCPABE, pk: Array[Byte]) extends 
   def this(next: Handler, pubkey_loc: String, privkey_loc: String) =
     this(next, new DirectCPABE(pubkey_loc), Common.suckFile(privkey_loc))
   
-  override def crunchDgram(m: SyslogMsg): SyslogMsg = m match {
+  override def crunchDgram(m: SyslogMsg): Message = m match {
     case m: FullCipherText => tryDecryption(m.p)
   }
   
-  private def tryDecryption(data: Array[Byte]): SyslogMsg = {
+  private def tryDecryption(data: Array[Byte]): Message = {
     val d = c.dec(pk,data)
     if(d.isDefined) Parser.fromInput(Stringifier(d.get))
     else UnauthorizedAccess

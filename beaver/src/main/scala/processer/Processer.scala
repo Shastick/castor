@@ -4,6 +4,7 @@ import util.messages.ClearSyslogMsg
 import util.Stringifier
 import util.messages.CipherSyslogMsg
 import util.messages.SyslogMsg
+import util.messages.Message
 
 /**
  * Superclass for any log processor. This class chooses what part
@@ -30,7 +31,7 @@ abstract class Processer(next: Handler) extends Handler{
    * Now only processing host and message
    * TODO : DO THIS BASED ON A CONFIG MEAN
    */
-  def crunchDgram(m: SyslogMsg):SyslogMsg = m match {
+  def crunchDgram(m: SyslogMsg): Message = m match {
     case m: ClearSyslogMsg =>
       new CipherSyslogMsg(Left(m.pri),
     		  			Left(m.tstamp),
