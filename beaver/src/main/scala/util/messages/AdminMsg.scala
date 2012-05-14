@@ -70,6 +70,10 @@ case class Notification(n: String) extends AdminMsg {
   override def toString = "===== NOTIFICATION: " + n + " ====="
 }
 
+case class MalformedSyslogInput(d: String) extends AdminMsg {
+  override def toString = "===== ERROR - MALFORMED INPUT: " + d + " ====="
+}
+
 /**
  * Authentication status messages
  */

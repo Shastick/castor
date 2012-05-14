@@ -21,8 +21,10 @@ class LogFileWriter(out: FileWriter, line_sep: String) extends Handler {
    * Write a line to the FileWriter and ensure it is terminated by a line separator.
    */
   private def writeLine(line: String) = {
-    if (line.endsWith(line_sep)) out.write(line)
-    	else out.write(line + line_sep)
-    out.flush()
+    if(line.length != 0){
+    	if(line.endsWith(line_sep)) out.write(line)
+    		else out.write(line + line_sep)
+    	out.flush()
+    }
   }
 }

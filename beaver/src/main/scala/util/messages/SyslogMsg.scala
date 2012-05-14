@@ -57,5 +57,5 @@ class FullCipherText(val p: Array[Byte]) extends SyslogMsg {
   override def toBytes = p
   override def toString = BASE64.enc(p)
 }
-case class MalformedSyslogInput(d: String) extends AdminMsg
+
 case object UnauthorizedAccess extends AdminMsg
