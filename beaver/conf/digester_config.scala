@@ -67,7 +67,7 @@ val ibaAuth = new IBASignerConfig {
 
 val hasher = new IBAHasherConfig {
   next = out
-  auth = hmacAuth
+  auth = ibaAuth
 } apply
 
 val sched = new HashSchedulerConfig {
