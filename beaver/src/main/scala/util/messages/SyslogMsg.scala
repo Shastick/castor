@@ -44,10 +44,12 @@ class CipherSyslogMsg(
    * ets => Either to String function : takes an either, returns the string if it is one,
    * and converts the bytes to an b64 encoded string if the Either is a byte array.
    */
-  private def ets(in: Either[String, Array[Byte]]): String =
-    if(in.isLeft) in.left.get
-    else BASE64.enc(in.right.get)
-
+  private def ets(in: Either[String, Array[Byte]]): String = in match {
+    case Left(s) => s
+    case Right(a) => BASE64.enc(a)
+    case null => println("NULL Field encountered ! => " + pri + " " + tstamp + " " + host + " " + msg)
+    	"VOID"
+  }
 }
 
 class FullCipherText(val p: Array[Byte]) extends SyslogMsg {
