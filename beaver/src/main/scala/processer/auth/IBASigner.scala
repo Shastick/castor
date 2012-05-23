@@ -56,7 +56,7 @@ class IBASigner(var key_reserve: List[IBAKeychain],
 	    
 	    val s = (k*r.modPow(f, n)) mod n
 
-	    new IBHashState(id,data,s.toByteArray,t.toByteArray,pkid)
+	    new IBHashState(id,conv.enc(data),conv.enc(s.toByteArray),conv.enc(t.toByteArray),pkid)
 	  
 	}
 	

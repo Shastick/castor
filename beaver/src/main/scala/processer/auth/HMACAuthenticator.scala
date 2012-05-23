@@ -27,7 +27,7 @@ class HMACAuthenticator(kc: HMACKeychain, digest: Digest) extends Authenticator{
 	  if (!keys.hasNext) throw new Exception("No more authentication keys!")
 	  else {
 	    val (id,k) = keys.next
-		new HMACState(id,BASE64.enc(data),BASE64.enc(hmac(k,data)))
+		new HMACState(id,conv.enc(data),conv.enc(hmac(k,data)))
 	  }
 	
 	def authenticate(h: HashState): AdminMsg = HashError("")

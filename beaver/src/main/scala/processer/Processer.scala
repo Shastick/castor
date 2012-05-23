@@ -12,7 +12,7 @@ import util.messages.Message
  */
 
 abstract class Processer(next: Handler) extends Handler{
-
+  
   def procDgram(m: SyslogMsg) = next ! crunchDgram(m)
   
   /**

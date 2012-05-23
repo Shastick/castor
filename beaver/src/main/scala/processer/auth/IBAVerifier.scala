@@ -19,15 +19,15 @@ class IBAVerifier(ks: ManagedKeyStore, md: MessageDigest) extends Authenticator 
 	  case m: IBHashState => verify(m)
 	  case _ => HashError("Bad Hash Type received: IBHashSate required, " + h.getClass() + " received instead!")
 	}
-  	
+  
   	/**
 	 * Check if the received HashState corresponds to the internal state.
 	 */
 	private def verify(hs: IBHashState): AdminMsg = {
-	  val (id_in,m,s,t,kid) = (BASE64.dec(hs.id),
-			  			BASE64.dec(hs.hash),
-			  			BigInt(BASE64.dec(hs.s)),
-			  			BASE64.dec(hs.t),
+	  val (id_in,m,s,t,kid) = (conv.dec(hs.id),
+			  			conv.dec(hs.hash),
+			  			BigInt(conv.dec(hs.s)),
+			  			conv.dec(hs.t),
 			  			hs.kid)
 	  
       val pubkey = ks.readPublicKey(kid)

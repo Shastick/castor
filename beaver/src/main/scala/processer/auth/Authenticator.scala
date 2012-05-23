@@ -8,11 +8,14 @@ import util.messages.IBAKeys
 import java.security.interfaces.RSAPublicKey
 import util.Keychain
 import util.IBAKeychain
+import util.BASE64
 
 /**
  * Represents an entity able to authenticate data.
  */
 trait Authenticator extends Actor {
+  
+	lazy val conv = BASE64.getConverter
 	/**
 	 * Authenticate a byte array. The ID will be used to determine what 
 	 * secret/key/whatever was used to authenticate if necessary.

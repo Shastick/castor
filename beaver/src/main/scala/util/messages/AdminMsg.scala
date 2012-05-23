@@ -25,12 +25,6 @@ abstract class HashState extends AdminMsg {
  * Wrapper around a hash, its authentication and the ID used to authenticate it.
  */
 case class HMACState(id: String, hash: String, sig: String) extends HashState {
-  /**
-   * Constructor variant with byte arrays.
-   */
-  def this(id: String, hash: Array[Byte], sig: Array[Byte]) =
-		  	this(id,BASE64.enc(hash),BASE64.enc(sig))
-  
   override def toString = "===== HASH CHAIN STATE - HMAC MODE : =====\n" + id + ":" + hash + ":" + sig
 }
 
@@ -41,13 +35,7 @@ case class HMACState(id: String, hash: String, sig: String) extends HashState {
  * 	- s,t: the signature of the hash chain
  *  - kid: the alias of the public key needed for verification
  */
-case class IBHashState(id: String, hash: String, s: String, t: String, kid: String) extends HashState {
-  /**
-   * Constructor variant with byte arrays.
-   */
-  def this(id: String, hash: Array[Byte], s: Array[Byte], t: Array[Byte], kid: String) =
-		  	this(id,BASE64.enc(hash),BASE64.enc(s), BASE64.enc(t), kid)
-  
+case class IBHashState(id: String, hash: String, s: String, t: String, kid: String) extends HashState {  
   override def toString = "===== HASH CHAIN STATE - IBA MODE : =====\n" +
 		  				id + ":" + hash + ":" + s + ":" + t + ":" + kid
 }

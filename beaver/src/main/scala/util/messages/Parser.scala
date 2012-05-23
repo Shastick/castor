@@ -9,9 +9,10 @@ import util.Stringifier
 
 object Parser {
 
+  val conv = BASE64.getConverter
+	
   /**
    * fromInput regexp's
-   * TODO : check EVERY timestamp format FFS !
    */
   
   private val tstamp_BSD = """\D{3}\s[\d\s]\d\s\d{2}:\d{2}:\d{2}"""
@@ -83,13 +84,13 @@ object Parser {
 		case notification(n) => Notification(n)
 		case header(m) => Header(m)
 		
-		case c_paranoid(m) => new FullCipherText(m)
+		case c_paranoid(m) => new FullCipherText(conv.dec(m))
 	  	case _ => throw new Exception("Parse error : " + line)
   }
   
   private def makeEvent(pri: String, t: String, h: String, m: String): SyslogMsg = 
     new CipherSyslogMsg(Left(pri),
     					Left(t),
-    					Right(BASE64.dec(h)),
-    					Right(BASE64.dec(m)))
+    					Right(conv.dec(h)),
+    					Right(conv.dec(m)))
 }

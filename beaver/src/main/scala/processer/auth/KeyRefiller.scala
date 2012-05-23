@@ -5,10 +5,13 @@ import util.messages.IBARefill
 import util.messages.IBAKeys
 import util.hasher.IBAKeyGen
 import java.util.Random
-import util.BASE64
 import util.IBAKeychain
+import util.BASE64
 
 class KeyRefiller(ks: ManagedKeyStore) extends Actor {
+  
+  lazy val conv = BASE64.getConverter
+  
   //TODO : harmonize bit size definitions
   val keySize = 2048
   val rnd = new Random()
@@ -38,7 +41,7 @@ class KeyRefiller(ks: ManagedKeyStore) extends Actor {
     do {
     	var r = new Array[Byte](4)
     	rnd.nextBytes(r)
-    	alias = "auth_pubkey_" + BASE64.enc(r)
+    	alias = "auth_pubkey_" + conv.enc(r)
     } while(ks.contains(alias))
     alias
   }

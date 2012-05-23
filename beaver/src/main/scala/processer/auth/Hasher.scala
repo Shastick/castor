@@ -67,6 +67,6 @@ class Hasher(next: Handler,
    */
   
   def verify(h: HashState): Boolean =
-    BASE64.dec(h.hash).toSeq == lastHash.toSeq
+    conv.dec(h.hash).toSeq == lastHash.toSeq
 
 }

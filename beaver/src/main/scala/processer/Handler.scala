@@ -2,6 +2,7 @@ package processer
 import scala.actors.Actor
 import util.messages.SyslogMsg
 import util.messages.AdminMsg
+import util.BASE64
 
 /**
  * Handler trait: class to group anything able 
@@ -11,6 +12,11 @@ import util.messages.AdminMsg
  * chain with a LogFileWriter (who also extends Handler)
  */
 trait Handler extends Actor {
+	
+  /**
+   * set a base 64 converter
+   */
+	lazy val conv = BASE64.getConverter
 	/**
 	 * Defines what is done to the message(s)
 	 */

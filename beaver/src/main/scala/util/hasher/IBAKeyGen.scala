@@ -18,6 +18,7 @@ object IBAKeyGen {
   val provider = "BC"
   Security.addProvider(new BouncyCastleProvider())
   
+  val conv = BASE64.getConverter
   /**
    * Default Hash we will use
    * TODO : make the pad_bytes size dynamic (if the key size changes it should adapt)
@@ -56,6 +57,6 @@ object IBAKeyGen {
   	    new BigInt(k.getPrivateExponent),
   	    new BigInt(k.getModulus))
   	    
-  	(BASE64.enc(id_hash),pk)
+  	(conv.enc(id_hash),pk)
   }
 }
