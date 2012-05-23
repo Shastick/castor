@@ -46,9 +46,13 @@ class CipherSyslogMsg(
    */
   private def ets(in: Either[String, Array[Byte]]): String = in match {
     case Left(s) => s
-    case Right(a) => BASE64.enc(a)
-    case null => println("NULL Field encountered ! => " + pri + " " + tstamp + " " + host + " " + msg)
-    	"VOID"
+    case Right(a) => if(a == null) error() 
+    				else BASE64.enc(a)
+  }
+  
+  private def error() = {
+    println("NULL Field encountered ! => " + pri + " " + tstamp + " " + host + " " + msg)
+    "VOID"
   }
 }
 
