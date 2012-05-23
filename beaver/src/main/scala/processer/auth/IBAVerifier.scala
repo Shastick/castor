@@ -10,6 +10,7 @@ import util.ManagedKeyStore
 import java.security.MessageDigest
 import java.security.interfaces.RSAPublicKey
 import util.Keychain
+import util.hasher.IBAKeyGen
 
 class IBAVerifier(ks: ManagedKeyStore, md: MessageDigest) extends Authenticator {
 	var block_length = 2048
@@ -30,11 +31,8 @@ class IBAVerifier(ks: ManagedKeyStore, md: MessageDigest) extends Authenticator 
 			  			hs.kid)
 	  
       val pubkey = ks.readPublicKey(kid)
-			  			//TODO DO THE PADDING IN ONE PLACE
-      val pad_bytes = 192
-	  val pad = Array.fill[Byte](pad_bytes)((new java.lang.Integer(-1)).toByte) _
-
-  	  val id = BigInt(id_in ++ pad)
+	  
+  	  val id = BigInt(IBAKeyGen.paddID(id_in))
 	  val (e,n) = (new BigInt(pubkey.getPublicExponent()),
 			  		new BigInt(pubkey.getModulus()))
 		

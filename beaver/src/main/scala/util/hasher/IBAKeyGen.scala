@@ -20,37 +20,37 @@ object IBAKeyGen {
   
   /**
    * Default Hash we will use
-   * TODO : also use BouncyCastle here for coherence ?
    * TODO : make the pad_bytes size dynamic (if the key size changes it should adapt)
    */
   
   val default_hash = "SHA-512"
   val digest = MessageDigest.getInstance(default_hash, provider)
   
-  val pad_bytes = 192
-  val hash_byte_size = 64 
+  val padding_size = 192
+  val hash_byte_size = 64
   /**
    * Generates a list of <quant> keys and their associated ID's
    * 
    * The values from 1 to <quant> are hashed and the hash output serves as the Identifier
    * to be encrypted.
    * 
-   * TODO : actually padding the end of the id string with all ones.
-   * 
    */
   def genKeys(privKey: RSAPrivateKey, quant: Int): List[(String,BigInt)] = 
   	(1 to quant) map {i => Stringifier(i.toString)} map {i => makeKey(i,privKey)} toList 
  
+  	
+  def paddID(id: Array[Byte]): Array[Byte] = {
+  	    val pad = Array.fill[Byte](padding_size)((new java.lang.Integer(-1)).toByte) _
+  	    id ++ pad
+  }
   
   /**
    * Build a one-time key.
    */
   private def makeKey(id: Array[Byte], k: RSAPrivateKey): (String, BigInt) = {
   	digest.reset
-  	// Pad the hash with all ones TODO : do it in one place...
-  	val pad = Array.fill[Byte](pad_bytes)((new java.lang.Integer(-1)).toByte) _
   	val id_hash = digest.digest(id)
-  	val padded = id_hash ++ pad
+  	val padded = paddID(id_hash)
 
   	val pk = BigInt(padded).modPow(
   	    new BigInt(k.getPrivateExponent),

@@ -7,6 +7,7 @@ import util.messages.AuthRequest
 import util.messages.IBAKeys
 import java.security.interfaces.RSAPublicKey
 import util.Keychain
+import util.IBAKeychain
 
 /**
  * Represents an entity able to authenticate data.
@@ -27,7 +28,7 @@ trait Authenticator extends Actor {
 	  react {
 	    case SigRequest(a) => reply(sign(a))
 	    case AuthRequest(m) => reply(authenticate(m))
-	    case IBAKeys(t) => addKeys(t)
+	    case k: IBAKeychain => addKeys(k)
 	  }
 	}
 }

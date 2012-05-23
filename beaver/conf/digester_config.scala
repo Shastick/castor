@@ -93,6 +93,8 @@ val udp = new UDPConfig {
  * Define the Set containing the previously defined elements
  * (important : that's what is then used to bootstrap everything :-))
  * and no 'apply' is required here.
+ * 
+ * DOUBLE CHECK the entries here if Castor does not work as expected.
  */
 new HandlerSet {
   handlers = Set(out, keyGen, hmacAuth, ibaAuth, hasher, sched, udp)

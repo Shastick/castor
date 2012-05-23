@@ -24,14 +24,13 @@ class KeyRefiller(ks: ManagedKeyStore) extends Actor {
    * keypair. The private key is immediately discarded while the public
    * key is stored in the keystore under a new alias.
    */
-  def genIBA(q: Int): IBAKeys = {
+  def genIBA(q: Int): IBAKeychain = {
     val (pub,priv) = ks.genKeyPair(keySize)
     val keys = IBAKeyGen.genKeys(priv, q).toIterator
     val alias = makeAlias
     ks.storePublicKey(alias,pub)
     ks.save
-    //TODO : get rid of the 'key' messages and directly send keychains
-    IBAKeys(IBAKeychain(alias,pub,keys))
+    IBAKeychain(alias,pub,keys)
   }
   
   def makeAlias(): String = {

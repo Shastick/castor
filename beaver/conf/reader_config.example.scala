@@ -16,18 +16,26 @@ val ks = new KeystoreConfig {
 /**
  * Declare each element that will compose the log digester,
  * beginning from the output and climbing back to the input.
+ * 
+ * the 'apply' method call is VITAL, as it will return the
+ * defined object.
  */
 
 /**
  * Output
+ * To show everything on console, just use a ScreenConfig
+ * To only show errors (parse errors or verification errors),
+ * 	use ErrorScreenConfig
+ * To only show meta-messages(verifications successes and errors, ...), use the AdminScreenConfig
  */
 val out = new ScreenConfig apply
+val adminOut = new AdminScreenConfig apply
+val errorOut = new ErrorScreenConfig apply
 
 /**
- * Processing (Crypt, Auth and scheduling)
- * TODO : test decryption
+ * Processing (Decrypt & Verify)
  */
-/*
+
 val aes = new AESConfig {
   next = out
   mode = "DEC"
@@ -41,7 +49,7 @@ val rsa = new RSAConfig {
   keystore = ks
   keyAlias = "rsa_2"
 } apply
-*/
+
 val cpabe_dec = new CPABEDecConfig {
   next = out
   publicKey = "files/pub_key"
@@ -56,6 +64,7 @@ val hasher = new IBAHasherConfig {
   next = out
   auth = ibaAuth
 } apply
+
 /**
  * Input
  */

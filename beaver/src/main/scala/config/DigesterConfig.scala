@@ -28,12 +28,27 @@ import util.ScheduleManager
 import util.hasher.HMACKeyGen
 import org.bouncycastle.crypto.digests.SHA512Digest
 import util.IBAKeychain
+import processer.output.ErrorScreen
+import processer.output.AdminScreen
+
+
+/**
+ * Ostrich Configurations definition
+ */
 
 /**
  * Outputs
  */
 class ScreenConfig extends Config[Screen] {
   lazy val apply = new Screen
+}
+
+class AdminScreenConfig extends Config[Screen] {
+  lazy val apply = new AdminScreen
+}
+
+class ErrorScreenConfig extends Config[Screen] {
+  lazy val apply = new ErrorScreen
 }
 
 class FileOutputConfig extends Config[LogFileWriter] {
@@ -144,7 +159,7 @@ class IBASignerConfig extends Config[Authenticator] {
     keystore.storePublicKey(keyAlias,pub)
     keystore.save
     // Calling the garbage collector to make sure the private key is removed ASAP
-    // TODO: make sure this is actually usefull...
+    // Not sure if useful, but it's the only thing I see.
     System.gc
     new IBASigner(List(IBAKeychain(keyAlias, pub, keys)), new Random, digest, refiller, quantity)
   }
@@ -164,8 +179,7 @@ class HMACSignerConfig extends Config[HMACAuthenticator] {
   
   var secret = required[String]
   var quantity = required[Int]
-  
-  //TODO : bring EVERY digest in the code under bouncycastle's implementation ?
+
   val digest = new SHA512Digest()
   
   lazy val apply =

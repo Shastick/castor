@@ -24,14 +24,9 @@ class IBASigner(var key_reserve: List[IBAKeychain],
 			krf: KeyRefiller,
 			refill_size: Int) extends Authenticator {
   
-  /**
-   * TODO make sure it is meaningful => should be of same size than the RSA modulus (?)
-   * (And make it coherent with all the key sizes.)
-   */
-	
+	//TODO : make coherent with key-size definitions
 	var block_length = 2048
 	
-	//TODO : make sure this works to define an empty iterator of the correct type...
 	var (pkid, pubkey, keys) = ("",
 			null.asInstanceOf[RSAPublicKey],
 			Iterator.empty.asInstanceOf[Iterator[(String,BigInt)]])
