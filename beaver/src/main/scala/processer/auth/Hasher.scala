@@ -15,6 +15,7 @@ import java.security.interfaces.RSAPublicKey
 import java.security.interfaces.RSAPrivateKey
 import util.messages.AuthRequest
 import util.messages.SigRequest
+import util.messages.Message
 
 /**
  * A Hasher is a stateful class that will be in charge of building a hash chain of the messages 
@@ -37,16 +38,16 @@ class Hasher(next: Handler,
    * This answer is then sent further to the next handler.
    * idem for HashState verification
    */
+  //TODO : replace current state with state from the auth segment to allow
+  // localizing the problems.
   override def procAdminMsg(m: AdminMsg) = m match {
     case SaveState => next ! (auth !? SigRequest(lastHash))
-    case h: HashState =>  
-      next ! (if(verify(h)) auth !? AuthRequest(h)
-    		  else HashError("Hash states not corresponding for segment ID: " + h.id))
+    case h: HashState => next ! checkState(h)  
     case _ => next ! m
   } 
   
   /**
-   * Handles the hashing TODO : is a salt required here ?
+   * Handles the hashing
    */
   def crunchArray(in: Array[Byte]): Array[Byte] = {
     md.reset
@@ -63,10 +64,17 @@ class Hasher(next: Handler,
   }
   
   /**
-   * Compare received versus computed hash and authenticate if equal
+   * Compare received versus computed, authenticate if equal
+   * or update lastHash with retrieved one if not corresponding.
    */
-  
-  def verify(h: HashState): Boolean =
-    conv.dec(h.hash).toSeq == lastHash.toSeq
-
+  private def checkState(h: HashState) = {
+    val hb = conv.dec(h.hash)
+      if(hb.toSeq == lastHash.toSeq){
+        auth !? AuthRequest(h)
+      }
+      else {
+		lastHash = hb
+		HashError("Hash states not corresponding for segment ID: " + h.id)
+      }
+  }
 }

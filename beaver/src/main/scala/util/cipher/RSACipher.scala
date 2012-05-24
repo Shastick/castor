@@ -15,7 +15,6 @@ class RSACipher(cipher: Cipher) extends LogCipher {
 	}
 } 
 
-//TODO : store only a private or a public key in the keystore.
 object RSACipher {
   
   		val cipher_def = "RSA/ECB/PKCS1PADDING"

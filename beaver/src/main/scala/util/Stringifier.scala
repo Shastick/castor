@@ -8,6 +8,7 @@ import java.io.InputStreamReader
  * As i'm not yet quite sure it is done correctly, I prefer keeping it in one place
  * if later corrections are required.
  */
+
 object Stringifier {
   
   def apply(in: String): Array[Byte] = toBytes(in)
@@ -19,14 +20,15 @@ object Stringifier {
   def apply(in: Array[Byte]): String = makeString(in)
   
   def makeString(in: Array[Byte]): String = {
-     // Yes, this is ugly.
+     // Yes, this looks ugly.
 	 // And yes, it is done on purpose, as if I want a string I can use in regexp's,
 	 // just calling new String(p.getData()) won't cut it... >.>
-	 // TODO @julien try to find a better way around, like not creating new readers each time
-	 // or checking if a String contructor is available with options like new String(p.getData(), "UTF8") 
-	val string_stream = new BufferedReader(
+	 // TODO: try to find a better way around, like not creating new readers each time
+	 // or checking if a String constructor is available with options like new String(p.getData(), "UTF8") 
+	val bais = new ByteArrayInputStream(in)
+    val string_stream = new BufferedReader(
 			 new InputStreamReader(
 			     new ByteArrayInputStream(in)))
-	 string_stream.readLine()
+	string_stream.readLine()
   }
 }

@@ -17,7 +17,7 @@ class AESCipher(cipher: Cipher) extends LogCipher{
 
 object AESCipher {
   /**
-   * TODO clear out the IV stuff
+   * IV Currently fixed.
    */
 	val keyAlg_def = "AES"
   	val cipher_def = "AES/CBC/PKCS7PADDING"

@@ -11,7 +11,6 @@ import util.HMACKeychain
 import util.Keychain
 import util.BASE64
 
-//TODO actually implement this...
 
 class HMACAuthenticator(kc: HMACKeychain, digest: Digest) extends Authenticator{
 	
@@ -33,7 +32,7 @@ class HMACAuthenticator(kc: HMACKeychain, digest: Digest) extends Authenticator{
 	def authenticate(h: HashState): AdminMsg = HashError("")
 	
 	private def hmac(key: Array[Byte], data: Array[Byte]): Array[Byte] = {
-	 val auth = new Array[Byte](hmac.getMacSize()) // TODO check if 'val' is OK here :-)
+	 var auth = new Array[Byte](hmac.getMacSize())
 	 hmac.init(new KeyParameter(key))
 	 hmac.update(data,0,data.length)
 	 hmac.doFinal(auth,0)
@@ -41,5 +40,5 @@ class HMACAuthenticator(kc: HMACKeychain, digest: Digest) extends Authenticator{
 	}
 	
 	def addKeys(kc: Keychain) = throw new Exception("HMACAuthenticator currently does not support" +
-			"kes refilling.")
+			"key refilling.")
 }

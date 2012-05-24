@@ -11,6 +11,8 @@ import util.Stringifier
  */
 
 abstract class SyslogMsg extends Message {
+   
+  
   def toBytes = Stringifier(toString)
   def toString: String
 }

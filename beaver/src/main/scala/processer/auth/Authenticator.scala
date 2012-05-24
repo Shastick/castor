@@ -24,7 +24,6 @@ trait Authenticator extends Actor {
 	
 	def authenticate(s: HashState): AdminMsg
 	
-	//TODO : wrap the notion of key into something abstract
 	def addKeys(kc : Keychain)
 	
 	def act() = loop {

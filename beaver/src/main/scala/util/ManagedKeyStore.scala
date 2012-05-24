@@ -29,8 +29,7 @@ import java.security.KeyPairGenerator
 
 /**
  *  Utility class for loading keystores, adding keys, etc.
- *  => TODO finish it correctly.
- *  => TODO check deprecation warnings ?
+ *  => TODO find an alternative to the deprecated method calls.
  */
 class ManagedKeyStore(
     file: String

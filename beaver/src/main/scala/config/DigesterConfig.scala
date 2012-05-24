@@ -30,6 +30,7 @@ import org.bouncycastle.crypto.digests.SHA512Digest
 import util.IBAKeychain
 import processer.output.ErrorScreen
 import processer.output.AdminScreen
+import processer.output.UDPOutput
 
 
 /**
@@ -51,11 +52,21 @@ class ErrorScreenConfig extends Config[Screen] {
   lazy val apply = new ErrorScreen
 }
 
+/**
+ * Outputs
+ */
 class FileOutputConfig extends Config[LogFileWriter] {
   var destination = required[String]
   var line_separator = optional[String]
   
   lazy val apply = new LogFileWriter(destination,line_separator.getOrElse("\n"))
+}
+
+class UDPOutputConfig extends Config[UDPOutput] {
+  var destination = required[String]
+  var port = required[Int]
+  
+  lazy val apply = new UDPOutput(destination,port)
 }
 /**
  * Inputs

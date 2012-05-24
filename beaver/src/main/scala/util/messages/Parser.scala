@@ -67,7 +67,6 @@ object Parser {
     case clr_txt(pri,tstamp,_,host,msg) =>
       	new ClearSyslogMsg(pri, tstamp, host,msg)
     case _ => MalformedSyslogInput(dgram)
-      //TODO @julien handle this correctly
   }
   
   /**

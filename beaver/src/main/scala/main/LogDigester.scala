@@ -21,10 +21,6 @@ import processer.Handler
 import config.ScreenConfig
 import scala.actors.Actor
 
-/**
- * TODO ideas :  - ABE 
- */
-
 object LogDigester extends App {
 	println("Loading configuration file...")
 	val configFile = new File("conf/digester_config.scala")

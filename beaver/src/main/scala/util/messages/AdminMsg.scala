@@ -11,7 +11,6 @@ abstract class AdminMsg extends Message {
   /**
    * Setting the default toString to return an empty string for cases where
    * a message should not be written to the output
-   * TODO : make sure it is not a bad idea...
    */
   override def toString: String = ""
 }
