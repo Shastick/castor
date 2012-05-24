@@ -14,10 +14,8 @@ import java.util.Date
 class UDPOutput(socket: DatagramSocket, dest:  InetAddress, port: Int) extends Handler {
 
 	/**
-	 * priority for admin messages
-	 * set to 4 ("security/authorization messages")
-	 * see http://www.ietf.org/rfc/rfc3164.txt
-	 * for details
+	 * priority for admin messages set to 4 ("security/authorization messages")
+	 * see http://www.ietf.org/rfc/rfc3164.txt for details
 	 */
 	val pri = 4
 	val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
