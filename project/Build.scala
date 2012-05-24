@@ -6,12 +6,12 @@ import Keys._
 
 object LogBuild extends Build {
 
-  name := "Beaver"
+  name := "Castor"
   version := "0.1"
   
   scalaVersion := "2.9.0-1"
     
-  lazy val BeaverSettings = Seq(
+  lazy val CastorSettings = Seq(
 	libraryDependencies ++= Seq(
 	  "com.twitter" % "util-eval" % "1.12.13",
 	  "com.twitter" % "util-core" % "1.9.2",
@@ -29,10 +29,10 @@ object LogBuild extends Build {
 	)
   )
 
-  lazy val beaver = Project(
-    id = "beaver",
-    base = file("beaver")
-  ) settings(BeaverSettings :_*) dependsOn(cpabe)
+  lazy val castor = Project(
+    id = "castor",
+    base = file("castor")
+  ) settings(CastorSettings :_*) dependsOn(cpabe)
 
   lazy val cpabe = Project(
     id = "cpabe",
