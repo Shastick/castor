@@ -29,7 +29,7 @@ abstract class Processer(next: Handler) extends Handler{
   /**
    * How a whole datagram is processed.
    * Now only processing host and message
-   * TODO : DO THIS BASED ON A CONFIG MEAN
+   * TODO : do this based on a config mean
    */
   def crunchDgram(m: SyslogMsg): Message = m match {
     case m: ClearSyslogMsg =>

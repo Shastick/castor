@@ -57,10 +57,12 @@ class DirectCPABE(pubKey: Array[Byte]){
 
 		val beb = Bswabe.dec(pub, prv, cph)
 		if (beb.b) {
-			// TODO : clear this out, it comes from the cpabe library
-			// the right way
-			// plt = AESCoder.decrypt(beb.e.toBytes(), aesBuf);
-			// the wrong way
+			/** This comes from the cpabe library. It seems to work with the 'wrong' way, but
+			  *it would need to be checked...
+			  * the right way
+		  	  * plt = AESCoder.decrypt(beb.e.toBytes(), aesBuf);
+			  * the wrong way
+			  */
 			Some(AESCoder.decrypt(mBuf, aesBuf))
 		} else None
 	}

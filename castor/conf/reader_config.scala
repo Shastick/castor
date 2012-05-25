@@ -25,9 +25,8 @@ val out = new ScreenConfig apply
 
 /**
  * Processing (Crypt, Auth and scheduling)
- * TODO : test decryption
  */
-/*
+
 val aes = new AESConfig {
   next = out
   mode = "DEC"
@@ -41,7 +40,7 @@ val rsa = new RSAConfig {
   keystore = ks
   keyAlias = "rsa_2"
 } apply
-*/
+
 val cpabe_dec = new CPABEDecConfig {
   next = out
   publicKey = "files/pub_key"

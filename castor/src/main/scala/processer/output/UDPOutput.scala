@@ -26,7 +26,7 @@ class UDPOutput(socket: DatagramSocket, dest:  InetAddress, port: Int) extends H
 	def procDgram(dg: SyslogMsg) = dg match {
 	  case m: CipherSyslogMsg => send(m.toBytes)
 	  case m: ClearSyslogMsg => send(m.toBytes)
-	  case m: FullCipherText => //TODO
+	  case m: FullCipherText => send(makefullCiphMsg(m).toBytes)
 	}
 	
 	def procAdminMsg(m: AdminMsg) = send( 
@@ -37,6 +37,13 @@ class UDPOutput(socket: DatagramSocket, dest:  InetAddress, port: Int) extends H
 	      m.toString)
 	  toBytes
 	  )
+	
+	private def makefullCiphMsg(m: FullCipherText) = 
+	  new ClearSyslogMsg(
+	      pri.toString(),
+	      dateFormat.format(new Date()),
+	      InetAddress.getLocalHost().getHostName(),
+	      m.toString)
 	
 	private def send(b: Array[Byte]) = 
 	  socket.send(new DatagramPacket(b, b.length, dest, port))

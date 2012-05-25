@@ -20,15 +20,17 @@ object Stringifier {
   def apply(in: Array[Byte]): String = makeString(in)
   
   def makeString(in: Array[Byte]): String = {
-     // Yes, this looks ugly.
-	 // And yes, it is done on purpose, as if I want a string I can use in regexp's,
-	 // just calling new String(p.getData()) won't cut it... >.>
-	 // TODO: try to find a better way around, like not creating new readers each time
-	 // or checking if a String constructor is available with options like new String(p.getData(), "UTF8") 
+     
+    /** Yes, this looks ugly.
+	   * And yes, it is done on purpose, as if I want a string I can use in regexp's,
+	   * just calling new String(p.getData()) won't cut it... >.>
+	   * Currently works, so it will stay like this if it doesn't become an issue.
+	   */
+	  
 	val bais = new ByteArrayInputStream(in)
-    val string_stream = new BufferedReader(
+    val sStream = new BufferedReader(
 			 new InputStreamReader(
 			     new ByteArrayInputStream(in)))
-	string_stream.readLine()
+	sStream.readLine()
   }
 }

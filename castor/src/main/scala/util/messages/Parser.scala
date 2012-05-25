@@ -29,10 +29,6 @@ object Parser {
    *  - timeless : only the TIMESTAMP is crypted
    *  - anonymous : only the HOST is crypted
    *  - blind : TIMESTAMP and HOST are crypted
-   *  
-   *  TODO check if the regexps can indeed correctly differentiate every case,
-   *  and in which cases they collide.
-   *  AND SELECT ONE BASED ON CONFIG ! ! !
    */
   
   private val c_paranoid = """^([A-Za-z0-9+/=]*)$""".r

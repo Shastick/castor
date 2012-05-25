@@ -75,7 +75,9 @@ class IBASigner(var key_reserve: List[IBAKeychain],
 	 */
 	def popKeys(): (String, RSAPublicKey, Iterator[(String, BigInt)]) = {
 	  val t = key_reserve.head
-	  key_reserve --= List(t)
+	  // key_reserve --= List(t) <= this is deprecated.
+	  // Compiler asks for the following instead:
+	  key_reserve filterNot (List(t) contains)
 	  (t.id, t.pub, t.keys)
 	}
 	

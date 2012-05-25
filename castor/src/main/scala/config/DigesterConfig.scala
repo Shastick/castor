@@ -136,7 +136,7 @@ class CPABEDecConfig extends Config[CPABEProcesserDec] {
 
 /**
  * Authenticators
- * TODO : harmonize key size definition
+ * TODO : harmonize key size definition and permit it from configuration file
  */
 
 class KeyRefillerConfig extends Config[KeyRefiller] {

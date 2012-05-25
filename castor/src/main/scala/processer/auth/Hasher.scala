@@ -38,8 +38,7 @@ class Hasher(next: Handler,
    * This answer is then sent further to the next handler.
    * idem for HashState verification
    */
-  //TODO : replace current state with state from the auth segment to allow
-  // localizing the problems.
+
   override def procAdminMsg(m: AdminMsg) = m match {
     case SaveState => next ! (auth !? SigRequest(lastHash))
     case h: HashState => next ! checkState(h)  
