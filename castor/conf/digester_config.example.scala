@@ -47,7 +47,7 @@ val ibaAuth = new IBASignerConfig {
 } apply
 
 val hasher = new IBAHasherConfig {
-  next = out
+  next = file_out
   auth = ibaAuth
 } apply
 
@@ -100,5 +100,5 @@ val udp = new UDPConfig {
  * DOUBLE CHECK the entries here if Castor does not work as expected.
  */
 new HandlerSet {
-  handlers = Set(out, keyGen, hmacAuth, ibaAuth, hasher, sched, udp)
+  handlers = Set(file_out, keyGen, hmacAuth, ibaAuth, hasher, sched, udp)
 }

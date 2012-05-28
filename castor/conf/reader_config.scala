@@ -12,7 +12,7 @@ val ks = new KeystoreConfig {
   location = "files/keystore"
   password = "dorloter"
 } apply
-  
+
 /**
  * Declare each element that will compose the log digester,
  * beginning from the output and climbing back to the input.
@@ -65,7 +65,6 @@ val file_in = new LogFileInputConfig {
   next = hasher
 } apply
 
-
 /**
  * Define the Set containing the previously defined elements
  * (important : that's what is then used to bootstrap everything :-))
@@ -74,5 +73,5 @@ val file_in = new LogFileInputConfig {
  * DOUBLE CHECK the entries here if Castor does not work as expected.
  */
 new HandlerSet {
-  handlers = Set(out,rsa, hasher,ibaAuth,file_in)
+  handlers = Set(file_ine, hasher, ibaAuth, cpabe_dec, out)
 }
