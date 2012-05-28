@@ -58,4 +58,6 @@ class FullCipherText(val p: Array[Byte]) extends SyslogMsg {
   override def toString = conv.enc(p)
 }
 
-case object UnauthorizedAccess extends AdminMsg
+case object UnauthorizedAccess extends AdminMsg {
+  override def toString = "===== Unauthorized access to this message."
+}
