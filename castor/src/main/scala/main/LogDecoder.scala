@@ -29,5 +29,5 @@ object LogDecoder extends App {
 	val hdlrs = config()
 	println("Starting handlers...")
 	hdlrs.foreach(_.start)
-	println("Log Digester started.")  
+	println("Log Decoder started.")  
 }

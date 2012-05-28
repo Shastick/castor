@@ -38,12 +38,12 @@ val aes = new AESConfig {
 } apply
 
 val rsa = new RSAConfig {
-  next = out
+  next = file_out
   mode = "ENC"
   keystore = ks
-  keyAlias = "rsa_2"
+  keyAlias = "rsa_3"
 } apply
-
+/*
 val cpabe_enc = new CPABEEncConfig {
   next = out
   publicKey = "files/pub_key"
@@ -74,7 +74,7 @@ val sched = new HashSchedulerConfig {
   slave = hasher
   interval = 5
 } apply
-
+*/
 /**
  * Input
  */
@@ -85,7 +85,7 @@ val file_in = new LogFileInputConfig {
 } apply
 
 val udp = new UDPConfig {
-  next = hasher
+  next = rsa
   port = 5555
 } apply
 
@@ -97,5 +97,5 @@ val udp = new UDPConfig {
  * DOUBLE CHECK the entries here if Castor does not work as expected.
  */
 new HandlerSet {
-  handlers = Set(out, keyGen, hmacAuth, ibaAuth, hasher, sched, udp)
+  handlers = Set(file_out, rsa, udp)
 }

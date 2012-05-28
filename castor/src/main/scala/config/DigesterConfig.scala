@@ -101,7 +101,7 @@ abstract class CipherConfig[T] extends Config[T] {
       case _ => throw new Exception("Encryption mode can only be ENC or DEC.")
     }
   
-  val pass = keypass.getOrElse("")
+  def pass = keypass.getOrElse("")
 }
 
 class AESConfig extends CipherConfig[AESProcesser] {

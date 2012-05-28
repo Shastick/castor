@@ -38,9 +38,10 @@ val rsa = new RSAConfig {
   next = out
   mode = "DEC"
   keystore = ks
-  keyAlias = "rsa_2"
+  keyAlias = "rsa_3"
+  keypass = "dorloter"
 } apply
-
+/*
 val cpabe_dec = new CPABEDecConfig {
   next = out
   publicKey = "files/pub_key"
@@ -55,12 +56,13 @@ val hasher = new IBAHasherConfig {
   next = out
   auth = ibaAuth
 } apply
+*/
 /**
  * Input
  */
 val file_in = new LogFileInputConfig {
   source = "test_out.txt"
-  next = hasher
+  next = rsa
 } apply
 
 
@@ -72,5 +74,5 @@ val file_in = new LogFileInputConfig {
  * DOUBLE CHECK the entries here if Castor does not work as expected.
  */
 new HandlerSet {
-  handlers = Set(out,ibaAuth,hasher,file_in)
+  handlers = Set(out,rsa,file_in)
 }
