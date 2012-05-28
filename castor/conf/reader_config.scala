@@ -53,7 +53,7 @@ val ibaAuth = new IBAVerifierConfig {
 } apply
 
 val hasher = new IBAHasherConfig {
-  next = rsa
+  next = cpabe_dec
   auth = ibaAuth
 } apply
 
@@ -73,5 +73,5 @@ val file_in = new LogFileInputConfig {
  * DOUBLE CHECK the entries here if Castor does not work as expected.
  */
 new HandlerSet {
-  handlers = Set(file_ine, hasher, ibaAuth, cpabe_dec, out)
+  handlers = Set(file_in, hasher, ibaAuth, cpabe_dec, out)
 }
