@@ -25,7 +25,7 @@ class AdminScreen extends Screen {
 class ErrorScreen extends Screen {
   override def procDgram(dg: SyslogMsg) = Unit
   override def procAdminMsg(m: AdminMsg) = m match {
-    case HashError(e) => println(m.toString())
+    case e: Error => println(m.toString())
     case _ =>
   }
 }

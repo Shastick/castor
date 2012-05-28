@@ -30,24 +30,6 @@ val file_out = new FileOutputConfig {
 /**
  * Processing (Crypt, Auth and scheduling)
  */
-val aes = new AESConfig {
-  next = out
-  mode = "ENC"
-  keystore = ks
-  keyAlias = "aes_test"
-} apply
-
-val rsa = new RSAConfig {
-  next = file_out
-  mode = "ENC"
-  keystore = ks
-  keyAlias = "rsa_3"
-} apply
-/*
-val cpabe_enc = new CPABEEncConfig {
-  next = out
-  publicKey = "files/pub_key"
-} apply
 
 val keyGen = new KeyRefillerConfig {
   keystore = ks
@@ -66,7 +48,7 @@ val ibaAuth = new IBASignerConfig {
 } apply
 
 val hasher = new IBAHasherConfig {
-  next = out
+  next = file_out
   auth = ibaAuth
 } apply
 
@@ -74,7 +56,26 @@ val sched = new HashSchedulerConfig {
   slave = hasher
   interval = 5
 } apply
-*/
+
+val aes = new AESConfig {
+  next = out
+  mode = "ENC"
+  keystore = ks
+  keyAlias = "aes_test"
+} apply
+
+val rsa = new RSAConfig {
+  next = hasher
+  mode = "ENC"
+  keystore = ks
+  keyAlias = "rsa_3"
+} apply
+
+val cpabe_enc = new CPABEEncConfig {
+  next = out
+  publicKey = "files/pub_key"
+} apply
+
 /**
  * Input
  */
@@ -97,5 +98,5 @@ val udp = new UDPConfig {
  * DOUBLE CHECK the entries here if Castor does not work as expected.
  */
 new HandlerSet {
-  handlers = Set(file_out, rsa, udp)
+  handlers = Set(file_out, rsa, hasher, sched, ibaAuth, keyGen, udp)
 }

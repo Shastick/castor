@@ -70,8 +70,13 @@ case object EmptyLine extends AdminMsg {
  */
 abstract class Error extends AdminMsg
 
-case class HashError(e: String) extends Error {
-  override def toString = "HASH-ERROR: " + e
+case class HashError(id: String, expected: String, computed: String) extends Error {
+  override def toString = "HASH-ERROR: Hash states not corresponding for segment ID: " + id + 
+  		" expected: " + expected + " found: " + computed
+}
+
+case class HashTypeError(e: String) extends Error {
+  override def toString = "HASH-TYPE ERROR: " + e
 }
 
 case class AuthError(id: String, hash: String) extends Error {

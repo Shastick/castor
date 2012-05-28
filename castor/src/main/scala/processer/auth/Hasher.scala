@@ -72,8 +72,9 @@ class Hasher(next: Handler,
         auth !? AuthRequest(h)
       }
       else {
+        val err = HashError(h.id, h.hash, Stringifier(lastHash))
 		lastHash = hb
-		HashError("Hash states not corresponding for segment ID: " + h.id)
+		err
       }
   }
 }

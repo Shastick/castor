@@ -31,25 +31,6 @@ val file_out = new FileOutputConfig {
  * Processing (Crypt & Auth)
  */
 
-val aes = new AESConfig {
-  next = out
-  mode = "ENC"
-  keystore = ks
-  keyAlias = "aes_test"
-} apply
-
-val rsa = new RSAConfig {
-  next = out
-  mode = "ENC"
-  keystore = ks
-  keyAlias = "rsa_2"
-} apply
-
-val cpabe_enc = new CPABEEncConfig {
-  next = out
-  publicKey = "files/pub_key"
-} apply
-
 val keyGen = new KeyRefillerConfig {
   keystore = ks
 } apply
@@ -69,6 +50,25 @@ val ibaAuth = new IBASignerConfig {
 val hasher = new IBAHasherConfig {
   next = out
   auth = ibaAuth
+} apply
+
+val aes = new AESConfig {
+  next = hasher
+  mode = "ENC"
+  keystore = ks
+  keyAlias = "aes_test"
+} apply
+
+val rsa = new RSAConfig {
+  next = hasher
+  mode = "ENC"
+  keystore = ks
+  keyAlias = "rsa_2"
+} apply
+
+val cpabe_enc = new CPABEEncConfig {
+  next = hasher
+  publicKey = "files/pub_key"
 } apply
 
 /**

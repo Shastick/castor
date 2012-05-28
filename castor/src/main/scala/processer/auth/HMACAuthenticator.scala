@@ -29,7 +29,8 @@ class HMACAuthenticator(kc: HMACKeychain, digest: Digest) extends Authenticator{
 		new HMACState(id,conv.enc(data),conv.enc(hmac(k,data)))
 	  }
 	
-	def authenticate(h: HashState): AdminMsg = HashError("")
+	// No authentication at the moment for the HMAC demonstrator.
+	def authenticate(h: HashState): AdminMsg = HashError("","","")
 	
 	private def hmac(key: Array[Byte], data: Array[Byte]): Array[Byte] = {
 	 var auth = new Array[Byte](hmac.getMacSize())
