@@ -42,8 +42,8 @@ class IBAVerifier(ks: ManagedKeyStore, md: MessageDigest) extends Authenticator 
 	  val checkMe = s.modPow(e,n)
 	  val shouldBe = (id * BigInt(t).modPow(f,n)) mod n
 	  
-	  if(checkMe == shouldBe) ValidHash(hs.hash)
-	  else AuthError("Segment could not be authenticated, id: " + hs.id)
+	  if(checkMe == shouldBe) ValidHash(hs.id, hs.hash)
+	  else AuthError(hs.id, hs.hash)
 	}
 	
 	def addKeys(kc: Keychain) = throw new Exception("addKeys() not available in verification mode.")

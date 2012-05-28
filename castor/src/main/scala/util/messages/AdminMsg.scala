@@ -74,12 +74,12 @@ case class HashError(e: String) extends Error {
   override def toString = "HASH-ERROR: " + e
 }
 
-case class AuthError(e: String) extends Error {
-  override def toString = "AUTH-ERROR: " + e
+case class AuthError(id: String, hash: String) extends Error {
+  override def toString = "AUTH-ERROR: Segment could not be authenticated, id: " + id + " hash: " + hash
 }
 
-case class ValidHash(id: String) extends AdminMsg {
-  override def toString = "Valid segment: " + id
+case class ValidHash(id: String, h: String) extends AdminMsg {
+  override def toString = "Valid segment, id: " + id + " hash: " + h
 }
 /**
  * Authentication requests traffic
