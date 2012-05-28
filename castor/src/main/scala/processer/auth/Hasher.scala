@@ -72,7 +72,7 @@ class Hasher(next: Handler,
         auth !? AuthRequest(h)
       }
       else {
-        val err = HashError(h.id, h.hash, Stringifier(lastHash))
+        val err = HashError(h.id, h.hash, conv.enc(lastHash))
 		lastHash = hb
 		err
       }

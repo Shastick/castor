@@ -155,7 +155,6 @@ class IBAVerifierConfig extends Config[Authenticator] {
 class IBASignerConfig extends Config[Authenticator] {
   var quantity = required[Int] // How many one-time keys to generate initially and at refill
   var keystore = required[ManagedKeyStore] // the keystore that will hold the public verification key
-  var keyAlias = required[String] // Alias under which the public key will be stored
   var refiller = required[KeyRefiller]
   
   var bitSize = optional[Int]
@@ -165,14 +164,11 @@ class IBASignerConfig extends Config[Authenticator] {
   
   lazy val apply = {
     println("Generating initial key list")
-    val (pub,priv) = keystore.genKeyPair(bits)
-    val keys = IBAKeyGen.genKeys(priv,quantity).toIterator
-    keystore.storePublicKey(keyAlias,pub)
-    keystore.save
+    val keys = refiller.genIBA(quantity)
     // Calling the garbage collector to make sure the private key is removed ASAP
     // Not sure if useful, but it's the only thing I see.
     System.gc
-    new IBASigner(List(IBAKeychain(keyAlias, pub, keys)), new Random, digest, refiller, quantity)
+    new IBASigner(keys, new Random, digest, refiller, quantity)
   }
 }
 

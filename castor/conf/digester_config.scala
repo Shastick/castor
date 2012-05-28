@@ -43,7 +43,6 @@ val hmacAuth = new HMACSignerConfig {
 val ibaAuth = new IBASignerConfig {
   quantity = 10
   keystore = ks
-  keyAlias = "iba_testing"
   refiller = keyGen 
 } apply
 
@@ -54,7 +53,7 @@ val hasher = new IBAHasherConfig {
 
 val sched = new HashSchedulerConfig {
   slave = hasher
-  interval = 5
+  interval = 10
 } apply
 
 val aes = new AESConfig {

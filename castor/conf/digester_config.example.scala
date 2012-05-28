@@ -43,7 +43,6 @@ val hmacAuth = new HMACSignerConfig {
 val ibaAuth = new IBASignerConfig {
   quantity = 10
   keystore = ks
-  keyAlias = "iba_testing"
   refiller = keyGen 
 } apply
 
