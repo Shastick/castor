@@ -51,6 +51,7 @@ object Parser {
    */
   private val notification = """^===== NOTIFICATION: (.*) =====$""".r
   private val header = """^===== (.*) =====$""".r
+  private val empty_line = """^(\s*)$""".r 
   /**
    * The SyslogParser takes a syslog datagram (in a string formt) as input and parses
    * it into a clear text SyslogMsg.
@@ -69,6 +70,7 @@ object Parser {
    * Parse the strings coming from a digested log (that could include various Admin messages too).
    */
   def fromLog(line: String): Message = line match {
+    	case empty_line(_) => EmptyLine
     	case c_event(pri,tstamp,_,host,msg) => makeEvent(pri,tstamp,host,msg)
     	
     	case clr_txt(pri,tstamp,_,host,msg) => new ClearSyslogMsg(pri,tstamp,host,msg)
@@ -78,9 +80,8 @@ object Parser {
 		
 		case notification(n) => Notification(n)
 		case header(m) => Header(m)
-		
 		case c_paranoid(m) => new FullCipherText(conv.dec(m))
-	  	case _ => throw new Exception("Parse error : " + line)
+	  	case _ => MalformedSyslogInput(line)
   }
   
   private def makeEvent(pri: String, t: String, h: String, m: String): SyslogMsg = 

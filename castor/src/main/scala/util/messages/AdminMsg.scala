@@ -61,6 +61,10 @@ case class MalformedSyslogInput(d: String) extends AdminMsg {
   override def toString = "===== ERROR - MALFORMED INPUT: " + d + " ====="
 }
 
+case object EmptyLine extends AdminMsg {
+  override def toString = "===== EMPTY INPUT LINE ====="
+}
+
 /**
  * Authentication status messages
  */
