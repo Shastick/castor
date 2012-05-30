@@ -5,3 +5,6 @@ this project toys around with Identity Based Authentication and Ciphertext Based
 You can easily build it with SBT. The only thing you have to take care of yourself is installing the PBC library and the java layer wrapping around, following these steps: http://gas.dia.unisa.it/projects/jpbc/docs/pbcwrapper.html
 
 The CPABE part currently uses the implementation found here: https://github.com/wakemecn/cpabe/ 
+
+Please don't hesitate to e-mail me any question you would have,
+J.
