@@ -45,7 +45,7 @@ val rsa = new RSAConfig {
 val cpabe_dec = new CPABEDecConfig {
   next = out
   publicKey = "files/pub_key"
-  privateKey = "files/private_key"
+  privateKey = "files/priv_key"
 } apply
 
 val ibaAuth = new IBAVerifierConfig {

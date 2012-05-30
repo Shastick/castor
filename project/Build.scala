@@ -19,7 +19,8 @@ object LogBuild extends Build {
 	  "com.twitter" % "xrayspecs_2.8.0" % "2.1.1",
 	  "org.scala-tools" % "vscaladoc" % "1.2-m1",
 	  "org.bouncycastle" % "bcprov-jdk16" % "1.46",
-	  "commons-codec" % "commons-codec" % "1.6"
+	  "commons-codec" % "commons-codec" % "1.6",
+	  "org.clapper" %% "argot" % "0.4"
 	)
   )
 

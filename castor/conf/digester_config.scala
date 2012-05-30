@@ -41,7 +41,7 @@ val hmacAuth = new HMACSignerConfig {
 } apply
 
 val ibaAuth = new IBASignerConfig {
-  quantity = 10
+  quantity = 20
   keystore = ks
   refiller = keyGen 
 } apply
@@ -53,7 +53,7 @@ val hasher = new IBAHasherConfig {
 
 val sched = new HashSchedulerConfig {
   slave = hasher
-  interval = 10
+  interval = 20
 } apply
 
 val aes = new AESConfig {
@@ -71,7 +71,7 @@ val rsa = new RSAConfig {
 } apply
 
 val cpabe_enc = new CPABEEncConfig {
-  next = out
+  next = hasher
   publicKey = "files/pub_key"
 } apply
 
@@ -85,7 +85,7 @@ val file_in = new LogFileInputConfig {
 } apply
 
 val udp = new UDPConfig {
-  next = rsa
+  next = cpabe_enc
   port = 5555
 } apply
 
@@ -97,5 +97,5 @@ val udp = new UDPConfig {
  * DOUBLE CHECK the entries here if Castor does not work as expected.
  */
 new HandlerSet {
-  handlers = Set(file_out, rsa, hasher, sched, ibaAuth, keyGen, udp)
+  handlers = Set(file_out, cpabe_enc, hasher, sched, ibaAuth, keyGen, udp)
 }

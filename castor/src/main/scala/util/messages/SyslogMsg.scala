@@ -59,5 +59,5 @@ class FullCipherText(val p: Array[Byte]) extends SyslogMsg {
 }
 
 case object UnauthorizedAccess extends AdminMsg {
-  override def toString = "===== Unauthorized access to this message."
+  override def toString = "===== The provided private certificate is not allowed to see this message. ====="
 }
