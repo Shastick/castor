@@ -2,6 +2,6 @@ Welcome to Castor,
 
 this project toys around with Identity Based Authentication and Ciphertext Based Attribute Encryption to encrypt and authenticate syslog messages.
 
-You can build it with SBT.
+You can easily build it with SBT. The only thing you have to take care of yourself is installing the PBC library and the java layer wrapping around, following these steps: http://gas.dia.unisa.it/projects/jpbc/docs/pbcwrapper.html
 
 The CPABE part currently uses the implementation found here: https://github.com/wakemecn/cpabe/ 
