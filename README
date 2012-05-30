@@ -1,0 +1,7 @@
+Welcome to Castor,
+
+this project toys around with Identity Based Authentication and Ciphertext Based Attribute Encryption to encrypt and authenticate syslog messages.
+
+You can build it with SBT.
+
+The CPABE part currently uses the implementation found here: https://github.com/wakemecn/cpabe/ 
