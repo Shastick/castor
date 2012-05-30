@@ -1,0 +1,3 @@
+[submodule "cpabe/src/main/java"]
+	path = cpabe/src/main/java
+	url = git@github.com:Shastick/cpabe.git
