@@ -101,7 +101,8 @@ abstract class CipherConfig[T] extends Config[T] {
       case _ => throw new Exception("Encryption mode can only be ENC or DEC.")
     }
   
-  def pass = keypass.getOrElse("")
+  def pass = keypass.getOrElse(
+      keypass.getOrElse(Conf.getPwd("Password for key " + keyAlias + ": ")))
 }
 
 class AESConfig extends CipherConfig[AESProcesser] {
@@ -184,13 +185,15 @@ class IBAHasherConfig extends Config[Hasher] {
 
 class HMACSignerConfig extends Config[HMACAuthenticator] {
   
-  var secret = required[String]
+  var secret = optional[String]
   var quantity = required[Int]
 
   val digest = new SHA512Digest()
   
+  def secr = secret.getOrElse(Conf.getPwd("HMAC Secret: "))
+  
   lazy val apply =
-    new HMACAuthenticator(HMACKeyGen.genKeys(secret,quantity), digest)
+    new HMACAuthenticator(HMACKeyGen.genKeys(secr,quantity), digest)
 }
 
 class HashSchedulerConfig extends Config[Actor] {
@@ -207,11 +210,17 @@ class KeystoreConfig extends Config[ManagedKeyStore] {
   var location = required[String]
   var password = optional[String]
   
-  lazy val apply = ManagedKeyStore.load(location, password.getOrElse(""))
+  def pw = password.getOrElse(Conf.getPwd("Keystore password: "))
+  
+  lazy val apply = ManagedKeyStore.load(location, pw)
 }
 
 class HandlerSet extends Config[Set[Actor]] {
   var handlers = required[Set[Actor]]
 
   def apply() = handlers
+}
+
+object Conf {
+  def getPwd(title: String) = Console.readLine(title)
 }

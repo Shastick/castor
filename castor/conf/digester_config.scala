@@ -10,7 +10,6 @@ import config._
 
 val ks = new KeystoreConfig {
   location = "files/keystore"
-  password = "dorloter"
 } apply
   
 /**
