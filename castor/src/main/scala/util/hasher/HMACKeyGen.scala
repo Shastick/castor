@@ -21,9 +21,9 @@ object HMACKeyGen {
     val digest = MessageDigest.getInstance(default_hash, provider)
     
     /**
-	 * Generate qtt secret keys based on the provided secret.
+	 * Generate <qtt> secret keys based on the provided secret.
 	 * keys are obtained by successively hashing the secret and using the secret as 
-	 * a hash at each round.
+	 * a salt at each round.
 	 */
     
     def genKeys(secret: String, qtt: Int):HMACKeychain = genKeys(Stringifier(secret), qtt)

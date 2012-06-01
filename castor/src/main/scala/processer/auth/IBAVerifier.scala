@@ -18,7 +18,8 @@ class IBAVerifier(ks: ManagedKeyStore, md: MessageDigest) extends Authenticator 
 	
   	def authenticate(h: HashState): AdminMsg = h match {
 	  case m: IBHashState => verify(m)
-	  case _ => HashTypeError("Bad Hash Type received: IBHashSate required, " + h.getClass() + " received instead!")
+	  case _ => HashTypeError("Bad Hash Type received: IBHashSate required, " +
+	      h.getClass() + " received instead!")
 	}
   
   	/**

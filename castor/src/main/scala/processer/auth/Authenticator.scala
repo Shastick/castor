@@ -22,6 +22,9 @@ trait Authenticator extends Actor {
 	 */
 	def sign(data: Array[Byte]): HashState
 	
+	/**
+	 * Verify if the received HashState is legitimate
+	 */
 	def authenticate(s: HashState): AdminMsg
 	
 	def addKeys(kc : Keychain)

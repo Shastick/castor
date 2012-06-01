@@ -102,7 +102,7 @@ abstract class CipherConfig[T] extends Config[T] {
     }
   
   def pass = keypass.getOrElse(
-      keypass.getOrElse(Conf.getPwd("Password for key " + keyAlias + ": ")))
+      keypass.getOrElse(Conf.getPwd("Password for key " + keyAlias.value + ": ")))
 }
 
 class AESConfig extends CipherConfig[AESProcesser] {
