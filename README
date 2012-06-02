@@ -6,7 +6,10 @@ You can easily build it with SBT. The only thing you have to take care of yourse
 
 The CPABE part currently uses the implementation found here: https://github.com/wakemecn/cpabe/ 
 A fork reflecting a few additions can be found here: https://github.com/Shastick/cpabe 
-At the moment, Castor directly contains the CPABE library.
+
+It is contained in the castor repo' as a submodule, so make sure you update it too if you clone castor.
+
+A compilation guide can be found here: http://shastick.github.com/castor/
 
 Please don't hesitate to e-mail me any question you could have,
 J.
