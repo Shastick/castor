@@ -5,7 +5,7 @@ import config._
 
 /**
  * Import the keyfile(s)
- * (if no password is set, an empty string is used instead)
+ * (if no password is set, it is asked interactively at startup)
  */
 
 val ks = new KeystoreConfig {
