@@ -4,9 +4,9 @@ import java.security.Security
 import java.security.Key
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 
-class RSACipher(cipher: Cipher) extends LogCipher {
-  	
-  override def crunchArray(bytes: Array[Byte]):Array[Byte]={
+class RSACipher(cipher: Cipher){
+
+  def crunchArray(bytes: Array[Byte]):Array[Byte]={
 	  val out = new Array[Byte](cipher.getOutputSize(bytes.size))
 	  val in_data = bytes.grouped(cipher.getBlockSize())
 	  val proc_data = in_data.flatMap(b => cipher.doFinal(b))

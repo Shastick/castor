@@ -16,11 +16,6 @@ abstract class Processer(next: Handler) extends Handler{
   def procDgram(m: SyslogMsg) = next ! crunchDgram(m)
   
   /**
-   * How an individual byte array is processed
-   */
-  def crunchArray(in: Array[Byte]):Array[Byte]
-  
-  /**
    * Default behavior for non-datagram messages :
    * propagate them without modification.
    */
@@ -31,24 +26,6 @@ abstract class Processer(next: Handler) extends Handler{
    * Now only processing host and message
    * TODO : do this based on a config mean
    */
-  def crunchDgram(m: SyslogMsg): Message = m match {
-    case m: ClearSyslogMsg =>
-      new CipherSyslogMsg(Left(m.pri),
-    		  			Left(m.tstamp),
-    		  			Right(crunchArray(Stringifier(m.host))),
-    		  			Right(crunchArray(Stringifier(m.msg))))
-    case m: CipherSyslogMsg =>
-      new ClearSyslogMsg(get(m.pri),
-    		  			get(m.tstamp),
-    		  			get(m.host),
-    		  			get(m.msg))
-  }
-  
-  /**
-   * Take the string in an Either or Decrypt the array and convert it to a string.
-   */
-  private def get(e: Either[String,Array[Byte]]): String = 
-    if(e.isLeft) e.left.get
-    else Stringifier(crunchArray(e.right.get))
+  def crunchDgram(m: SyslogMsg): Message 
     
 }

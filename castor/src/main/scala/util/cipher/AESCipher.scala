@@ -6,8 +6,10 @@ import java.security.Key
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import javax.crypto.spec.IvParameterSpec
 
-class AESCipher(cipher: Cipher) extends LogCipher{
-	def crunchArray(input: Array[Byte]):Array[Byte]={
+class AESCipher(cipher: Cipher, mode: Int, keySpec: SecretKeySpec) {
+  
+	def crunchArray(iv: Array[Byte], input: Array[Byte]):Array[Byte]={
+	  cipher.init(mode, keySpec, new IvParameterSpec(iv))
 	  val o = new Array[Byte](cipher.getOutputSize(input.size))
 	  val o_len = cipher.update(input,0,input.size,o,0)
 	  cipher.doFinal(o,o_len)
@@ -16,22 +18,18 @@ class AESCipher(cipher: Cipher) extends LogCipher{
 }
 
 object AESCipher {
-  /**
-   * IV Currently fixed.
-   */
+  
 	val keyAlg_def = "AES"
   	val cipher_def = "AES/CBC/PKCS7PADDING"
   	val provider = "BC"
   	Security.addProvider(new BouncyCastleProvider())
   	
 	val block_size = 256
-	val iv = "LOLOLOLOLOLOLOLO".getBytes()
 			
 	def init(k: Key, mode: Int):AESCipher={
 			val keySpec = makeKeySpec(k)
 			val cipher = Cipher.getInstance(cipher_def, provider)
-			cipher.init(mode,keySpec, new IvParameterSpec(iv))
-			new AESCipher(cipher)
+			new AESCipher(cipher, mode, keySpec)
 	}
   	
   	private def makeKeySpec(k: Key):SecretKeySpec = {
