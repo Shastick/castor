@@ -27,34 +27,10 @@ val out = new ScreenConfig apply
  * Processing (Crypt, Auth and scheduling)
  */
 
-val aes = new AESConfig {
-  next = out
-  mode = "DEC"
-  keystore = ks
-  keyAlias = "aes_test"
-} apply
-
-val rsa = new RSAConfig {
-  next = out
-  mode = "DEC"
-  keystore = ks
-  keyAlias = "rsa_3"
-  keypass = "dorloter"
-} apply
-
 val cpabe_dec = new CPABEDecConfig {
   next = out
   publicKey = "files/pub_key"
   privateKey = "files/priv_key"
-} apply
-
-val ibaAuth = new IBAVerifierConfig {
-  keystore = ks
-} apply
-
-val hasher = new IBAHasherConfig {
-  next = cpabe_dec
-  auth = ibaAuth
 } apply
 
 /**
@@ -62,7 +38,7 @@ val hasher = new IBAHasherConfig {
  */
 val file_in = new LogFileInputConfig {
   source = "test_out.txt"
-  next = hasher
+  next = cpabe_dec
 } apply
 
 /**
@@ -73,5 +49,5 @@ val file_in = new LogFileInputConfig {
  * DOUBLE CHECK the entries here if Castor does not work as expected.
  */
 new HandlerSet {
-  handlers = Set(file_in, hasher, ibaAuth, cpabe_dec, out)
+  handlers = Set(file_in, cpabe_dec, out)
 }
